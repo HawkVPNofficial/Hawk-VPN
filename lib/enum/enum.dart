@@ -489,6 +489,7 @@ enum LoadingTag {
   access,
   proxies,
   batteryOptimization,
+  backendSync,
 }
 
 enum CoreStatus { connecting, connected, disconnected }

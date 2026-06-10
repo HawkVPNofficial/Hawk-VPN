@@ -537,5 +537,7 @@
   "editSsid": "SSIDを編集",
   "authorized": "許可済み",
   "tapToAuthorize": "タップして許可",
+  "totalTraffic": "総通信量",
+  "remainingTraffic": "残り通信量",
   "suspended": "一時停止中..."
 }

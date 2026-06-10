@@ -537,5 +537,7 @@
   "editSsid": "编辑SSID",
   "authorized": "已授权",
   "tapToAuthorize": "点击授权",
+  "totalTraffic": "总流量",
+  "remainingTraffic": "剩余流量",
   "suspended": "挂起中..."
 }

@@ -537,5 +537,7 @@
   "editSsid": "Изменить SSID",
   "authorized": "Разрешено",
   "tapToAuthorize": "Нажмите, чтобы разрешить",
+  "totalTraffic": "Всего трафика",
+  "remainingTraffic": "Осталось трафика",
   "suspended": "Приостановлено..."
 }

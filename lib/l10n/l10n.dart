@@ -4374,6 +4374,26 @@ class AppLocalizations {
     );
   }
 
+  /// `Total traffic`
+  String get totalTraffic {
+    return Intl.message(
+      'Total traffic',
+      name: 'totalTraffic',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Remaining traffic`
+  String get remainingTraffic {
+    return Intl.message(
+      'Remaining traffic',
+      name: 'remainingTraffic',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Suspended...`
   String get suspended {
     return Intl.message('Suspended...', name: 'suspended', desc: '', args: []);

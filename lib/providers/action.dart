@@ -1,5 +1,7 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:fl_clash/common/common.dart';
 import 'package:fl_clash/core/core.dart';
@@ -826,6 +828,8 @@ class ProxiesAction extends _$ProxiesAction {
 
 @Riverpod(keepAlive: true)
 class ProfilesAction extends _$ProfilesAction {
+  static const _backendProfileLabel = 'MyProxy';
+
   @override
   void build() {}
 
@@ -872,6 +876,84 @@ class ProfilesAction extends _$ProfilesAction {
         commonPrint.log(e.toString(), logLevel: LogLevel.warning);
       }
     }
+  }
+
+  Future<void> syncBackendProfile() async {
+    final deviceId = globalState.deviceId;
+    if (deviceId.isEmpty) return;
+    while (true) {
+      Object? error;
+      ref.read(loadingProvider(LoadingTag.backendSync).notifier).start();
+      try {
+        await _syncBackendProfile(deviceId);
+        globalState.showNotifier('订阅加载成功');
+        return;
+      } catch (e) {
+        error = e;
+        commonPrint.log(
+          'syncBackendProfile failed $e',
+          logLevel: LogLevel.warning,
+        );
+      } finally {
+        await ref.read(loadingProvider(LoadingTag.backendSync).notifier).stop();
+      }
+
+      await globalState.showMessage(
+        title: '订阅加载失败',
+        message: TextSpan(text: error.toString()),
+        confirmText: '重新加载',
+        cancelable: false,
+        dismissible: false,
+      );
+    }
+  }
+
+  Future<void> _syncBackendProfile(String deviceId) async {
+    var auth = await preferences.getBackendAuth();
+    BackendUser user;
+    try {
+      user = await request.currentUser(auth: auth);
+    } catch (e) {
+      if (!request.isUnauthorized(e)) rethrow;
+      final (loginAuth, _) = await request.login(deviceId);
+      auth = loginAuth;
+      user = await request.currentUser(auth: auth);
+    }
+    if (auth == null || !auth.isValid) {
+      throw 'backend auth is empty';
+    }
+    globalState.backendAuth = auth;
+    globalState.backendUser = user;
+    final subscription = await request.getBackendSubscription(auth: auth);
+    if (subscription.content.trim().isEmpty) {
+      throw 'subscription is empty';
+    }
+    await _saveBackendSubscription(subscription);
+  }
+
+  Future<void> _saveBackendSubscription(
+    BackendSubscription subscription,
+  ) async {
+    final bytes = Uint8List.fromList(utf8.encode(subscription.content));
+    Profile? backendProfile;
+    for (final profile in ref.read(profilesProvider)) {
+      if (profile.label == _backendProfileLabel) {
+        backendProfile = profile;
+        break;
+      }
+    }
+    final profile =
+        backendProfile ?? Profile.normal(label: _backendProfileLabel);
+    final nextProfile = await profile
+        .copyWith(label: _backendProfileLabel)
+        .saveFile(bytes);
+    ref
+        .read(profilesProvider.notifier)
+        .put(
+          nextProfile.copyWith(subscriptionInfo: subscription.subscriptionInfo),
+        );
+    ref.read(currentProfileIdProvider.notifier).value = nextProfile.id;
+    await preferences.saveConfig(ref.read(configProvider));
   }
 
   void putProfile(Profile profile) {

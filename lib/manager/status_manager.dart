@@ -3,9 +3,11 @@ import 'dart:collection';
 import 'dart:math';
 
 import 'package:fl_clash/common/common.dart';
+import 'package:fl_clash/enum/enum.dart';
 import 'package:fl_clash/models/models.dart';
 import 'package:fl_clash/providers/providers.dart';
 import 'package:fl_clash/widgets/fade_box.dart';
+import 'package:fl_clash/widgets/loading.dart';
 import 'package:fl_clash/widgets/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -86,6 +88,45 @@ class StatusManagerState extends State<StatusManager> {
     return Stack(
       children: [
         widget.child,
+        Consumer(
+          builder: (_, ref, _) {
+            final isLoading = ref.watch(
+              loadingProvider(LoadingTag.backendSync),
+            );
+            if (!isLoading) {
+              return const SizedBox(key: ValueKey('backend_sync_idle'));
+            }
+            return Positioned.fill(
+              key: const ValueKey('backend_sync_loading'),
+              child: FadeThroughBox(
+                child: ColoredBox(
+                  color: Colors.black38,
+                  child: Center(
+                    child: Card(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 24,
+                          vertical: 20,
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            const SizedBox.square(
+                              dimension: CommonCircleLoading.defaultDimension,
+                              child: CommonCircleLoading(),
+                            ),
+                            const SizedBox(width: 16),
+                            Text(context.appLocalizations.loading),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            );
+          },
+        ),
         Consumer(
           builder: (_, ref, child) {
             final top = ref.watch(overlayTopOffsetProvider);

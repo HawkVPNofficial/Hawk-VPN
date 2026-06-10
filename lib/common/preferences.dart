@@ -5,6 +5,10 @@ import 'package:fl_clash/models/models.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'constant.dart';
+import 'snowflake.dart';
+
+const _installIdKey = 'installId';
+const _backendAuthKey = 'backendAuth';
 
 class Preferences {
   static Preferences? _instance;
@@ -37,6 +41,33 @@ class Preferences {
   Future<void> saveShareState(SharedState shareState) async {
     final preferences = await sharedPreferencesCompleter.future;
     await preferences?.setString('sharedState', json.encode(shareState));
+  }
+
+  Future<String> getInstallId() async {
+    final preferences = await sharedPreferencesCompleter.future;
+    final installId = preferences?.getString(_installIdKey);
+    if (installId != null && installId.isNotEmpty) {
+      return installId;
+    }
+    final newInstallId = 'local-${snowflake.id}';
+    await preferences?.setString(_installIdKey, newInstallId);
+    return newInstallId;
+  }
+
+  Future<void> saveBackendAuth(BackendAuth auth) async {
+    final preferences = await sharedPreferencesCompleter.future;
+    await preferences?.setString(_backendAuthKey, json.encode(auth.toJson()));
+  }
+
+  Future<BackendAuth?> getBackendAuth() async {
+    try {
+      final preferences = await sharedPreferencesCompleter.future;
+      final authString = preferences?.getString(_backendAuthKey);
+      if (authString == null || authString.isEmpty) return null;
+      return BackendAuth.fromJson(json.decode(authString));
+    } catch (_) {
+      return null;
+    }
   }
 
   Future<Map<String, Object?>?> getConfigMap() async {

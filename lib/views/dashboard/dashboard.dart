@@ -10,18 +10,31 @@ import 'package:fl_clash/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'my_proxy_dashboard.dart';
 import 'widgets/start_button.dart';
 
 typedef _IsEditWidgetBuilder = Widget Function(bool isEdit);
 
-class DashboardView extends ConsumerStatefulWidget {
+class DashboardView extends StatelessWidget {
   const DashboardView({super.key});
 
   @override
-  ConsumerState<DashboardView> createState() => _DashboardViewState();
+  Widget build(BuildContext context) {
+    return useMyProxyDashboard
+        ? const MyProxyDashboardView()
+        : const LegacyDashboardView();
+  }
 }
 
-class _DashboardViewState extends ConsumerState<DashboardView> {
+class LegacyDashboardView extends ConsumerStatefulWidget {
+  const LegacyDashboardView({super.key});
+
+  @override
+  ConsumerState<LegacyDashboardView> createState() =>
+      _LegacyDashboardViewState();
+}
+
+class _LegacyDashboardViewState extends ConsumerState<LegacyDashboardView> {
   final key = GlobalKey<SuperGridState>();
   final _isEditNotifier = ValueNotifier<bool>(false);
   final _addedWidgetsNotifier = ValueNotifier<List<GridItem>>([]);
@@ -87,7 +100,10 @@ class _DashboardViewState extends ConsumerState<DashboardView> {
                           },
                         ),
                         onPressed: _handleConnection,
-                        icon: const Icon(Icons.check, fontWeight: FontWeight.w900),
+                        icon: const Icon(
+                          Icons.check,
+                          fontWeight: FontWeight.w900,
+                        ),
                       )
                     : FilledButton.icon(
                         key: ValueKey(coreStatus),

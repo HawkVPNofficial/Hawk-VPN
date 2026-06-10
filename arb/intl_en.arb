@@ -537,5 +537,7 @@
   "editSsid": "Edit SSID",
   "authorized": "Authorized",
   "tapToAuthorize": "Tap to authorize",
+  "totalTraffic": "Total traffic",
+  "remainingTraffic": "Remaining traffic",
   "suspended": "Suspended..."
 }

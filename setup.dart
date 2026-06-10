@@ -159,9 +159,24 @@ Future<int> _package(
   final coreSha256 = platform == 'windows' ? await _buildGoCore(rootDir) : null;
 
   final file = File(p.join(rootDir, 'env.json'));
+  final previousEnv = file.existsSync()
+      ? jsonDecode(file.readAsStringSync()) as Map<String, dynamic>
+      : <String, dynamic>{};
 
+  final backendBaseUrl = env == 'stable'
+      ? 'https://api.myproxy.work/'
+      : 'https://myproxyapi.aigateway.cn/';
   await file.writeAsString(
-    jsonEncode({'APP_ENV': env, 'CORE_SHA256': ?coreSha256}),
+    jsonEncode({
+      'APP_ENV': env,
+      'BACKEND_BASE_URL': backendBaseUrl,
+      'SHOW_PROFILES_TAB': previousEnv['SHOW_PROFILES_TAB'] == true,
+      'SHOW_FULL_TOOLS': previousEnv['SHOW_FULL_TOOLS'] == true,
+      'DASHBOARD_MODULE': previousEnv['DASHBOARD_MODULE'] == 'legacy'
+          ? 'legacy'
+          : 'myproxy',
+      'CORE_SHA256': ?coreSha256,
+    }),
   );
 
   final flutterBuildArgs = createFlutterBuildArgs(

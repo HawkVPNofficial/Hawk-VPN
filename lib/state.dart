@@ -19,12 +19,17 @@ import 'database/database.dart';
 import 'enum/enum.dart';
 import 'l10n/l10n.dart';
 import 'models/models.dart';
+import 'plugins/app.dart';
 import 'providers/providers.dart';
 
 class GlobalState {
   static GlobalState? _instance;
   final navigatorKey = GlobalKey<NavigatorState>();
   bool isPre = true;
+  String appSetId = '';
+  String deviceId = '';
+  BackendAuth? backendAuth;
+  BackendUser? backendUser;
   late final String coreSHA256;
   late final PackageInfo packageInfo;
   Function? updateCurrentDelayDebounce;
@@ -82,6 +87,8 @@ class GlobalState {
     );
     final appStateOverrides = buildAppStateOverrides(appState);
     packageInfo = await PackageInfo.fromPlatform();
+    appSetId = await app?.getAppSetId() ?? '';
+    deviceId = appSetId.isNotEmpty ? appSetId : await preferences.getInstallId();
     final configMap = await preferences.getConfigMap();
     final config = await migration.migrationIfNeeded(
       configMap,
@@ -321,6 +328,7 @@ class GlobalState {
     await _showCrashlyticsTip();
     await container.read(coreActionProvider.notifier).connectCore();
     await container.read(coreActionProvider.notifier).initCore();
+    await container.read(profilesActionProvider.notifier).syncBackendProfile();
     await container.read(setupActionProvider.notifier).initStatus();
     container.read(initProvider.notifier).value = true;
     permissions.check();

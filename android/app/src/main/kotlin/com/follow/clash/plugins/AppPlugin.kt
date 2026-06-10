@@ -27,6 +27,7 @@ import com.follow.clash.common.quickIntent
 import com.follow.clash.getPackageIconPath
 import com.follow.clash.models.Package
 import com.follow.clash.showToast
+import com.google.android.gms.appset.AppSet
 import com.google.gson.Gson
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.plugins.FlutterPlugin
@@ -154,6 +155,10 @@ class AppPlugin : FlutterPlugin, MethodChannel.MethodCallHandler, ActivityAware 
                 handleGetPackageIcon(call, result)
             }
 
+            "getAppSetId" -> {
+                handleGetAppSetId(result)
+            }
+
             "tip" -> {
                 val message = call.argument<String>("message")
                 tip(message)
@@ -175,6 +180,20 @@ class AppPlugin : FlutterPlugin, MethodChannel.MethodCallHandler, ActivityAware 
             else -> {
                 result.notImplemented()
             }
+        }
+    }
+
+    private fun handleGetAppSetId(result: Result) {
+        try {
+            AppSet.getClient(GlobalState.application).appSetIdInfo
+                .addOnSuccessListener {
+                    result.success(it.id)
+                }
+                .addOnFailureListener {
+                    result.success("")
+                }
+        } catch (_: Exception) {
+            result.success("")
         }
     }
 

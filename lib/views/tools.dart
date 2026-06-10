@@ -57,8 +57,8 @@ class _ToolViewState extends ConsumerState<ToolsView> {
     return generateSection(
       title: context.appLocalizations.other,
       items: [
-        const _DisclaimerItem(),
-        if (enableDeveloperMode) const _DeveloperItem(),
+        if (showFullTools) const _DisclaimerItem(),
+        if (showFullTools && enableDeveloperMode) const _DeveloperItem(),
         const _InfoItem(),
       ],
     );
@@ -70,13 +70,13 @@ class _ToolViewState extends ConsumerState<ToolsView> {
       items: [
         const _LocaleItem(),
         const _ThemeItem(),
-        const _BackupItem(),
-        if (system.isDesktop) const _HotkeyItem(),
-        if (system.isWindows) const _LoopbackItem(),
-        if (system.isAndroid) const _AccessItem(),
-        const _ConfigItem(),
-        const _AdvancedConfigItem(),
-        const _SettingItem(),
+        if (showFullTools) const _BackupItem(),
+        if (showFullTools && system.isDesktop) const _HotkeyItem(),
+        if (showFullTools && system.isWindows) const _LoopbackItem(),
+        if (showFullTools && system.isAndroid) const _AccessItem(),
+        if (showFullTools) const _ConfigItem(),
+        if (showFullTools) const _AdvancedConfigItem(),
+        if (showFullTools) const _SettingItem(),
       ],
     );
   }
@@ -89,20 +89,21 @@ class _ToolViewState extends ConsumerState<ToolsView> {
       ),
     );
     final items = [
-      Consumer(
-        builder: (_, ref, _) {
-          final state = ref.watch(moreToolsSelectorStateProvider);
-          if (state.navigationItems.isEmpty) {
-            return Container();
-          }
-          return Column(
-            children: [
-              ListHeader(title: context.appLocalizations.more),
-              _buildNavigationMenu(state.navigationItems),
-            ],
-          );
-        },
-      ),
+      if (showFullTools)
+        Consumer(
+          builder: (_, ref, _) {
+            final state = ref.watch(moreToolsSelectorStateProvider);
+            if (state.navigationItems.isEmpty) {
+              return Container();
+            }
+            return Column(
+              children: [
+                ListHeader(title: context.appLocalizations.more),
+                _buildNavigationMenu(state.navigationItems),
+              ],
+            );
+          },
+        ),
       ..._getSettingList(),
       ..._getOtherList(vm2.b),
     ];

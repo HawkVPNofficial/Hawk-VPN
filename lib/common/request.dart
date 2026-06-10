@@ -14,10 +14,22 @@ import 'package:flutter/foundation.dart';
 class Request {
   late final Dio dio;
   late final Dio _clashDio;
+  late final Dio _backendDio;
   String? userAgent;
 
   Request() {
     dio = Dio(BaseOptions(headers: {'User-Agent': browserUa}));
+    _backendDio = Dio(
+      BaseOptions(
+        headers: {
+          'User-Agent': browserUa,
+          Headers.contentTypeHeader: Headers.jsonContentType,
+        },
+        connectTimeout: httpTimeoutDuration,
+        receiveTimeout: httpTimeoutDuration,
+        sendTimeout: httpTimeoutDuration,
+      ),
+    );
     _clashDio = Dio();
     _clashDio.httpClientAdapter = IOHttpClientAdapter(
       createHttpClient: () {
@@ -29,6 +41,82 @@ class Request {
         return client;
       },
     );
+  }
+
+  void _updateBackendBaseUrl() {
+    const backendBaseUrl = String.fromEnvironment('BACKEND_BASE_URL');
+    _backendDio.options.baseUrl = backendBaseUrl.takeFirstValid([
+      globalState.isPre ? backendDevBaseUrl : backendProdBaseUrl,
+    ]);
+  }
+
+  Future<(BackendAuth, BackendUser)> login(String appSetId) async {
+    _updateBackendBaseUrl();
+    final response = await _backendDio.post<Map<String, dynamic>>(
+      '/api/auth/login',
+      data: {'appSetId': appSetId},
+      options: Options(responseType: ResponseType.json),
+    );
+    final result = BackendResponse.fromJson(response.data ?? {});
+    result.throwIfFailed();
+    final data = result.data;
+    final auth = BackendAuth.fromJson(data);
+    final userData = data['user'];
+    final user = BackendUser.fromJson(
+      userData is Map ? Map<String, dynamic>.from(userData) : {},
+    );
+    if (!auth.isValid) {
+      throw 'backend login failed';
+    }
+    _setBackendAuth(auth);
+    await preferences.saveBackendAuth(auth);
+    return (auth, user);
+  }
+
+  Future<BackendUser> currentUser({BackendAuth? auth}) async {
+    _updateBackendBaseUrl();
+    if (auth != null) {
+      _setBackendAuth(auth);
+    }
+    final response = await _backendDio.get<Map<String, dynamic>>(
+      '/api/auth/me',
+      options: Options(responseType: ResponseType.json),
+    );
+    final result = BackendResponse.fromJson(response.data ?? {});
+    result.throwIfFailed();
+    return BackendUser.fromJson(result.data);
+  }
+
+  Future<BackendSubscription> getBackendSubscription({
+    BackendAuth? auth,
+  }) async {
+    _updateBackendBaseUrl();
+    if (auth != null) {
+      _setBackendAuth(auth);
+    }
+    final response = await _backendDio.get<String>(
+      '/api/subscription/clash',
+      options: Options(responseType: ResponseType.plain),
+    );
+    return BackendSubscription(
+      content: response.data ?? '',
+      subscriptionInfo: SubscriptionInfo.formHString(
+        response.headers.value('subscription-userinfo'),
+      ),
+    );
+  }
+
+  bool isUnauthorized(Object error) {
+    return error is DioException &&
+        error.response?.statusCode == HttpStatus.unauthorized;
+  }
+
+  void _setBackendAuth(BackendAuth auth) {
+    if (!auth.isValid) return;
+    final tokenValue = auth.tokenValue.startsWith('Bearer ')
+        ? auth.tokenValue
+        : 'Bearer ${auth.tokenValue}';
+    _backendDio.options.headers[auth.tokenName] = tokenValue;
   }
 
   Future<Response<Uint8List>> getFileResponseForUrl(String url) async {
@@ -113,30 +201,30 @@ class Request {
 
       final future = dio
           .get<Map<String, dynamic>>(
-        source.key,
-        cancelToken: token,
-        options: Options(responseType: ResponseType.json),
-      )
+            source.key,
+            cancelToken: token,
+            options: Options(responseType: ResponseType.json),
+          )
           .timeout(const Duration(seconds: 10));
       future
           .then((res) {
-        if (res.statusCode == HttpStatus.ok && res.data != null) {
-          completer.complete(Result.success(source.value(res.data!)));
-          return;
-        }
-        commonPrint.log('checkIp data empty', logLevel: LogLevel.info);
-        failureCount++;
-        handleFailRes();
-      })
+            if (res.statusCode == HttpStatus.ok && res.data != null) {
+              completer.complete(Result.success(source.value(res.data!)));
+              return;
+            }
+            commonPrint.log('checkIp data empty', logLevel: LogLevel.info);
+            failureCount++;
+            handleFailRes();
+          })
           .catchError((e) {
-        failureCount++;
-        if (e is DioException && e.type == DioExceptionType.cancel) {
-          completer.complete(Result.error('cancelled'));
-          return;
-        }
-        commonPrint.log('checkIp error $e', logLevel: LogLevel.warning);
-        handleFailRes();
-      });
+            failureCount++;
+            if (e is DioException && e.type == DioExceptionType.cancel) {
+              completer.complete(Result.error('cancelled'));
+              return;
+            }
+            commonPrint.log('checkIp error $e', logLevel: LogLevel.warning);
+            handleFailRes();
+          });
       return completer.future;
     });
     final res = await Future.any(futures);
@@ -149,9 +237,9 @@ class Request {
     try {
       final response = await dio
           .get(
-        'http://$localhost:$helperPort/ping',
-        options: Options(responseType: ResponseType.plain),
-      )
+            'http://$localhost:$helperPort/ping',
+            options: Options(responseType: ResponseType.plain),
+          )
           .timeout(const Duration(milliseconds: 2000));
       if (response.statusCode != HttpStatus.ok) {
         return false;
@@ -166,10 +254,10 @@ class Request {
     try {
       final response = await dio
           .post(
-        'http://$localhost:$helperPort/start',
-        data: json.encode({'path': appPath.corePath, 'arg': arg}),
-        options: Options(responseType: ResponseType.plain),
-      )
+            'http://$localhost:$helperPort/start',
+            data: json.encode({'path': appPath.corePath, 'arg': arg}),
+            options: Options(responseType: ResponseType.plain),
+          )
           .timeout(const Duration(milliseconds: 2000));
       if (response.statusCode != HttpStatus.ok) {
         return false;
@@ -185,9 +273,9 @@ class Request {
     try {
       final response = await dio
           .post(
-        'http://$localhost:$helperPort/stop',
-        options: Options(responseType: ResponseType.plain),
-      )
+            'http://$localhost:$helperPort/stop',
+            options: Options(responseType: ResponseType.plain),
+          )
           .timeout(const Duration(milliseconds: 2000));
       if (response.statusCode != HttpStatus.ok) {
         return false;

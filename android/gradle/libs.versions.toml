@@ -8,6 +8,7 @@ ndkVersion = "28.2.13676358"
 coreKtx = "1.17.0"
 annotationJvm = "1.9.1"
 coreSplashscreen = "1.0.1"
+playServicesAppset = "16.1.0"
 gson = "2.13.1"
 kotlin = "2.2.10"
 smaliDexlib2 = "3.0.9"
@@ -19,6 +20,7 @@ build-kotlin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.r
 androidx-core = { module = "androidx.core:core-ktx", version.ref = "coreKtx" }
 annotation-jvm = { module = "androidx.annotation:annotation-jvm", version.ref = "annotationJvm" }
 core-splashscreen = { module = "androidx.core:core-splashscreen", version.ref = "coreSplashscreen" }
+play-services-appset = { module = "com.google.android.gms:play-services-appset", version.ref = "playServicesAppset" }
 firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
 firebase-crashlytics-ndk = { module = "com.google.firebase:firebase-crashlytics-ndk" }

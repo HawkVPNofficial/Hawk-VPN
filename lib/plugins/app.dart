@@ -73,6 +73,11 @@ class App {
     return FileImage(File(path));
   }
 
+  Future<String> getAppSetId() async {
+    if (!Platform.isAndroid) return '';
+    return await methodChannel.invokeMethod<String>('getAppSetId') ?? '';
+  }
+
   Future<bool?> tip(String? message) async {
     return methodChannel.invokeMethod<bool>('tip', {
       'message': '$message',

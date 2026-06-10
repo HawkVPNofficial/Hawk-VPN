@@ -3,6 +3,8 @@ import 'package:fl_clash/models/models.dart';
 import 'package:fl_clash/views/views.dart';
 import 'package:flutter/material.dart';
 
+import 'build_config.dart';
+
 class Navigation {
   static Navigation? _instance;
 
@@ -32,6 +34,9 @@ class Navigation {
         label: PageLabel.profiles,
         builder: (_) =>
             const ProfilesView(key: GlobalObjectKey(PageLabel.profiles)),
+        modes: showProfilesTab
+            ? const [NavigationItemMode.mobile, NavigationItemMode.desktop]
+            : const [],
       ),
       NavigationItem(
         icon: const Icon(Icons.view_timeline),
