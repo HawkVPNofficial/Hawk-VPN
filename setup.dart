@@ -163,18 +163,17 @@ Future<int> _package(
       ? jsonDecode(file.readAsStringSync()) as Map<String, dynamic>
       : <String, dynamic>{};
 
-  final backendBaseUrl = env == 'stable'
-      ? 'https://api.myproxy.work/'
-      : 'https://myproxyapi.aigateway.cn/';
   await file.writeAsString(
     jsonEncode({
       'APP_ENV': env,
-      'BACKEND_BASE_URL': backendBaseUrl,
+      'BACKEND_BASE_URL': env == 'stable'
+          ? 'https://api.tooran.link/'
+          : 'https://myproxyapi.aigateway.cn/',
       'SHOW_PROFILES_TAB': previousEnv['SHOW_PROFILES_TAB'] == true,
       'SHOW_FULL_TOOLS': previousEnv['SHOW_FULL_TOOLS'] == true,
       'DASHBOARD_MODULE': previousEnv['DASHBOARD_MODULE'] == 'legacy'
           ? 'legacy'
-          : 'myproxy',
+          : 'tooran',
       'CORE_SHA256': ?coreSha256,
     }),
   );

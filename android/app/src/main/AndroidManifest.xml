@@ -90,7 +90,7 @@
         <service
             android:name=".TileService"
             android:exported="true"
-            android:icon="@drawable/ic"
+            android:icon="@drawable/ic_notification"
             android:label="Tooran"
             android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
             <intent-filter>

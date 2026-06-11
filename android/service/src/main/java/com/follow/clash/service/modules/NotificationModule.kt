@@ -89,7 +89,7 @@ class NotificationModule(private val service: Service) : Module() {
         NotificationCompat.Builder(
             service, GlobalState.NOTIFICATION_CHANNEL
         ).apply {
-            setSmallIcon(R.drawable.ic_service)
+            setSmallIcon(R.drawable.ic_notification)
             setContentTitle("Tooran")
             setContentIntent(intent.toPendingIntent)
             setPriority(NotificationCompat.PRIORITY_HIGH)
