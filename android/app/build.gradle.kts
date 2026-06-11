@@ -99,7 +99,6 @@ dependencies {
     implementation(project(":service"))
     implementation(project(":common"))
     implementation(libs.core.splashscreen)
-    implementation(libs.play.services.appset)
     implementation(libs.gson)
     implementation(libs.smali.dexlib2) {
         exclude(group = "com.google.guava", module = "guava")

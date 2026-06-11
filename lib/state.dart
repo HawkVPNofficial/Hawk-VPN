@@ -88,9 +88,8 @@ class GlobalState {
     final appStateOverrides = buildAppStateOverrides(appState);
     packageInfo = await PackageInfo.fromPlatform();
     final androidId = await app?.getAndroidId() ?? '';
-    appSetId = await app?.getAppSetId() ?? '';
     final installId = await preferences.getInstallId();
-    deviceId = androidId.takeFirstValid([appSetId, installId]);
+    deviceId = androidId.takeFirstValid([installId]);
     final configMap = await preferences.getConfigMap();
     final config = await migration.migrationIfNeeded(
       configMap,
