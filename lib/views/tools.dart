@@ -10,6 +10,7 @@ import 'package:fl_clash/views/access.dart';
 import 'package:fl_clash/views/application_setting.dart';
 import 'package:fl_clash/views/backup_and_restore.dart';
 import 'package:fl_clash/views/config/config.dart';
+import 'package:fl_clash/views/feedback.dart';
 import 'package:fl_clash/views/hotkey.dart';
 import 'package:fl_clash/widgets/widgets.dart';
 import 'package:flutter/material.dart';
@@ -59,6 +60,7 @@ class _ToolViewState extends ConsumerState<ToolsView> {
       items: [
         if (showFullTools) const _DisclaimerItem(),
         if (showFullTools && enableDeveloperMode) const _DeveloperItem(),
+        const _FeedbackItem(),
         const _InfoItem(),
       ],
     );
@@ -297,6 +299,19 @@ class _InfoItem extends StatelessWidget {
       leading: const Icon(Icons.info),
       title: Text(context.appLocalizations.about),
       delegate: const OpenDelegate(widget: AboutView()),
+    );
+  }
+}
+
+class _FeedbackItem extends StatelessWidget {
+  const _FeedbackItem();
+
+  @override
+  Widget build(BuildContext context) {
+    return ListItem.open(
+      leading: const Icon(Icons.feedback_outlined),
+      title: Text(context.appLocalizations.feedback),
+      delegate: const OpenDelegate(widget: FeedbackView()),
     );
   }
 }

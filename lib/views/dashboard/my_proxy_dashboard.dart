@@ -66,21 +66,6 @@ class MyProxyDashboardView extends ConsumerWidget {
     return bestDelay;
   }
 
-  String _trafficQuotaText(int value) {
-    final units = [
-      (label: 'MB', divisor: pow(1024, 2)),
-      (label: 'GB', divisor: pow(1024, 3)),
-      (label: 'TB', divisor: pow(1024, 4)),
-    ];
-    var selected = units.first;
-    for (final unit in units) {
-      if (value >= unit.divisor) {
-        selected = unit;
-      }
-    }
-    return '${(value / selected.divisor).toStringAsFixed(3)} ${selected.label}';
-  }
-
   Widget _panel({required Widget child}) {
     return SizedBox(
       width: double.infinity,
@@ -345,54 +330,6 @@ class MyProxyDashboardView extends ConsumerWidget {
     );
   }
 
-  Widget _buildQuota(BuildContext context, WidgetRef ref) {
-    final appLocalizations = context.appLocalizations;
-    final subscriptionInfo = ref.watch(
-      currentProfileProvider.select((profile) => profile?.subscriptionInfo),
-    );
-    final total = subscriptionInfo?.total ?? 0;
-    final downloaded = subscriptionInfo?.download ?? 0;
-    final remaining = max(total - downloaded, 0);
-    final progress = total > 0
-        ? (downloaded / total).clamp(0.0, 1.0).toDouble()
-        : 0.0;
-    return _panel(
-      child: Padding(
-        padding: baseInfoEdgeInsets,
-        child: Column(
-          children: [
-            InfoHeader(
-              padding: EdgeInsets.zero,
-              info: Info(
-                label: appLocalizations.trafficUsage,
-                iconData: Icons.data_saver_off,
-              ),
-            ),
-            const SizedBox(height: 12),
-            _QuotaRow(
-              label: appLocalizations.totalTraffic,
-              value: total > 0 ? _trafficQuotaText(total) : '--',
-            ),
-            const SizedBox(height: 10),
-            _QuotaRow(
-              label: appLocalizations.remainingTraffic,
-              value: total > 0 ? _trafficQuotaText(remaining) : '--',
-            ),
-            const SizedBox(height: 14),
-            ClipRRect(
-              borderRadius: BorderRadius.circular(999),
-              child: LinearProgressIndicator(
-                minHeight: 6,
-                value: progress,
-                backgroundColor: context.colorScheme.primary.opacity15,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return CommonScaffold(
@@ -410,7 +347,123 @@ class MyProxyDashboardView extends ConsumerWidget {
               const SizedBox(height: 16),
               _buildChart(context, ref),
               const SizedBox(height: 16),
-              _buildQuota(context, ref),
+              const _QuotaPanel(),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _QuotaPanel extends ConsumerStatefulWidget {
+  const _QuotaPanel();
+
+  @override
+  ConsumerState<_QuotaPanel> createState() => _QuotaPanelState();
+}
+
+class _QuotaPanelState extends ConsumerState<_QuotaPanel> {
+  bool _isRefreshing = false;
+
+  String _trafficQuotaText(int value) {
+    final units = [
+      (label: 'MB', divisor: pow(1024, 2)),
+      (label: 'GB', divisor: pow(1024, 3)),
+      (label: 'TB', divisor: pow(1024, 4)),
+    ];
+    var selected = units.first;
+    for (final unit in units) {
+      if (value >= unit.divisor) {
+        selected = unit;
+      }
+    }
+    return '${(value / selected.divisor).toStringAsFixed(3)} ${selected.label}';
+  }
+
+  Future<void> _refresh() async {
+    if (_isRefreshing) return;
+    setState(() {
+      _isRefreshing = true;
+    });
+    try {
+      await ref.read(profilesActionProvider.notifier).syncBackendProfile();
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isRefreshing = false;
+        });
+      }
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final appLocalizations = context.appLocalizations;
+    final subscriptionInfo = ref.watch(
+      currentProfileProvider.select((profile) => profile?.subscriptionInfo),
+    );
+    final total = subscriptionInfo?.total ?? 0;
+    final downloaded = subscriptionInfo?.download ?? 0;
+    final remaining = max(total - downloaded, 0);
+    final progress = total > 0
+        ? (downloaded / total).clamp(0.0, 1.0).toDouble()
+        : 0.0;
+    return SizedBox(
+      width: double.infinity,
+      child: CommonCard(
+        onPressed: () {},
+        child: Padding(
+          padding: baseInfoEdgeInsets,
+          child: Column(
+            children: [
+              InfoHeader(
+                padding: baseInfoEdgeInsets.copyWith(
+                  left: 0,
+                  top: 8.mAp,
+                  right: 0,
+                  bottom: 8.mAp,
+                ),
+                info: Info(
+                  label: appLocalizations.trafficUsage,
+                  iconData: Icons.data_saver_off,
+                ),
+                actions: [
+                  IconButton(
+                    tooltip: appLocalizations.update,
+                    visualDensity: VisualDensity.compact,
+                    onPressed: _isRefreshing ? null : _refresh,
+                    icon: _isRefreshing
+                        ? SizedBox.square(
+                            dimension: 18,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2,
+                              color: context.colorScheme.primary,
+                            ),
+                          )
+                        : const Icon(Icons.refresh),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 12),
+              _QuotaRow(
+                label: appLocalizations.totalTraffic,
+                value: total > 0 ? _trafficQuotaText(total) : '--',
+              ),
+              const SizedBox(height: 10),
+              _QuotaRow(
+                label: appLocalizations.remainingTraffic,
+                value: total > 0 ? _trafficQuotaText(remaining) : '--',
+              ),
+              const SizedBox(height: 14),
+              ClipRRect(
+                borderRadius: BorderRadius.circular(999),
+                child: LinearProgressIndicator(
+                  minHeight: 6,
+                  value: progress,
+                  backgroundColor: context.colorScheme.primary.opacity15,
+                ),
+              ),
             ],
           ),
         ),

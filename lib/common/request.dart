@@ -106,6 +106,47 @@ class Request {
     );
   }
 
+  Future<BackendUploadedFile> uploadFeedbackImage(File file) async {
+    await _prepareBackendRequest();
+    final response = await _backendDio.post<Map<String, dynamic>>(
+      '/api/files/upload',
+      data: FormData.fromMap({'file': await MultipartFile.fromFile(file.path)}),
+      options: Options(
+        contentType: 'multipart/form-data',
+        responseType: ResponseType.json,
+      ),
+    );
+    final result = BackendResponse.fromJson(response.data ?? {});
+    result.throwIfFailed();
+    final uploadedFile = BackendUploadedFile.fromJson(result.data);
+    if (uploadedFile.url.isEmpty) {
+      throw 'upload file failed';
+    }
+    return uploadedFile;
+  }
+
+  Future<int> submitFeedback({
+    required String type,
+    required String description,
+    required String contact,
+    required List<String> imageUrls,
+  }) async {
+    await _prepareBackendRequest();
+    final response = await _backendDio.post<Map<String, dynamic>>(
+      '/api/feedback/submit',
+      data: {
+        'type': type,
+        'description': description,
+        'imageUrls': imageUrls,
+        'contact': contact,
+      },
+      options: Options(responseType: ResponseType.json),
+    );
+    final result = BackendResponse.fromJson(response.data ?? {});
+    result.throwIfFailed();
+    return (result.data['id'] as num?)?.toInt() ?? 0;
+  }
+
   bool isUnauthorized(Object error) {
     return error is DioException &&
         error.response?.statusCode == HttpStatus.unauthorized;
@@ -117,6 +158,15 @@ class Request {
         ? auth.tokenValue
         : 'Bearer ${auth.tokenValue}';
     _backendDio.options.headers[auth.tokenName] = tokenValue;
+  }
+
+  Future<void> _prepareBackendRequest({BackendAuth? auth}) async {
+    _updateBackendBaseUrl();
+    final nextAuth =
+        auth ?? globalState.backendAuth ?? await preferences.getBackendAuth();
+    if (nextAuth != null) {
+      _setBackendAuth(nextAuth);
+    }
   }
 
   Future<Response<Uint8List>> getFileResponseForUrl(String url) async {
@@ -160,8 +210,8 @@ class Request {
 
   Future<Map<String, dynamic>?> checkForUpdate() async {
     try {
-      final response = await dio.get(
-        'https://api.github.com/repos/$repository/releases/latest',
+      final response = await _backendDio.get(
+        '/api/app/latest',
         options: Options(responseType: ResponseType.json),
       );
       if (response.statusCode != 200) return null;

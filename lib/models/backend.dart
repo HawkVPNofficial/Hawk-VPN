@@ -87,3 +87,26 @@ class BackendSubscription {
   final String content;
   final SubscriptionInfo? subscriptionInfo;
 }
+
+class BackendUploadedFile {
+  const BackendUploadedFile({
+    required this.url,
+    required this.originalFilename,
+    required this.contentType,
+    required this.size,
+  });
+
+  factory BackendUploadedFile.fromJson(Map<String, dynamic> json) {
+    return BackendUploadedFile(
+      url: json['url']?.toString() ?? '',
+      originalFilename: json['originalFilename']?.toString() ?? '',
+      contentType: json['contentType']?.toString() ?? '',
+      size: (json['size'] as num?)?.toInt() ?? 0,
+    );
+  }
+
+  final String url;
+  final String originalFilename;
+  final String contentType;
+  final int size;
+}

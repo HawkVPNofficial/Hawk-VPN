@@ -89,9 +89,9 @@ class AppLocalizations {
     return Intl.message('Profiles', name: 'profiles', desc: '', args: []);
   }
 
-  /// `Tools`
+  /// `Settings`
   String get tools {
-    return Intl.message('Tools', name: 'tools', desc: '', args: []);
+    return Intl.message('Settings', name: 'tools', desc: '', args: []);
   }
 
   /// `Logs`
@@ -4392,6 +4392,166 @@ class AppLocalizations {
       desc: '',
       args: [],
     );
+  }
+
+  /// `Feedback`
+  String get feedback {
+    return Intl.message('Feedback', name: 'feedback', desc: '', args: []);
+  }
+
+  /// `Feedback type`
+  String get feedbackType {
+    return Intl.message(
+      'Feedback type',
+      name: 'feedbackType',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Feedback content`
+  String get feedbackContent {
+    return Intl.message(
+      'Feedback content',
+      name: 'feedbackContent',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Contact`
+  String get contact {
+    return Intl.message('Contact', name: 'contact', desc: '', args: []);
+  }
+
+  /// `Screenshot`
+  String get screenshot {
+    return Intl.message('Screenshot', name: 'screenshot', desc: '', args: []);
+  }
+
+  /// `Add screenshot`
+  String get addScreenshot {
+    return Intl.message(
+      'Add screenshot',
+      name: 'addScreenshot',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No screenshot selected`
+  String get noScreenshot {
+    return Intl.message(
+      'No screenshot selected',
+      name: 'noScreenshot',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Submit feedback`
+  String get submitFeedback {
+    return Intl.message(
+      'Submit feedback',
+      name: 'submitFeedback',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Submitting...`
+  String get submitting {
+    return Intl.message(
+      'Submitting...',
+      name: 'submitting',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Feedback submitted`
+  String get feedbackSubmitSuccess {
+    return Intl.message(
+      'Feedback submitted',
+      name: 'feedbackSubmitSuccess',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Feedback submission failed`
+  String get feedbackSubmitFailed {
+    return Intl.message(
+      'Feedback submission failed',
+      name: 'feedbackSubmitFailed',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `App bug`
+  String get appBug {
+    return Intl.message('App bug', name: 'appBug', desc: '', args: []);
+  }
+
+  /// `Connection issue`
+  String get connectionIssue {
+    return Intl.message(
+      'Connection issue',
+      name: 'connectionIssue',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Speed issue`
+  String get speedIssue {
+    return Intl.message('Speed issue', name: 'speedIssue', desc: '', args: []);
+  }
+
+  /// `Account issue`
+  String get accountIssue {
+    return Intl.message(
+      'Account issue',
+      name: 'accountIssue',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Suggestion`
+  String get suggestion {
+    return Intl.message('Suggestion', name: 'suggestion', desc: '', args: []);
+  }
+
+  /// `Other`
+  String get otherFeedback {
+    return Intl.message('Other', name: 'otherFeedback', desc: '', args: []);
+  }
+
+  /// `Subscription loaded`
+  String get subscriptionLoadSuccess {
+    return Intl.message(
+      'Subscription loaded',
+      name: 'subscriptionLoadSuccess',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Subscription load failed`
+  String get subscriptionLoadFailed {
+    return Intl.message(
+      'Subscription load failed',
+      name: 'subscriptionLoadFailed',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Reload`
+  String get reload {
+    return Intl.message('Reload', name: 'reload', desc: '', args: []);
   }
 
   /// `Suspended...`

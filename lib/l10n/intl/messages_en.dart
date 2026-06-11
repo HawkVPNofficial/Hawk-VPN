@@ -86,6 +86,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Access Control Settings",
     ),
     "account": MessageLookupByLibrary.simpleMessage("Account"),
+    "accountIssue": MessageLookupByLibrary.simpleMessage("Account issue"),
     "action": MessageLookupByLibrary.simpleMessage("Action"),
     "action_mode": MessageLookupByLibrary.simpleMessage("Switch mode"),
     "action_proxy": MessageLookupByLibrary.simpleMessage("System proxy"),
@@ -100,6 +101,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Add proxy providers",
     ),
     "addRule": MessageLookupByLibrary.simpleMessage("Add rule"),
+    "addScreenshot": MessageLookupByLibrary.simpleMessage("Add screenshot"),
     "addSsid": MessageLookupByLibrary.simpleMessage("Add SSID"),
     "addedRules": MessageLookupByLibrary.simpleMessage("Added rules"),
     "additionalParameters": MessageLookupByLibrary.simpleMessage(
@@ -133,6 +135,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "appAccessControl": MessageLookupByLibrary.simpleMessage(
       "App access control",
     ),
+    "appBug": MessageLookupByLibrary.simpleMessage("App bug"),
     "appendSystemDns": MessageLookupByLibrary.simpleMessage(
       "Append System DNS",
     ),
@@ -238,11 +241,13 @@ class MessageLookup extends MessageLookupByLibrary {
     "connected": MessageLookupByLibrary.simpleMessage("Connected"),
     "connecting": MessageLookupByLibrary.simpleMessage("Connecting..."),
     "connection": MessageLookupByLibrary.simpleMessage("Connection"),
+    "connectionIssue": MessageLookupByLibrary.simpleMessage("Connection issue"),
     "connections": MessageLookupByLibrary.simpleMessage("Connections"),
     "connectionsDesc": MessageLookupByLibrary.simpleMessage(
       "View current connections data",
     ),
     "connectivity": MessageLookupByLibrary.simpleMessage("Connectivity："),
+    "contact": MessageLookupByLibrary.simpleMessage("Contact"),
     "content": MessageLookupByLibrary.simpleMessage("Content"),
     "contentNotEmpty": MessageLookupByLibrary.simpleMessage(
       "Content cannot be empty",
@@ -378,6 +383,15 @@ class MessageLookup extends MessageLookupByLibrary {
       "Generally use offshore DNS",
     ),
     "fallbackFilter": MessageLookupByLibrary.simpleMessage("Fallback filter"),
+    "feedback": MessageLookupByLibrary.simpleMessage("Feedback"),
+    "feedbackContent": MessageLookupByLibrary.simpleMessage("Feedback content"),
+    "feedbackSubmitFailed": MessageLookupByLibrary.simpleMessage(
+      "Feedback submission failed",
+    ),
+    "feedbackSubmitSuccess": MessageLookupByLibrary.simpleMessage(
+      "Feedback submitted",
+    ),
+    "feedbackType": MessageLookupByLibrary.simpleMessage("Feedback type"),
     "fidelityScheme": MessageLookupByLibrary.simpleMessage("Fidelity"),
     "file": MessageLookupByLibrary.simpleMessage("File"),
     "fileDesc": MessageLookupByLibrary.simpleMessage("Directly upload profile"),
@@ -574,6 +588,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "noResolveHostname": MessageLookupByLibrary.simpleMessage(
       "No resolve hostname",
     ),
+    "noScreenshot": MessageLookupByLibrary.simpleMessage(
+      "No screenshot selected",
+    ),
     "none": MessageLookupByLibrary.simpleMessage("none"),
     "notSelectedTip": MessageLookupByLibrary.simpleMessage(
       "The current proxy group cannot be selected.",
@@ -600,6 +617,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "otherContributors": MessageLookupByLibrary.simpleMessage(
       "Other contributors",
     ),
+    "otherFeedback": MessageLookupByLibrary.simpleMessage("Other"),
     "outboundMode": MessageLookupByLibrary.simpleMessage("Outbound mode"),
     "override": MessageLookupByLibrary.simpleMessage("Override"),
     "overrideDns": MessageLookupByLibrary.simpleMessage("Override Dns"),
@@ -712,6 +730,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "rainbowScheme": MessageLookupByLibrary.simpleMessage("Rainbow"),
     "redirPort": MessageLookupByLibrary.simpleMessage("Redir Port"),
     "redo": MessageLookupByLibrary.simpleMessage("redo"),
+    "reload": MessageLookupByLibrary.simpleMessage("Reload"),
     "remainingTraffic": MessageLookupByLibrary.simpleMessage(
       "Remaining traffic",
     ),
@@ -885,6 +904,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "saveChanges": MessageLookupByLibrary.simpleMessage(
       "Do you want to save the changes?",
     ),
+    "screenshot": MessageLookupByLibrary.simpleMessage("Screenshot"),
     "script": MessageLookupByLibrary.simpleMessage("Script"),
     "scriptModeDesc": MessageLookupByLibrary.simpleMessage(
       "Script mode, use external extension scripts, provide one-click override configuration capability",
@@ -921,6 +941,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "sourceIp": MessageLookupByLibrary.simpleMessage("Source IP"),
     "specialProxy": MessageLookupByLibrary.simpleMessage("Special proxy"),
     "specialRules": MessageLookupByLibrary.simpleMessage("special rules"),
+    "speedIssue": MessageLookupByLibrary.simpleMessage("Speed issue"),
     "speedStatistics": MessageLookupByLibrary.simpleMessage("Speed statistics"),
     "splitStrategy": MessageLookupByLibrary.simpleMessage("Split strategy"),
     "splitStrategyNotEmpty": MessageLookupByLibrary.simpleMessage(
@@ -947,6 +968,15 @@ class MessageLookup extends MessageLookupByLibrary {
       "Sub rule cannot be empty",
     ),
     "submit": MessageLookupByLibrary.simpleMessage("Submit"),
+    "submitFeedback": MessageLookupByLibrary.simpleMessage("Submit feedback"),
+    "submitting": MessageLookupByLibrary.simpleMessage("Submitting..."),
+    "subscriptionLoadFailed": MessageLookupByLibrary.simpleMessage(
+      "Subscription load failed",
+    ),
+    "subscriptionLoadSuccess": MessageLookupByLibrary.simpleMessage(
+      "Subscription loaded",
+    ),
+    "suggestion": MessageLookupByLibrary.simpleMessage("Suggestion"),
     "suspended": MessageLookupByLibrary.simpleMessage("Suspended..."),
     "sync": MessageLookupByLibrary.simpleMessage("Sync"),
     "system": MessageLookupByLibrary.simpleMessage("System"),
@@ -981,7 +1011,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "tip": MessageLookupByLibrary.simpleMessage("tip"),
     "toggle": MessageLookupByLibrary.simpleMessage("Toggle"),
     "tonalSpotScheme": MessageLookupByLibrary.simpleMessage("TonalSpot"),
-    "tools": MessageLookupByLibrary.simpleMessage("Tools"),
+    "tools": MessageLookupByLibrary.simpleMessage("Settings"),
     "totalTraffic": MessageLookupByLibrary.simpleMessage("Total traffic"),
     "tproxyPort": MessageLookupByLibrary.simpleMessage("Tproxy Port"),
     "trafficUsage": MessageLookupByLibrary.simpleMessage("Traffic usage"),

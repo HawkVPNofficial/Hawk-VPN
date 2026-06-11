@@ -159,6 +159,10 @@ class AppPlugin : FlutterPlugin, MethodChannel.MethodCallHandler, ActivityAware 
                 handleGetAppSetId(result)
             }
 
+            "getAndroidId" -> {
+                handleGetAndroidId(result)
+            }
+
             "tip" -> {
                 val message = call.argument<String>("message")
                 tip(message)
@@ -180,6 +184,19 @@ class AppPlugin : FlutterPlugin, MethodChannel.MethodCallHandler, ActivityAware 
             else -> {
                 result.notImplemented()
             }
+        }
+    }
+
+    private fun handleGetAndroidId(result: Result) {
+        try {
+            result.success(
+                Settings.Secure.getString(
+                    GlobalState.application.contentResolver,
+                    Settings.Secure.ANDROID_ID
+                ) ?: ""
+            )
+        } catch (_: Exception) {
+            result.success("")
         }
     }
 

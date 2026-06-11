@@ -97,7 +97,14 @@ class CommonAction extends _$CommonAction {
         cancelText: isUser ? null : currentAppLocalizations.noLongerRemind,
       );
       if (res == true) {
-        launchUrl(Uri.parse('https://github.com/$repository/releases/latest'));
+        final downloadUrl = data['download_url']?.toString() ?? '';
+        launchUrl(
+          Uri.parse(
+            downloadUrl.takeFirstValid([
+              'https://github.com/$repository/releases/latest',
+            ]),
+          ),
+        );
       } else if (!isUser && res == false) {
         ref
             .read(appSettingProvider.notifier)
@@ -886,7 +893,9 @@ class ProfilesAction extends _$ProfilesAction {
       ref.read(loadingProvider(LoadingTag.backendSync).notifier).start();
       try {
         await _syncBackendProfile(deviceId);
-        globalState.showNotifier('订阅加载成功');
+        globalState.showNotifier(
+          currentAppLocalizations.subscriptionLoadSuccess,
+        );
         return;
       } catch (e) {
         error = e;
@@ -899,9 +908,9 @@ class ProfilesAction extends _$ProfilesAction {
       }
 
       await globalState.showMessage(
-        title: '订阅加载失败',
+        title: currentAppLocalizations.subscriptionLoadFailed,
         message: TextSpan(text: error.toString()),
-        confirmText: '重新加载',
+        confirmText: currentAppLocalizations.reload,
         cancelable: false,
         dismissible: false,
       );

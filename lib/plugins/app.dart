@@ -53,9 +53,7 @@ class App {
   }
 
   Future<bool?> requestNotificationsPermission() async {
-    return methodChannel.invokeMethod<bool>(
-      'requestNotificationsPermission',
-    );
+    return methodChannel.invokeMethod<bool>('requestNotificationsPermission');
   }
 
   Future<bool> openFile(String path) async {
@@ -78,10 +76,13 @@ class App {
     return await methodChannel.invokeMethod<String>('getAppSetId') ?? '';
   }
 
+  Future<String> getAndroidId() async {
+    if (!Platform.isAndroid) return '';
+    return await methodChannel.invokeMethod<String>('getAndroidId') ?? '';
+  }
+
   Future<bool?> tip(String? message) async {
-    return methodChannel.invokeMethod<bool>('tip', {
-      'message': '$message',
-    });
+    return methodChannel.invokeMethod<bool>('tip', {'message': '$message'});
   }
 
   Future<bool?> initShortcuts() async {
