@@ -71,7 +71,7 @@ class _ToolViewState extends ConsumerState<ToolsView> {
       title: context.appLocalizations.settings,
       items: [
         const _LocaleItem(),
-        const _ThemeItem(),
+        if (showFullTools) const _ThemeItem(),
         if (showFullTools) const _BackupItem(),
         if (showFullTools && system.isDesktop) const _HotkeyItem(),
         if (showFullTools && system.isWindows) const _LoopbackItem(),

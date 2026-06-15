@@ -195,7 +195,7 @@ Future<int> _package(
     [
       'package',
       '--skip-clean',
-      '--artifact-name=Tooran-{{build_name}}-{{platform}}{{#description}}-{{description}}{{/description}}{{#is_installer}}-setup{{/is_installer}}{{#ext}}.{{ext}}{{/ext}}',
+      '--artifact-name=Sorena-{{build_name}}-{{platform}}{{#description}}-{{description}}{{/description}}{{#is_installer}}-setup{{/is_installer}}{{#ext}}.{{ext}}{{/ext}}',
       '--platform',
       platform,
       '--targets',

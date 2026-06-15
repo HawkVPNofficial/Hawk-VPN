@@ -37,7 +37,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.follow.clash"
+        applicationId = "com.namei.sorena"
         minSdk = flutter.minSdkVersion
         targetSdk = libs.versions.targetSdk.get().toInt()
         versionCode = flutter.versionCode
@@ -94,6 +94,16 @@ flutter {
     source = "../.."
 }
 
+val uploadCrashlyticsMapping = providers
+    .environmentVariable("UPLOAD_CRASHLYTICS_MAPPING")
+    .map(String::toBoolean)
+    .orElse(false)
+
+tasks.configureEach {
+    if (name.startsWith("uploadCrashlyticsMappingFile")) {
+        enabled = uploadCrashlyticsMapping.get()
+    }
+}
 
 dependencies {
     implementation(project(":service"))

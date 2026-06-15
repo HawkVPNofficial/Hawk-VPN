@@ -774,10 +774,10 @@ class AppLocalizations {
     );
   }
 
-  /// `A multi-platform proxy client based on ClashMeta, simple and easy to use, open-source and ad-free.`
+  /// `Sorena VPN helps you enjoy a safer, more private and more reliable internet experience.`
   String get desc {
     return Intl.message(
-      'A multi-platform proxy client based on ClashMeta, simple and easy to use, open-source and ad-free.',
+      'Sorena VPN helps you enjoy a safer, more private and more reliable internet experience.',
       name: 'desc',
       desc: '',
       args: [],

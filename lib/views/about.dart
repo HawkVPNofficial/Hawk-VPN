@@ -33,13 +33,6 @@ class AboutView extends StatelessWidget {
             _checkUpdate(context);
           },
         ),
-        ListItem(
-          title: Text(appLocalizations.project),
-          onTap: () {
-            globalState.openUrl('https://github.com/$repository');
-          },
-          trailing: const Icon(Icons.launch),
-        ),
       ],
     );
   }
