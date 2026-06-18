@@ -1,5 +1,27 @@
 import 'profile.dart';
 
+int _intFromJson(dynamic value, {int defaultValue = 0}) {
+  if (value is num) return value.toInt();
+  if (value is String) return int.tryParse(value) ?? defaultValue;
+  return defaultValue;
+}
+
+int _timestampFromJson(dynamic value) {
+  if (value is num) return value.toInt();
+  if (value is String) {
+    final timestamp = int.tryParse(value);
+    if (timestamp != null) return timestamp;
+    return DateTime.tryParse(value)?.millisecondsSinceEpoch ?? 0;
+  }
+  return 0;
+}
+
+bool _boolFromJson(dynamic value) {
+  if (value is bool) return value;
+  if (value is String) return value.toLowerCase() == 'true';
+  return false;
+}
+
 class BackendResponse {
   const BackendResponse({
     required this.success,
@@ -24,6 +46,15 @@ class BackendResponse {
     if (success) return;
     throw message.isNotEmpty ? message : 'backend request failed';
   }
+}
+
+class BackendRequestException implements Exception {
+  const BackendRequestException(this.message);
+
+  final String message;
+
+  @override
+  String toString() => message;
 }
 
 class BackendAuth {
@@ -56,18 +87,34 @@ class BackendUser {
     required this.totalGb,
     required this.expiryTime,
     required this.enabled,
+    required this.inviteCode,
+    required this.inviteCodeSubmitted,
+    required this.todayRewardBytes,
+    required this.checkedInToday,
+    required this.invitationSummary,
+    required this.createdAt,
   });
 
   factory BackendUser.fromJson(Map<String, dynamic> json) {
     return BackendUser(
-      id: (json['id'] as num?)?.toInt() ?? 0,
+      id: _intFromJson(json['id']),
       appSetId: json['appSetId']?.toString() ?? '',
       clientEmail: json['clientEmail']?.toString() ?? '',
       clientUuid: json['clientUuid']?.toString() ?? '',
       subId: json['subId']?.toString() ?? '',
-      totalGb: (json['totalGb'] as num?)?.toInt() ?? 0,
-      expiryTime: (json['expiryTime'] as num?)?.toInt() ?? 0,
-      enabled: json['enabled'] == true,
+      totalGb: _intFromJson(json['totalGb']),
+      expiryTime: _intFromJson(json['expiryTime']),
+      enabled: _boolFromJson(json['enabled']),
+      inviteCode: json['inviteCode']?.toString() ?? '',
+      inviteCodeSubmitted: _boolFromJson(json['inviteCodeSubmitted']),
+      todayRewardBytes: _intFromJson(json['todayRewardBytes']),
+      checkedInToday: _boolFromJson(json['checkedInToday']),
+      invitationSummary: BackendInvitationSummary.fromJson(
+        json['invitationSummary'] is Map
+            ? Map<String, dynamic>.from(json['invitationSummary'] as Map)
+            : const {},
+      ),
+      createdAt: _timestampFromJson(json['createdAt']),
     );
   }
 
@@ -79,6 +126,94 @@ class BackendUser {
   final int totalGb;
   final int expiryTime;
   final bool enabled;
+  final String inviteCode;
+  final bool inviteCodeSubmitted;
+  final int todayRewardBytes;
+  final bool checkedInToday;
+  final BackendInvitationSummary invitationSummary;
+  final int createdAt;
+}
+
+class BackendInvitationSummary {
+  const BackendInvitationSummary({
+    required this.successCount,
+    required this.rewardTotalBytes,
+  });
+
+  factory BackendInvitationSummary.fromJson(Map<String, dynamic> json) {
+    return BackendInvitationSummary(
+      successCount: _intFromJson(json['successCount']),
+      rewardTotalBytes: _intFromJson(json['rewardTotalBytes']),
+    );
+  }
+
+  final int successCount;
+  final int rewardTotalBytes;
+}
+
+class BackendAppConfig {
+  const BackendAppConfig({
+    required this.checkInRewardMb,
+    required this.inviteRewardMb,
+    required this.invitedRewardMb,
+    required this.adRewardMb,
+  });
+
+  factory BackendAppConfig.defaults() {
+    return const BackendAppConfig(
+      checkInRewardMb: 30,
+      inviteRewardMb: 500,
+      invitedRewardMb: 500,
+      adRewardMb: 50,
+    );
+  }
+
+  factory BackendAppConfig.fromJson(Map<String, dynamic> json) {
+    final defaults = BackendAppConfig.defaults();
+    return BackendAppConfig(
+      checkInRewardMb: _intFromJson(
+        json['checkInRewardMb'],
+        defaultValue: defaults.checkInRewardMb,
+      ),
+      inviteRewardMb: _intFromJson(
+        json['inviteRewardMb'],
+        defaultValue: defaults.inviteRewardMb,
+      ),
+      invitedRewardMb: _intFromJson(
+        json['invitedRewardMb'],
+        defaultValue: defaults.invitedRewardMb,
+      ),
+      adRewardMb: _intFromJson(
+        json['adRewardMb'],
+        defaultValue: defaults.adRewardMb,
+      ),
+    );
+  }
+
+  final int checkInRewardMb;
+  final int inviteRewardMb;
+  final int invitedRewardMb;
+  final int adRewardMb;
+}
+
+class BackendTrafficReward {
+  const BackendTrafficReward({
+    required this.rewardType,
+    required this.rewardBytes,
+    required this.totalGb,
+  });
+
+  factory BackendTrafficReward.fromJson(Map<String, dynamic> json) {
+    return BackendTrafficReward(
+      rewardType: json['rewardType']?.toString() ?? '',
+      rewardBytes: _intFromJson(json['rewardBytes']),
+      totalGb: _intFromJson(json['totalGb']),
+    );
+  }
+
+  final String rewardType;
+  final int rewardBytes;
+  final int totalGb;
 }
 
 class BackendSubscription {
@@ -101,7 +236,7 @@ class BackendUploadedFile {
       url: json['url']?.toString() ?? '',
       originalFilename: json['originalFilename']?.toString() ?? '',
       contentType: json['contentType']?.toString() ?? '',
-      size: (json['size'] as num?)?.toInt() ?? 0,
+      size: _intFromJson(json['size']),
     );
   }
 

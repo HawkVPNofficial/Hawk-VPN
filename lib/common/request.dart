@@ -25,9 +25,33 @@ class Request {
           'User-Agent': browserUa,
           Headers.contentTypeHeader: Headers.jsonContentType,
         },
-        connectTimeout: httpTimeoutDuration,
-        receiveTimeout: httpTimeoutDuration,
-        sendTimeout: httpTimeoutDuration,
+        connectTimeout: httpConnectTimeoutDuration,
+        receiveTimeout: httpReadTimeoutDuration,
+        sendTimeout: httpSendTimeoutDuration,
+      ),
+    );
+    _backendDio.interceptors.add(
+      InterceptorsWrapper(
+        onError: (error, handler) {
+          final statusCode = error.response?.statusCode;
+          if (statusCode == HttpStatus.unauthorized) {
+            handler.next(error);
+            return;
+          }
+          final message = _getBackendErrorMessage(error);
+          if (message != null) {
+            handler.reject(
+              DioException(
+                requestOptions: error.requestOptions,
+                response: error.response,
+                type: error.type,
+                error: BackendRequestException(message),
+              ),
+            );
+            return;
+          }
+          handler.next(error);
+        },
       ),
     );
     _clashDio = Dio();
@@ -48,6 +72,33 @@ class Request {
     _backendDio.options.baseUrl = backendBaseUrl.takeFirstValid([
       globalState.isPre ? backendDevBaseUrl : backendProdBaseUrl,
     ]);
+  }
+
+  String? _getBackendErrorMessage(DioException error) {
+    final statusCode = error.response?.statusCode;
+    if (statusCode == null || statusCode < 400) return null;
+    final data = error.response?.data;
+    if (data is Map) {
+      final message = data['message']?.toString() ?? '';
+      if (message.trim().isNotEmpty) return message.trim();
+    }
+    if (data is String && data.trim().isNotEmpty) {
+      try {
+        final json = jsonDecode(data);
+        if (json is Map) {
+          final message = json['message']?.toString() ?? '';
+          if (message.trim().isNotEmpty) return message.trim();
+        }
+      } catch (_) {}
+    }
+    return null;
+  }
+
+  Object unwrapBackendError(Object error) {
+    if (error is DioException && error.error is BackendRequestException) {
+      return error.error!;
+    }
+    return error;
   }
 
   Future<(BackendAuth, BackendUser)> login(String appSetId) async {
@@ -85,6 +136,43 @@ class Request {
     final result = BackendResponse.fromJson(response.data ?? {});
     result.throwIfFailed();
     return BackendUser.fromJson(result.data);
+  }
+
+  Future<BackendAppConfig> getBackendAppConfig() async {
+    _updateBackendBaseUrl();
+    final response = await _backendDio.get<Map<String, dynamic>>(
+      '/api/app/config',
+      options: Options(responseType: ResponseType.json),
+    );
+    final result = BackendResponse.fromJson(response.data ?? {});
+    result.throwIfFailed();
+    return BackendAppConfig.fromJson(result.data);
+  }
+
+  Future<BackendTrafficReward> checkIn({BackendAuth? auth}) async {
+    await _prepareBackendRequest(auth: auth);
+    final response = await _backendDio.post<Map<String, dynamic>>(
+      '/api/traffic/check-in',
+      options: Options(responseType: ResponseType.json),
+    );
+    final result = BackendResponse.fromJson(response.data ?? {});
+    result.throwIfFailed();
+    return BackendTrafficReward.fromJson(result.data);
+  }
+
+  Future<BackendTrafficReward> submitInviteCode({
+    required String inviteCode,
+    BackendAuth? auth,
+  }) async {
+    await _prepareBackendRequest(auth: auth);
+    final response = await _backendDio.post<Map<String, dynamic>>(
+      '/api/traffic/invite-code',
+      data: {'inviteCode': inviteCode},
+      options: Options(responseType: ResponseType.json),
+    );
+    final result = BackendResponse.fromJson(response.data ?? {});
+    result.throwIfFailed();
+    return BackendTrafficReward.fromJson(result.data);
   }
 
   Future<BackendSubscription> getBackendSubscription({
@@ -210,8 +298,9 @@ class Request {
 
   Future<Map<String, dynamic>?> checkForUpdate() async {
     try {
+      _updateBackendBaseUrl();
       final response = await _backendDio.get(
-        '/api/app/latest',
+        '/api/app/update',
         options: Options(responseType: ResponseType.json),
       );
       if (response.statusCode != 200) return null;

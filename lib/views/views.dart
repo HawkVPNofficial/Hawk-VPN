@@ -1,5 +1,6 @@
 export 'about.dart';
 export 'access.dart';
+export 'account.dart';
 export 'application_setting.dart';
 export 'backup_and_restore.dart';
 export 'config/config.dart';
@@ -7,8 +8,11 @@ export 'connection/connections.dart';
 export 'connection/requests.dart';
 export 'dashboard/dashboard.dart';
 export 'developer.dart';
+export 'free_traffic.dart';
+export 'invite.dart';
 export 'logs.dart';
 export 'profiles/profiles.dart';
 export 'proxies/proxies.dart';
 export 'resources.dart';
+export 'reward_message.dart';
 export 'tools.dart';

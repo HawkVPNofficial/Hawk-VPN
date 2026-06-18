@@ -387,7 +387,9 @@ class _QuotaPanelState extends ConsumerState<_QuotaPanel> {
       _isRefreshing = true;
     });
     try {
-      await ref.read(profilesActionProvider.notifier).syncBackendProfile();
+      await ref
+          .read(profilesActionProvider.notifier)
+          .syncBackendProfile(retryOnFailure: false);
     } finally {
       if (mounted) {
         setState(() {
@@ -403,7 +405,9 @@ class _QuotaPanelState extends ConsumerState<_QuotaPanel> {
     final subscriptionInfo = ref.watch(
       currentProfileProvider.select((profile) => profile?.subscriptionInfo),
     );
-    final total = subscriptionInfo?.total ?? 0;
+    final total = ref.watch(
+      backendUserStateProvider.select((user) => user?.totalGb ?? 0),
+    );
     final downloaded = subscriptionInfo?.download ?? 0;
     final remaining = max(total - downloaded, 0);
     final progress = total > 0

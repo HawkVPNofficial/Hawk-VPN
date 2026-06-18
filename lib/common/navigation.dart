@@ -3,6 +3,7 @@ import 'package:fl_clash/models/models.dart';
 import 'package:fl_clash/views/views.dart';
 import 'package:flutter/material.dart';
 
+import 'app_localizations.dart';
 import 'build_config.dart';
 
 class Navigation {
@@ -19,6 +20,20 @@ class Navigation {
         label: PageLabel.dashboard,
         builder: (_) =>
             const DashboardView(key: GlobalObjectKey(PageLabel.dashboard)),
+      ),
+      NavigationItem(
+        icon: const Icon(Icons.account_balance_wallet),
+        label: PageLabel.free,
+        builder: (_) =>
+            const FreeTrafficView(key: GlobalObjectKey(PageLabel.free)),
+        modes: const [NavigationItemMode.mobile],
+      ),
+      NavigationItem(
+        icon: const Icon(Icons.person_add),
+        label: PageLabel.invite,
+        builder: (_) =>
+            const InviteView(key: GlobalObjectKey(PageLabel.invite)),
+        modes: const [NavigationItemMode.mobile],
       ),
       NavigationItem(
         icon: const Icon(Icons.article),
@@ -89,3 +104,19 @@ class Navigation {
 }
 
 final navigation = Navigation();
+
+String getPageLabelText(PageLabel label) {
+  final appLocalizations = currentAppLocalizations;
+  return switch (label) {
+    PageLabel.dashboard => appLocalizations.dashboard,
+    PageLabel.free => appLocalizations.free,
+    PageLabel.invite => appLocalizations.invite,
+    PageLabel.proxies => appLocalizations.proxies,
+    PageLabel.profiles => appLocalizations.profiles,
+    PageLabel.tools => appLocalizations.tools,
+    PageLabel.logs => appLocalizations.logs,
+    PageLabel.requests => appLocalizations.requests,
+    PageLabel.resources => appLocalizations.resources,
+    PageLabel.connections => appLocalizations.connections,
+  };
+}

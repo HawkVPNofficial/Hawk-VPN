@@ -46,26 +46,42 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m10(subRule) => "${subRule} является недопустимым подправилом";
 
-  static String m11(appName) =>
+  static String m11(mb) =>
+      "Введите код друга, и вы оба получите ${mb} MB бесплатного трафика";
+
+  static String m12(mb) =>
+      "Вы и ваш друг получите по ${mb} MB бесплатного трафика";
+
+  static String m13(mb) => "+${mb} MB/чел.";
+
+  static String m14(mb) => "1 приглашение = ${mb} MB";
+
+  static String m15(mb) => "После отправки вы оба получите ${mb} MB";
+
+  static String m16(appName) =>
       "1. Open System Settings > Privacy & Security\n2. Choose Location Services\n3. Find and check ${appName} in the right list\n\nAfter completing the setup, return to the app and use it normally. Thank you for your cooperation.";
 
-  static String m12(count) =>
+  static String m17(count) =>
       "${Intl.plural(count, one: '${count} минута назад', few: '${count} минуты назад', many: '${count} минут назад', other: '${count} минуты назад')}";
 
-  static String m13(count) =>
+  static String m18(count) =>
       "${Intl.plural(count, one: '${count} месяц назад', few: '${count} месяца назад', many: '${count} месяцев назад', other: '${count} месяца назад')}";
 
-  static String m14(label) => "${label} пока отсутствуют";
+  static String m19(label) => "${label} пока отсутствуют";
 
-  static String m15(label) => "${label} должно быть числом";
+  static String m20(label) => "${label} должно быть числом";
 
-  static String m16(label) => "${label} должен быть числом от 1024 до 49151";
+  static String m21(label) => "${label} должен быть числом от 1024 до 49151";
 
-  static String m17(count) => "Выбрано ${count} элементов";
+  static String m22(traffic) => "Вы получили ${traffic} бесплатного трафика.";
 
-  static String m18(label) => "${label} должен быть URL";
+  static String m23(count) => "Выбрано ${count} элементов";
 
-  static String m19(count) =>
+  static String m24(done, total) => "Сегодня: ${done}/${total}";
+
+  static String m25(label) => "${label} должен быть URL";
+
+  static String m26(count) =>
       "${Intl.plural(count, one: '${count} год назад', few: '${count} года назад', many: '${count} лет назад', other: '${count} года назад')}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
@@ -135,6 +151,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Контроль доступа приложений",
     ),
     "appBug": MessageLookupByLibrary.simpleMessage("Ошибка приложения"),
+    "appSetId": MessageLookupByLibrary.simpleMessage("App Set ID"),
     "appendSystemDns": MessageLookupByLibrary.simpleMessage(
       "Добавить системный DNS",
     ),
@@ -211,6 +228,13 @@ class MessageLookup extends MessageLookupByLibrary {
     "cancelSelectAll": MessageLookupByLibrary.simpleMessage(
       "Отменить выбор всего",
     ),
+    "checkIn": MessageLookupByLibrary.simpleMessage("Отметиться"),
+    "checkedInToday": MessageLookupByLibrary.simpleMessage(
+      "Сегодня уже отмечено",
+    ),
+    "checkInFailed": MessageLookupByLibrary.simpleMessage(
+      "Не удалось отметиться",
+    ),
     "checkUpdate": MessageLookupByLibrary.simpleMessage("Проверить обновления"),
     "checkUpdateError": MessageLookupByLibrary.simpleMessage(
       "Текущее приложение уже является последней версией",
@@ -225,6 +249,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "color": MessageLookupByLibrary.simpleMessage("Цвет"),
     "colorSchemes": MessageLookupByLibrary.simpleMessage("Цветовые схемы"),
     "columns": MessageLookupByLibrary.simpleMessage("Столбцы"),
+    "comingSoon": MessageLookupByLibrary.simpleMessage("Скоро"),
     "compatible": MessageLookupByLibrary.simpleMessage("Режим совместимости"),
     "configDataDetected": MessageLookupByLibrary.simpleMessage(
       "Данные обнаружены в конфигурации",
@@ -265,6 +290,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "controlGlobalAddedRules": MessageLookupByLibrary.simpleMessage(
       "Управление глобальными добавленными правилами",
     ),
+    "copied": MessageLookupByLibrary.simpleMessage("Скопировано"),
     "copy": MessageLookupByLibrary.simpleMessage("Копировать"),
     "copyEnvVar": MessageLookupByLibrary.simpleMessage(
       "Копирование переменных окружения",
@@ -284,6 +310,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "creationTime": MessageLookupByLibrary.simpleMessage("Время создания"),
     "custom": MessageLookupByLibrary.simpleMessage("Пользовательский"),
     "cut": MessageLookupByLibrary.simpleMessage("Вырезать"),
+    "dailyCheckIn": MessageLookupByLibrary.simpleMessage("Ежедневная отметка"),
+    "dailyTasks": MessageLookupByLibrary.simpleMessage("Ежедневные задания"),
     "dark": MessageLookupByLibrary.simpleMessage("Темный"),
     "dashboard": MessageLookupByLibrary.simpleMessage("Панель управления"),
     "dataChangedSave": MessageLookupByLibrary.simpleMessage(
@@ -324,6 +352,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "developerModeEnableTip": MessageLookupByLibrary.simpleMessage(
       "Режим разработчика активирован.",
     ),
+    "deviceId": MessageLookupByLibrary.simpleMessage("ID устройства"),
     "direct": MessageLookupByLibrary.simpleMessage("Прямой"),
     "disableUDP": MessageLookupByLibrary.simpleMessage("Отключить UDP"),
     "disclaimer": MessageLookupByLibrary.simpleMessage(
@@ -423,6 +452,14 @@ class MessageLookup extends MessageLookupByLibrary {
     "forceRestartCoreTip": MessageLookupByLibrary.simpleMessage(
       "Вы уверены, что хотите принудительно перезапустить ядро?",
     ),
+    "free": MessageLookupByLibrary.simpleMessage("Бесплатно"),
+    "freeTraffic": MessageLookupByLibrary.simpleMessage("Бесплатный трафик"),
+    "freeTrafficSubtitle": MessageLookupByLibrary.simpleMessage(
+      "Выполняйте задания и получайте трафик",
+    ),
+    "friendInviteCode": MessageLookupByLibrary.simpleMessage(
+      "Код приглашения друга",
+    ),
     "fruitSaladScheme": MessageLookupByLibrary.simpleMessage("Фруктовый микс"),
     "general": MessageLookupByLibrary.simpleMessage("Общие"),
     "geodataLoader": MessageLookupByLibrary.simpleMessage(
@@ -503,6 +540,33 @@ class MessageLookup extends MessageLookupByLibrary {
     "invalidProxy": m8,
     "invalidProxyProvider": m9,
     "invalidSubRule": m10,
+    "invite": MessageLookupByLibrary.simpleMessage("Пригласить"),
+    "inviteCode": MessageLookupByLibrary.simpleMessage("Код приглашения"),
+    "inviteCodeAlreadySubmitted": MessageLookupByLibrary.simpleMessage(
+      "Код приглашения уже отправлен",
+    ),
+    "inviteCodeCopied": MessageLookupByLibrary.simpleMessage(
+      "Код приглашения скопирован",
+    ),
+    "inviteCodeHint": m11,
+    "inviteCodeInvalid": MessageLookupByLibrary.simpleMessage(
+      "Неверный формат кода приглашения",
+    ),
+    "inviteCodeSubmitFailed": MessageLookupByLibrary.simpleMessage(
+      "Не удалось отправить код приглашения",
+    ),
+    "inviteFriends": MessageLookupByLibrary.simpleMessage("Пригласить"),
+    "inviteFriendsSubtitle": MessageLookupByLibrary.simpleMessage(
+      "Приглашайте друзей и получайте награды",
+    ),
+    "inviteRewardDesc": m12,
+    "inviteRewardPerPerson": m13,
+    "inviteRewardTitle": m14,
+    "inviteRuleOne": MessageLookupByLibrary.simpleMessage(
+      "Другу нужно только ввести ваш код приглашения",
+    ),
+    "inviteRuleTwo": m15,
+    "inviteRules": MessageLookupByLibrary.simpleMessage("Правила приглашения"),
     "ipcidr": MessageLookupByLibrary.simpleMessage("IPCIDR"),
     "ipv6Desc": MessageLookupByLibrary.simpleMessage(
       "При включении будет возможно получать IPv6 трафик",
@@ -536,7 +600,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "locationPermissionDesc": MessageLookupByLibrary.simpleMessage(
       "According to system requirements, obtaining the Wi-Fi name requires you to grant location permission.",
     ),
-    "locationPermissionGuide": m11,
+    "locationPermissionGuide": m16,
     "locationPermissionRequired": MessageLookupByLibrary.simpleMessage(
       "Location Permission Required",
     ),
@@ -574,11 +638,11 @@ class MessageLookup extends MessageLookupByLibrary {
     "minimizeOnExitDesc": MessageLookupByLibrary.simpleMessage(
       "Изменить стандартное событие выхода из системы",
     ),
-    "minutesAgo": m12,
+    "minutesAgo": m17,
     "mixedPort": MessageLookupByLibrary.simpleMessage("Смешанный порт"),
     "mode": MessageLookupByLibrary.simpleMessage("Режим"),
     "monochromeScheme": MessageLookupByLibrary.simpleMessage("Монохром"),
-    "monthsAgo": m13,
+    "monthsAgo": m18,
     "more": MessageLookupByLibrary.simpleMessage("Еще"),
     "name": MessageLookupByLibrary.simpleMessage("Имя"),
     "nameserver": MessageLookupByLibrary.simpleMessage("Сервер имен"),
@@ -625,8 +689,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "nullProfileDesc": MessageLookupByLibrary.simpleMessage(
       "Нет профиля, пожалуйста, добавьте профиль",
     ),
-    "nullTip": m14,
-    "numberTip": m15,
+    "nullTip": m19,
+    "numberTip": m20,
     "onDemand": MessageLookupByLibrary.simpleMessage("On Demand"),
     "onDemandDesc": MessageLookupByLibrary.simpleMessage(
       "Configure the program running state for specific scenarios",
@@ -668,6 +732,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "palette": MessageLookupByLibrary.simpleMessage("Палитра"),
     "password": MessageLookupByLibrary.simpleMessage("Пароль"),
     "paste": MessageLookupByLibrary.simpleMessage("Вставить"),
+    "personalProfile": MessageLookupByLibrary.simpleMessage("Профиль"),
     "pleaseBindWebDAV": MessageLookupByLibrary.simpleMessage(
       "Пожалуйста, привяжите WebDAV",
     ),
@@ -684,7 +749,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "portConflictTip": MessageLookupByLibrary.simpleMessage(
       "Введите другой порт",
     ),
-    "portTip": m16,
+    "portTip": m21,
     "preferH3Desc": MessageLookupByLibrary.simpleMessage(
       "Приоритетное использование HTTP/3 для DOH",
     ),
@@ -767,6 +832,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "rainbowScheme": MessageLookupByLibrary.simpleMessage("Радужные"),
     "redirPort": MessageLookupByLibrary.simpleMessage("Redir-порт"),
     "redo": MessageLookupByLibrary.simpleMessage("Повторить"),
+    "registerTime": MessageLookupByLibrary.simpleMessage("Время регистрации"),
     "reload": MessageLookupByLibrary.simpleMessage("Загрузить снова"),
     "remainingTraffic": MessageLookupByLibrary.simpleMessage(
       "Осталось трафика",
@@ -832,6 +898,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "restoreSuccess": MessageLookupByLibrary.simpleMessage(
       "Восстановление успешно",
     ),
+    "rewardReceived": MessageLookupByLibrary.simpleMessage("Награда получена"),
+    "rewardReceivedMessage": m22,
     "routeAddress": MessageLookupByLibrary.simpleMessage("Адрес маршрутизации"),
     "routeAddressDesc": MessageLookupByLibrary.simpleMessage(
       "Настройка адреса прослушивания маршрутизации",
@@ -973,7 +1041,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Пожалуйста, выберите подправило",
     ),
     "selected": MessageLookupByLibrary.simpleMessage("Выбрано"),
-    "selectedCountTitle": m17,
+    "selectedCountTitle": m23,
     "settings": MessageLookupByLibrary.simpleMessage("Настройки"),
     "show": MessageLookupByLibrary.simpleMessage("Показать"),
     "shrink": MessageLookupByLibrary.simpleMessage("Сжать"),
@@ -1020,12 +1088,18 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "submit": MessageLookupByLibrary.simpleMessage("Отправить"),
     "submitFeedback": MessageLookupByLibrary.simpleMessage("Отправить отзыв"),
+    "submitInviteCode": MessageLookupByLibrary.simpleMessage(
+      "Ввести код приглашения",
+    ),
     "submitting": MessageLookupByLibrary.simpleMessage("Отправка..."),
     "subscriptionLoadFailed": MessageLookupByLibrary.simpleMessage(
       "Не удалось загрузить подписку",
     ),
     "subscriptionLoadSuccess": MessageLookupByLibrary.simpleMessage(
       "Подписка загружена",
+    ),
+    "successfulInvites": MessageLookupByLibrary.simpleMessage(
+      "Успешные приглашения",
     ),
     "suggestion": MessageLookupByLibrary.simpleMessage("Предложение"),
     "suspended": MessageLookupByLibrary.simpleMessage("Приостановлено..."),
@@ -1066,11 +1140,14 @@ class MessageLookup extends MessageLookupByLibrary {
     "time": MessageLookupByLibrary.simpleMessage("Время"),
     "timeout": MessageLookupByLibrary.simpleMessage("Таймаут"),
     "tip": MessageLookupByLibrary.simpleMessage("подсказка"),
+    "todayReceived": MessageLookupByLibrary.simpleMessage("Получено сегодня"),
+    "todayTaskProgress": m24,
     "toggle": MessageLookupByLibrary.simpleMessage("Переключить"),
     "tonalSpotScheme": MessageLookupByLibrary.simpleMessage("Тональный акцент"),
     "tools": MessageLookupByLibrary.simpleMessage("Настройки"),
     "totalTraffic": MessageLookupByLibrary.simpleMessage("Всего трафика"),
     "tproxyPort": MessageLookupByLibrary.simpleMessage("Tproxy-порт"),
+    "trafficEarned": MessageLookupByLibrary.simpleMessage("Полученный трафик"),
     "trafficUsage": MessageLookupByLibrary.simpleMessage(
       "Использование трафика",
     ),
@@ -1098,7 +1175,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "urlDesc": MessageLookupByLibrary.simpleMessage(
       "Получить профиль через URL",
     ),
-    "urlTip": m18,
+    "urlTip": m25,
     "useHosts": MessageLookupByLibrary.simpleMessage("Использовать hosts"),
     "useSystemHosts": MessageLookupByLibrary.simpleMessage(
       "Использовать системные hosts",
@@ -1115,13 +1192,17 @@ class MessageLookup extends MessageLookupByLibrary {
     "vpnTip": MessageLookupByLibrary.simpleMessage(
       "Изменения вступят в силу после перезапуска VPN",
     ),
+    "watchRewardVideo": MessageLookupByLibrary.simpleMessage("Смотреть видео"),
     "webDAVConfiguration": MessageLookupByLibrary.simpleMessage(
       "Конфигурация WebDAV",
     ),
     "whitelistMode": MessageLookupByLibrary.simpleMessage(
       "Режим белого списка",
     ),
-    "yearsAgo": m19,
+    "yearsAgo": m26,
+    "yourInviteCode": MessageLookupByLibrary.simpleMessage(
+      "Ваш код приглашения",
+    ),
     "zh_CN": MessageLookupByLibrary.simpleMessage("Упрощенный китайский"),
   };
 }

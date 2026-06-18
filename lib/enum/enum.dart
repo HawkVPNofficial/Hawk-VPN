@@ -333,6 +333,8 @@ enum GeodataLoader { standard, memconservative }
 
 enum PageLabel {
   dashboard,
+  free,
+  invite,
   proxies,
   profiles,
   tools,
@@ -491,6 +493,8 @@ enum LoadingTag {
   batteryOptimization,
   backendSync,
   feedback,
+  checkIn,
+  inviteCode,
 }
 
 enum CoreStatus { connecting, connected, disconnected }

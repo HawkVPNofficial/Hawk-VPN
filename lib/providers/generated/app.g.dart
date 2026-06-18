@@ -165,6 +165,111 @@ abstract class _$Requests extends $Notifier<FixedList<TrackerInfo>> {
   }
 }
 
+@ProviderFor(BackendUserState)
+final backendUserStateProvider = BackendUserStateProvider._();
+
+final class BackendUserStateProvider
+    extends $NotifierProvider<BackendUserState, BackendUser?> {
+  BackendUserStateProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'backendUserStateProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$backendUserStateHash();
+
+  @$internal
+  @override
+  BackendUserState create() => BackendUserState();
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(BackendUser? value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<BackendUser?>(value),
+    );
+  }
+}
+
+String _$backendUserStateHash() => r'34f8742a9da941f92ed891db97ded55a840b90a7';
+
+abstract class _$BackendUserState extends $Notifier<BackendUser?> {
+  BackendUser? build();
+  @$mustCallSuper
+  @override
+  void runBuild() {
+    final ref = this.ref as $Ref<BackendUser?, BackendUser?>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<BackendUser?, BackendUser?>,
+              BackendUser?,
+              Object?,
+              Object?
+            >;
+    element.handleCreate(ref, build);
+  }
+}
+
+@ProviderFor(BackendAppConfigState)
+final backendAppConfigStateProvider = BackendAppConfigStateProvider._();
+
+final class BackendAppConfigStateProvider
+    extends $NotifierProvider<BackendAppConfigState, BackendAppConfig> {
+  BackendAppConfigStateProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'backendAppConfigStateProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$backendAppConfigStateHash();
+
+  @$internal
+  @override
+  BackendAppConfigState create() => BackendAppConfigState();
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(BackendAppConfig value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<BackendAppConfig>(value),
+    );
+  }
+}
+
+String _$backendAppConfigStateHash() =>
+    r'ae3a6da9a506dcf7035ff5d326c58feb116c4ce4';
+
+abstract class _$BackendAppConfigState extends $Notifier<BackendAppConfig> {
+  BackendAppConfig build();
+  @$mustCallSuper
+  @override
+  void runBuild() {
+    final ref = this.ref as $Ref<BackendAppConfig, BackendAppConfig>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<BackendAppConfig, BackendAppConfig>,
+              BackendAppConfig,
+              Object?,
+              Object?
+            >;
+    element.handleCreate(ref, build);
+  }
+}
+
 @ProviderFor(Providers)
 final providersProvider = ProvidersProvider._();
 
@@ -1791,7 +1896,7 @@ final class NetworkDetectionProvider
   }
 }
 
-String _$networkDetectionHash() => r'e2892c87c76992bec307699de7d838152aa272d5';
+String _$networkDetectionHash() => r'1cab20d67ec54321b4dbba9d971cd80e98542e23';
 
 abstract class _$NetworkDetection extends $Notifier<NetworkDetectionState> {
   NetworkDetectionState build();

@@ -47,26 +47,41 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m10(subRule) => "${subRule} is an invalid SUB_RULE";
 
-  static String m11(appName) =>
+  static String m11(mb) =>
+      "Enter a friend’s invite code and you both get ${mb} MB free traffic";
+
+  static String m12(mb) => "You and your friend both get ${mb} MB free traffic";
+
+  static String m13(mb) => "+${mb} MB/person";
+
+  static String m14(mb) => "Each invite = ${mb} MB";
+
+  static String m15(mb) => "Once submitted, both of you get ${mb} MB";
+
+  static String m16(appName) =>
       "1. Open System Settings > Privacy & Security\n2. Choose Location Services\n3. Find and check ${appName} in the right list\n\nAfter completing the setup, return to the app and use it normally. Thank you for your cooperation.";
 
-  static String m12(count) =>
+  static String m17(count) =>
       "${Intl.plural(count, one: '1 minute ago', other: '${count} minutes ago')}";
 
-  static String m13(count) =>
+  static String m18(count) =>
       "${Intl.plural(count, one: '1 month ago', other: '${count} months ago')}";
 
-  static String m14(label) => "No ${label} yet";
+  static String m19(label) => "No ${label} yet";
 
-  static String m15(label) => "${label} must be a number";
+  static String m20(label) => "${label} must be a number";
 
-  static String m16(label) => "${label} must be between 1024 and 49151";
+  static String m21(label) => "${label} must be between 1024 and 49151";
 
-  static String m17(count) => "${count} items have been selected";
+  static String m22(traffic) => "You received ${traffic} free traffic.";
 
-  static String m18(label) => "${label} must be a url";
+  static String m23(count) => "${count} items have been selected";
 
-  static String m19(count) =>
+  static String m24(done, total) => "Today: ${done}/${total}";
+
+  static String m25(label) => "${label} must be a url";
+
+  static String m26(count) =>
       "${Intl.plural(count, one: '1 year ago', other: '${count} years ago')}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
@@ -136,6 +151,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "App access control",
     ),
     "appBug": MessageLookupByLibrary.simpleMessage("App bug"),
+    "appSetId": MessageLookupByLibrary.simpleMessage("App Set ID"),
     "appendSystemDns": MessageLookupByLibrary.simpleMessage(
       "Append System DNS",
     ),
@@ -208,6 +224,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "cancelSelectAll": MessageLookupByLibrary.simpleMessage(
       "Cancel select all",
     ),
+    "checkIn": MessageLookupByLibrary.simpleMessage("Check in"),
+    "checkedInToday": MessageLookupByLibrary.simpleMessage("Checked in today"),
+    "checkInFailed": MessageLookupByLibrary.simpleMessage("Check-in failed"),
     "checkUpdate": MessageLookupByLibrary.simpleMessage("Check for updates"),
     "checkUpdateError": MessageLookupByLibrary.simpleMessage(
       "The current application is already the latest version",
@@ -218,6 +237,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "color": MessageLookupByLibrary.simpleMessage("Color"),
     "colorSchemes": MessageLookupByLibrary.simpleMessage("Color schemes"),
     "columns": MessageLookupByLibrary.simpleMessage("Columns"),
+    "comingSoon": MessageLookupByLibrary.simpleMessage("Coming soon"),
     "compatible": MessageLookupByLibrary.simpleMessage("Compatibility mode"),
     "configDataDetected": MessageLookupByLibrary.simpleMessage(
       "Data detected in configuration",
@@ -256,6 +276,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "controlGlobalAddedRules": MessageLookupByLibrary.simpleMessage(
       "Control global added rules",
     ),
+    "copied": MessageLookupByLibrary.simpleMessage("Copied"),
     "copy": MessageLookupByLibrary.simpleMessage("Copy"),
     "copyEnvVar": MessageLookupByLibrary.simpleMessage(
       "Copying environment variables",
@@ -275,6 +296,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "creationTime": MessageLookupByLibrary.simpleMessage("Creation time"),
     "custom": MessageLookupByLibrary.simpleMessage("Custom"),
     "cut": MessageLookupByLibrary.simpleMessage("Cut"),
+    "dailyCheckIn": MessageLookupByLibrary.simpleMessage("Daily check-in"),
+    "dailyTasks": MessageLookupByLibrary.simpleMessage("Daily tasks"),
     "dark": MessageLookupByLibrary.simpleMessage("Dark"),
     "dashboard": MessageLookupByLibrary.simpleMessage("Dashboard"),
     "dataChangedSave": MessageLookupByLibrary.simpleMessage(
@@ -317,6 +340,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "developerModeEnableTip": MessageLookupByLibrary.simpleMessage(
       "Developer mode is enabled.",
     ),
+    "deviceId": MessageLookupByLibrary.simpleMessage("Device ID"),
     "direct": MessageLookupByLibrary.simpleMessage("Direct"),
     "disableUDP": MessageLookupByLibrary.simpleMessage("Disable UDP"),
     "disclaimer": MessageLookupByLibrary.simpleMessage("Disclaimer"),
@@ -406,6 +430,14 @@ class MessageLookup extends MessageLookupByLibrary {
     "forceRestartCoreTip": MessageLookupByLibrary.simpleMessage(
       "Are you sure you want to force restart the core?",
     ),
+    "free": MessageLookupByLibrary.simpleMessage("Free"),
+    "freeTraffic": MessageLookupByLibrary.simpleMessage("Free Traffic"),
+    "freeTrafficSubtitle": MessageLookupByLibrary.simpleMessage(
+      "Complete tasks to get free traffic",
+    ),
+    "friendInviteCode": MessageLookupByLibrary.simpleMessage(
+      "Friend\'s invite code",
+    ),
     "fruitSaladScheme": MessageLookupByLibrary.simpleMessage("FruitSalad"),
     "general": MessageLookupByLibrary.simpleMessage("General"),
     "geodataLoader": MessageLookupByLibrary.simpleMessage(
@@ -482,6 +514,33 @@ class MessageLookup extends MessageLookupByLibrary {
     "invalidProxy": m8,
     "invalidProxyProvider": m9,
     "invalidSubRule": m10,
+    "invite": MessageLookupByLibrary.simpleMessage("Invite"),
+    "inviteCode": MessageLookupByLibrary.simpleMessage("Invite code"),
+    "inviteCodeAlreadySubmitted": MessageLookupByLibrary.simpleMessage(
+      "Invite code already submitted",
+    ),
+    "inviteCodeCopied": MessageLookupByLibrary.simpleMessage(
+      "Invite code copied",
+    ),
+    "inviteCodeHint": m11,
+    "inviteCodeInvalid": MessageLookupByLibrary.simpleMessage(
+      "Invite code format is invalid",
+    ),
+    "inviteCodeSubmitFailed": MessageLookupByLibrary.simpleMessage(
+      "Invite code submission failed",
+    ),
+    "inviteFriends": MessageLookupByLibrary.simpleMessage("Invite"),
+    "inviteFriendsSubtitle": MessageLookupByLibrary.simpleMessage(
+      "Invite friends to earn rewards",
+    ),
+    "inviteRewardDesc": m12,
+    "inviteRewardPerPerson": m13,
+    "inviteRewardTitle": m14,
+    "inviteRuleOne": MessageLookupByLibrary.simpleMessage(
+      "Your friend just enters your invite code",
+    ),
+    "inviteRuleTwo": m15,
+    "inviteRules": MessageLookupByLibrary.simpleMessage("Invite rules"),
     "ipcidr": MessageLookupByLibrary.simpleMessage("Ipcidr"),
     "ipv6Desc": MessageLookupByLibrary.simpleMessage(
       "When turned on it will be able to receive IPv6 traffic",
@@ -515,7 +574,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "locationPermissionDesc": MessageLookupByLibrary.simpleMessage(
       "According to system requirements, obtaining the Wi-Fi name requires you to grant location permission.",
     ),
-    "locationPermissionGuide": m11,
+    "locationPermissionGuide": m16,
     "locationPermissionRequired": MessageLookupByLibrary.simpleMessage(
       "Location Permission Required",
     ),
@@ -545,11 +604,11 @@ class MessageLookup extends MessageLookupByLibrary {
     "minimizeOnExitDesc": MessageLookupByLibrary.simpleMessage(
       "Modify the default system exit event",
     ),
-    "minutesAgo": m12,
+    "minutesAgo": m17,
     "mixedPort": MessageLookupByLibrary.simpleMessage("Mixed Port"),
     "mode": MessageLookupByLibrary.simpleMessage("Mode"),
     "monochromeScheme": MessageLookupByLibrary.simpleMessage("Monochrome"),
-    "monthsAgo": m13,
+    "monthsAgo": m18,
     "more": MessageLookupByLibrary.simpleMessage("More"),
     "name": MessageLookupByLibrary.simpleMessage("Name"),
     "nameserver": MessageLookupByLibrary.simpleMessage("Nameserver"),
@@ -598,8 +657,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "nullProfileDesc": MessageLookupByLibrary.simpleMessage(
       "No profile, Please add a profile",
     ),
-    "nullTip": m14,
-    "numberTip": m15,
+    "nullTip": m19,
+    "numberTip": m20,
     "onDemand": MessageLookupByLibrary.simpleMessage("On Demand"),
     "onDemandDesc": MessageLookupByLibrary.simpleMessage(
       "Configure the program running state for specific scenarios",
@@ -633,6 +692,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "palette": MessageLookupByLibrary.simpleMessage("Palette"),
     "password": MessageLookupByLibrary.simpleMessage("Password"),
     "paste": MessageLookupByLibrary.simpleMessage("Paste"),
+    "personalProfile": MessageLookupByLibrary.simpleMessage("Personal profile"),
     "pleaseBindWebDAV": MessageLookupByLibrary.simpleMessage(
       "Please bind WebDAV",
     ),
@@ -649,7 +709,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "portConflictTip": MessageLookupByLibrary.simpleMessage(
       "Please enter a different port",
     ),
-    "portTip": m16,
+    "portTip": m21,
     "preferH3Desc": MessageLookupByLibrary.simpleMessage(
       "Prioritize the use of DOH\'s http/3",
     ),
@@ -730,6 +790,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "rainbowScheme": MessageLookupByLibrary.simpleMessage("Rainbow"),
     "redirPort": MessageLookupByLibrary.simpleMessage("Redir Port"),
     "redo": MessageLookupByLibrary.simpleMessage("redo"),
+    "registerTime": MessageLookupByLibrary.simpleMessage("Registration time"),
     "reload": MessageLookupByLibrary.simpleMessage("Reload"),
     "remainingTraffic": MessageLookupByLibrary.simpleMessage(
       "Remaining traffic",
@@ -787,6 +848,8 @@ class MessageLookup extends MessageLookupByLibrary {
       "Override",
     ),
     "restoreSuccess": MessageLookupByLibrary.simpleMessage("Restore success"),
+    "rewardReceived": MessageLookupByLibrary.simpleMessage("Reward received"),
+    "rewardReceivedMessage": m22,
     "routeAddress": MessageLookupByLibrary.simpleMessage("Route address"),
     "routeAddressDesc": MessageLookupByLibrary.simpleMessage(
       "Config listen route address",
@@ -926,7 +989,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Please select sub rule",
     ),
     "selected": MessageLookupByLibrary.simpleMessage("Selected"),
-    "selectedCountTitle": m17,
+    "selectedCountTitle": m23,
     "settings": MessageLookupByLibrary.simpleMessage("Settings"),
     "show": MessageLookupByLibrary.simpleMessage("Show"),
     "shrink": MessageLookupByLibrary.simpleMessage("Shrink"),
@@ -969,12 +1032,18 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "submit": MessageLookupByLibrary.simpleMessage("Submit"),
     "submitFeedback": MessageLookupByLibrary.simpleMessage("Submit feedback"),
+    "submitInviteCode": MessageLookupByLibrary.simpleMessage(
+      "Submit invite code",
+    ),
     "submitting": MessageLookupByLibrary.simpleMessage("Submitting..."),
     "subscriptionLoadFailed": MessageLookupByLibrary.simpleMessage(
       "Subscription load failed",
     ),
     "subscriptionLoadSuccess": MessageLookupByLibrary.simpleMessage(
       "Subscription loaded",
+    ),
+    "successfulInvites": MessageLookupByLibrary.simpleMessage(
+      "Successful invites",
     ),
     "suggestion": MessageLookupByLibrary.simpleMessage("Suggestion"),
     "suspended": MessageLookupByLibrary.simpleMessage("Suspended..."),
@@ -1009,11 +1078,14 @@ class MessageLookup extends MessageLookupByLibrary {
     "time": MessageLookupByLibrary.simpleMessage("Time"),
     "timeout": MessageLookupByLibrary.simpleMessage("Timeout"),
     "tip": MessageLookupByLibrary.simpleMessage("tip"),
+    "todayReceived": MessageLookupByLibrary.simpleMessage("Received today"),
+    "todayTaskProgress": m24,
     "toggle": MessageLookupByLibrary.simpleMessage("Toggle"),
     "tonalSpotScheme": MessageLookupByLibrary.simpleMessage("TonalSpot"),
     "tools": MessageLookupByLibrary.simpleMessage("Settings"),
     "totalTraffic": MessageLookupByLibrary.simpleMessage("Total traffic"),
     "tproxyPort": MessageLookupByLibrary.simpleMessage("Tproxy Port"),
+    "trafficEarned": MessageLookupByLibrary.simpleMessage("Traffic earned"),
     "trafficUsage": MessageLookupByLibrary.simpleMessage("Traffic usage"),
     "tun": MessageLookupByLibrary.simpleMessage("TUN"),
     "tunDesc": MessageLookupByLibrary.simpleMessage(
@@ -1037,7 +1109,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "urlDesc": MessageLookupByLibrary.simpleMessage(
       "Obtain profile through URL",
     ),
-    "urlTip": m18,
+    "urlTip": m25,
     "useHosts": MessageLookupByLibrary.simpleMessage("Use hosts"),
     "useSystemHosts": MessageLookupByLibrary.simpleMessage("Use system hosts"),
     "value": MessageLookupByLibrary.simpleMessage("Value"),
@@ -1052,11 +1124,15 @@ class MessageLookup extends MessageLookupByLibrary {
     "vpnTip": MessageLookupByLibrary.simpleMessage(
       "Changes take effect after restarting the VPN",
     ),
+    "watchRewardVideo": MessageLookupByLibrary.simpleMessage(
+      "Watch rewarded video",
+    ),
     "webDAVConfiguration": MessageLookupByLibrary.simpleMessage(
       "WebDAV configuration",
     ),
     "whitelistMode": MessageLookupByLibrary.simpleMessage("Whitelist mode"),
-    "yearsAgo": m19,
+    "yearsAgo": m26,
+    "yourInviteCode": MessageLookupByLibrary.simpleMessage("Your invite code"),
     "zh_CN": MessageLookupByLibrary.simpleMessage("Simplified Chinese"),
   };
 }

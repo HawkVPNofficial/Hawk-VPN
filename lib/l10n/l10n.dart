@@ -4558,6 +4558,346 @@ class AppLocalizations {
   String get suspended {
     return Intl.message('Suspended...', name: 'suspended', desc: '', args: []);
   }
+
+  /// `Free`
+  String get free {
+    return Intl.message('Free', name: 'free', desc: '', args: []);
+  }
+
+  /// `Invite`
+  String get invite {
+    return Intl.message('Invite', name: 'invite', desc: '', args: []);
+  }
+
+  /// `Free Traffic`
+  String get freeTraffic {
+    return Intl.message(
+      'Free Traffic',
+      name: 'freeTraffic',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Complete tasks to get free traffic`
+  String get freeTrafficSubtitle {
+    return Intl.message(
+      'Complete tasks to get free traffic',
+      name: 'freeTrafficSubtitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Daily tasks`
+  String get dailyTasks {
+    return Intl.message('Daily tasks', name: 'dailyTasks', desc: '', args: []);
+  }
+
+  /// `Watch rewarded video`
+  String get watchRewardVideo {
+    return Intl.message(
+      'Watch rewarded video',
+      name: 'watchRewardVideo',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Coming soon`
+  String get comingSoon {
+    return Intl.message('Coming soon', name: 'comingSoon', desc: '', args: []);
+  }
+
+  /// `Daily check-in`
+  String get dailyCheckIn {
+    return Intl.message(
+      'Daily check-in',
+      name: 'dailyCheckIn',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Check in`
+  String get checkIn {
+    return Intl.message('Check in', name: 'checkIn', desc: '', args: []);
+  }
+
+  /// `Checked in today`
+  String get checkedInToday {
+    return Intl.message(
+      'Checked in today',
+      name: 'checkedInToday',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Check-in failed`
+  String get checkInFailed {
+    return Intl.message(
+      'Check-in failed',
+      name: 'checkInFailed',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Today: {done}/{total}`
+  String todayTaskProgress(Object done, Object total) {
+    return Intl.message(
+      'Today: $done/$total',
+      name: 'todayTaskProgress',
+      desc: '',
+      args: [done, total],
+    );
+  }
+
+  /// `Invite`
+  String get inviteFriends {
+    return Intl.message('Invite', name: 'inviteFriends', desc: '', args: []);
+  }
+
+  /// `Invite friends to earn rewards`
+  String get inviteFriendsSubtitle {
+    return Intl.message(
+      'Invite friends to earn rewards',
+      name: 'inviteFriendsSubtitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `+{mb} MB/person`
+  String inviteRewardPerPerson(Object mb) {
+    return Intl.message(
+      '+$mb MB/person',
+      name: 'inviteRewardPerPerson',
+      desc: '',
+      args: [mb],
+    );
+  }
+
+  /// `Received today`
+  String get todayReceived {
+    return Intl.message(
+      'Received today',
+      name: 'todayReceived',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Reward received`
+  String get rewardReceived {
+    return Intl.message(
+      'Reward received',
+      name: 'rewardReceived',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You received {traffic} free traffic.`
+  String rewardReceivedMessage(Object traffic) {
+    return Intl.message(
+      'You received $traffic free traffic.',
+      name: 'rewardReceivedMessage',
+      desc: '',
+      args: [traffic],
+    );
+  }
+
+  /// `Each invite = {mb} MB`
+  String inviteRewardTitle(Object mb) {
+    return Intl.message(
+      'Each invite = $mb MB',
+      name: 'inviteRewardTitle',
+      desc: '',
+      args: [mb],
+    );
+  }
+
+  /// `You and your friend both get {mb} MB free traffic`
+  String inviteRewardDesc(Object mb) {
+    return Intl.message(
+      'You and your friend both get $mb MB free traffic',
+      name: 'inviteRewardDesc',
+      desc: '',
+      args: [mb],
+    );
+  }
+
+  /// `Invite rules`
+  String get inviteRules {
+    return Intl.message(
+      'Invite rules',
+      name: 'inviteRules',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Your friend just enters your invite code`
+  String get inviteRuleOne {
+    return Intl.message(
+      'Your friend just enters your invite code',
+      name: 'inviteRuleOne',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Once submitted, both of you get {mb} MB`
+  String inviteRuleTwo(Object mb) {
+    return Intl.message(
+      'Once submitted, both of you get $mb MB',
+      name: 'inviteRuleTwo',
+      desc: '',
+      args: [mb],
+    );
+  }
+
+  /// `Your invite code`
+  String get yourInviteCode {
+    return Intl.message(
+      'Your invite code',
+      name: 'yourInviteCode',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Invite code copied`
+  String get inviteCodeCopied {
+    return Intl.message(
+      'Invite code copied',
+      name: 'inviteCodeCopied',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Successful invites`
+  String get successfulInvites {
+    return Intl.message(
+      'Successful invites',
+      name: 'successfulInvites',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Traffic earned`
+  String get trafficEarned {
+    return Intl.message(
+      'Traffic earned',
+      name: 'trafficEarned',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Device ID`
+  String get deviceId {
+    return Intl.message('Device ID', name: 'deviceId', desc: '', args: []);
+  }
+
+  /// `Personal profile`
+  String get personalProfile {
+    return Intl.message(
+      'Personal profile',
+      name: 'personalProfile',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `App Set ID`
+  String get appSetId {
+    return Intl.message('App Set ID', name: 'appSetId', desc: '', args: []);
+  }
+
+  /// `Invite code`
+  String get inviteCode {
+    return Intl.message('Invite code', name: 'inviteCode', desc: '', args: []);
+  }
+
+  /// `Registration time`
+  String get registerTime {
+    return Intl.message(
+      'Registration time',
+      name: 'registerTime',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Copied`
+  String get copied {
+    return Intl.message('Copied', name: 'copied', desc: '', args: []);
+  }
+
+  /// `Submit invite code`
+  String get submitInviteCode {
+    return Intl.message(
+      'Submit invite code',
+      name: 'submitInviteCode',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Friend's invite code`
+  String get friendInviteCode {
+    return Intl.message(
+      'Friend\'s invite code',
+      name: 'friendInviteCode',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter a friend’s invite code and you both get {mb} MB free traffic`
+  String inviteCodeHint(Object mb) {
+    return Intl.message(
+      'Enter a friend’s invite code and you both get $mb MB free traffic',
+      name: 'inviteCodeHint',
+      desc: '',
+      args: [mb],
+    );
+  }
+
+  /// `Invite code format is invalid`
+  String get inviteCodeInvalid {
+    return Intl.message(
+      'Invite code format is invalid',
+      name: 'inviteCodeInvalid',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Invite code already submitted`
+  String get inviteCodeAlreadySubmitted {
+    return Intl.message(
+      'Invite code already submitted',
+      name: 'inviteCodeAlreadySubmitted',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Invite code submission failed`
+  String get inviteCodeSubmitFailed {
+    return Intl.message(
+      'Invite code submission failed',
+      name: 'inviteCodeSubmitFailed',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<AppLocalizations> {

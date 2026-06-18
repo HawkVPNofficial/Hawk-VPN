@@ -7,6 +7,7 @@ import 'package:fl_clash/core/controller.dart';
 import 'package:fl_clash/enum/enum.dart';
 import 'package:fl_clash/models/models.dart';
 import 'package:fl_clash/providers/providers.dart';
+import 'package:fl_clash/state.dart';
 import 'package:flutter/services.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:wifi_ssid/wifi_ssid.dart';
@@ -55,6 +56,45 @@ class Requests extends _$Requests with AutoDisposeNotifierMixin {
 
   void addRequest(TrackerInfo value) {
     this.value = state.copyWith()..add(value);
+  }
+}
+
+@Riverpod(keepAlive: true)
+class BackendUserState extends _$BackendUserState
+    with AutoDisposeNotifierMixin {
+  @override
+  BackendUser? build() {
+    return globalState.backendUser;
+  }
+
+  void setUser(BackendUser? user) {
+    globalState.backendUser = user;
+    value = user;
+  }
+}
+
+@Riverpod(keepAlive: true)
+class BackendAppConfigState extends _$BackendAppConfigState
+    with AutoDisposeNotifierMixin {
+  @override
+  BackendAppConfig build() {
+    return BackendAppConfig.defaults();
+  }
+
+  void setConfig(BackendAppConfig config) {
+    value = config;
+  }
+
+  Future<void> sync() async {
+    try {
+      value = await request.getBackendAppConfig();
+    } catch (e) {
+      commonPrint.log(
+        'sync backend app config failed $e',
+        logLevel: LogLevel.warning,
+      );
+      value = BackendAppConfig.defaults();
+    }
   }
 }
 

@@ -96,7 +96,7 @@ class _FeedbackViewState extends ConsumerState<FeedbackView> {
       if (!mounted) return;
       await globalState.showMessage(
         title: context.appLocalizations.feedbackSubmitFailed,
-        message: TextSpan(text: e.toString()),
+        message: TextSpan(text: request.unwrapBackendError(e).toString()),
       );
     } finally {
       await loadingNotifier.stop();

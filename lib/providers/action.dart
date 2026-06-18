@@ -885,7 +885,7 @@ class ProfilesAction extends _$ProfilesAction {
     }
   }
 
-  Future<void> syncBackendProfile() async {
+  Future<void> syncBackendProfile({bool retryOnFailure = true}) async {
     final deviceId = globalState.deviceId;
     if (deviceId.isEmpty) return;
     while (true) {
@@ -898,13 +898,23 @@ class ProfilesAction extends _$ProfilesAction {
         );
         return;
       } catch (e) {
-        error = e;
+        error = request.unwrapBackendError(e);
         commonPrint.log(
           'syncBackendProfile failed $e',
           logLevel: LogLevel.warning,
         );
       } finally {
         await ref.read(loadingProvider(LoadingTag.backendSync).notifier).stop();
+      }
+
+      if (!retryOnFailure) {
+        await globalState.showMessage(
+          title: currentAppLocalizations.subscriptionLoadFailed,
+          message: TextSpan(text: error.toString()),
+          confirmText: currentAppLocalizations.reload,
+          cancelText: currentAppLocalizations.cancel,
+        );
+        return;
       }
 
       await globalState.showMessage(
@@ -918,6 +928,7 @@ class ProfilesAction extends _$ProfilesAction {
   }
 
   Future<void> _syncBackendProfile(String deviceId) async {
+    await ref.read(backendAppConfigStateProvider.notifier).sync();
     var auth = await preferences.getBackendAuth();
     BackendUser user;
     try {
@@ -932,12 +943,40 @@ class ProfilesAction extends _$ProfilesAction {
       throw 'backend auth is empty';
     }
     globalState.backendAuth = auth;
-    globalState.backendUser = user;
+    ref.read(backendUserStateProvider.notifier).setUser(user);
     final subscription = await request.getBackendSubscription(auth: auth);
     if (subscription.content.trim().isEmpty) {
       throw 'subscription is empty';
     }
     await _saveBackendSubscription(subscription);
+  }
+
+  Future<BackendTrafficReward> checkIn() async {
+    final auth = globalState.backendAuth ?? await preferences.getBackendAuth();
+    final reward = await request.checkIn(auth: auth);
+    await _refreshBackendUser(auth: auth);
+    return reward;
+  }
+
+  Future<BackendTrafficReward> submitInviteCode(String inviteCode) async {
+    final auth = globalState.backendAuth ?? await preferences.getBackendAuth();
+    final reward = await request.submitInviteCode(
+      inviteCode: inviteCode,
+      auth: auth,
+    );
+    await _refreshBackendUser(auth: auth);
+    return reward;
+  }
+
+  Future<void> _refreshBackendUser({BackendAuth? auth}) async {
+    final nextAuth = auth ?? await preferences.getBackendAuth();
+    if (nextAuth == null || !nextAuth.isValid) {
+      await _syncBackendProfile(globalState.deviceId);
+      return;
+    }
+    final user = await request.currentUser(auth: nextAuth);
+    globalState.backendAuth = nextAuth;
+    ref.read(backendUserStateProvider.notifier).setUser(user);
   }
 
   Future<void> _saveBackendSubscription(

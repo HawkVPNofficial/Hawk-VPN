@@ -7,6 +7,7 @@ import 'package:fl_clash/providers/providers.dart';
 import 'package:fl_clash/state.dart';
 import 'package:fl_clash/views/about.dart';
 import 'package:fl_clash/views/access.dart';
+import 'package:fl_clash/views/account.dart';
 import 'package:fl_clash/views/application_setting.dart';
 import 'package:fl_clash/views/backup_and_restore.dart';
 import 'package:fl_clash/views/config/config.dart';
@@ -33,7 +34,7 @@ class _ToolViewState extends ConsumerState<ToolsView> {
   Widget _buildNavigationMenuItem(NavigationItem navigationItem) {
     return ListItem.open(
       leading: navigationItem.icon,
-      title: Text(Intl.message(navigationItem.label.name)),
+      title: Text(getPageLabelText(navigationItem.label)),
       subtitle: navigationItem.description != null
           ? Text(Intl.message(navigationItem.description!))
           : null,
@@ -83,6 +84,13 @@ class _ToolViewState extends ConsumerState<ToolsView> {
     );
   }
 
+  List<Widget> _getAccountList() {
+    return generateSection(
+      title: context.appLocalizations.account,
+      items: const [_AccountProfileItem(), _InviteCodeItem()],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final vm2 = ref.watch(
@@ -107,6 +115,7 @@ class _ToolViewState extends ConsumerState<ToolsView> {
           },
         ),
       ..._getSettingList(),
+      ..._getAccountList(),
       ..._getOtherList(vm2.b),
     ];
     return CommonScaffold(
@@ -299,6 +308,40 @@ class _InfoItem extends StatelessWidget {
       leading: const Icon(Icons.info),
       title: Text(context.appLocalizations.about),
       delegate: const OpenDelegate(widget: AboutView()),
+    );
+  }
+}
+
+class _AccountProfileItem extends StatelessWidget {
+  const _AccountProfileItem();
+
+  @override
+  Widget build(BuildContext context) {
+    return ListItem.open(
+      leading: const Icon(Icons.person_outline),
+      title: Text(context.appLocalizations.personalProfile),
+      delegate: const OpenDelegate(widget: AccountProfileView()),
+    );
+  }
+}
+
+class _InviteCodeItem extends ConsumerWidget {
+  const _InviteCodeItem();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final submitted = ref.watch(
+      backendUserStateProvider.select(
+        (user) => user?.inviteCodeSubmitted == true,
+      ),
+    );
+    return ListItem.open(
+      leading: const Icon(Icons.group_add_outlined),
+      title: Text(context.appLocalizations.submitInviteCode),
+      subtitle: submitted
+          ? Text(context.appLocalizations.inviteCodeAlreadySubmitted)
+          : null,
+      delegate: const OpenDelegate(widget: InviteCodeSubmitView()),
     );
   }
 }

@@ -67,6 +67,7 @@ docs/
 /macos/**/Package.resolved
 /macos/build/
 /env.json
+/env-*.json
 /core_sha256.json
 /core/*.exe
 /plugins/rust_api/.claude/
