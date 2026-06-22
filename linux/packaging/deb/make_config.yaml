@@ -1,5 +1,5 @@
-display_name: Tooran
-package_name: Tooran
+display_name: Hawk VPN
+package_name: hawk-vpn
 maintainer:
   name: chen08209
   email: chen08209@gmail.com
@@ -15,12 +15,12 @@ dependencies:
   - libkeybinder-3.0-dev
 
 keywords:
-  - Tooran
+  - Hawk VPN
   - Clash
   - ClashMeta
   - Proxy
 
-generic_name: Tooran
+generic_name: Hawk VPN
 
 categories:
   - Network

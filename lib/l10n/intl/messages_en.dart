@@ -323,7 +323,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "deleteMultipTip": m1,
     "deleteTip": m2,
     "desc": MessageLookupByLibrary.simpleMessage(
-      "Sorena VPN helps you enjoy a safer, more private and more reliable internet experience.",
+      "Hawk VPN helps you enjoy a safer, more private and more reliable internet experience.",
     ),
     "destination": MessageLookupByLibrary.simpleMessage("Destination"),
     "destinationGeoIP": MessageLookupByLibrary.simpleMessage(

@@ -1,14 +1,14 @@
-display_name: Tooran
+display_name: Hawk VPN
 
 icon: ./assets/images/icon.png
 
 keywords:
-  - Tooran
+  - Hawk VPN
   - Clash
   - ClashMeta
   - Proxy
 
-generic_name: Tooran
+generic_name: Hawk VPN
 
 categories:
   - Network

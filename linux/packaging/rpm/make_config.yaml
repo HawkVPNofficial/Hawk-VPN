@@ -1,4 +1,4 @@
-display_name: Tooran
+display_name: Hawk VPN
 
 packager: chen08209
 packagerEmail: chen08209@gmail.com
@@ -11,12 +11,12 @@ essential: false
 icon: ./assets/images/icon.png
 
 keywords:
-  - Tooran
+  - Hawk VPN
   - Clash
   - ClashMeta
   - Proxy
 
-generic_name: Tooran
+generic_name: Hawk VPN
 
 group: Applications/Internet
 

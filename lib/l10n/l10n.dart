@@ -774,10 +774,10 @@ class AppLocalizations {
     );
   }
 
-  /// `Sorena VPN helps you enjoy a safer, more private and more reliable internet experience.`
+  /// `Hawk VPN helps you enjoy a safer, more private and more reliable internet experience.`
   String get desc {
     return Intl.message(
-      'Sorena VPN helps you enjoy a safer, more private and more reliable internet experience.',
+      'Hawk VPN helps you enjoy a safer, more private and more reliable internet experience.',
       name: 'desc',
       desc: '',
       args: [],
