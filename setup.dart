@@ -17,6 +17,10 @@ const _androidFlutterTarget = {
   'amd64': 'android-x64',
 };
 
+const _defaultBannerAdUnitId = 'ca-app-pub-2702996863596684/8634447720';
+const _defaultRewardedAdUnitId = 'ca-app-pub-2702996863596684/6187806849';
+const _defaultInterstitialAdUnitId = '';
+
 const _hostPlatform = {
   'linux': 'linux',
   'macos': 'macos',
@@ -174,6 +178,21 @@ Future<int> _package(
       'DASHBOARD_MODULE': previousEnv['DASHBOARD_MODULE'] == 'legacy'
           ? 'legacy'
           : 'tooran',
+      'ADMOB_BANNER_AD_UNIT_ID': _readStringEnv(
+        previousEnv,
+        'ADMOB_BANNER_AD_UNIT_ID',
+        _defaultBannerAdUnitId,
+      ),
+      'ADMOB_REWARDED_AD_UNIT_ID': _readStringEnv(
+        previousEnv,
+        'ADMOB_REWARDED_AD_UNIT_ID',
+        _defaultRewardedAdUnitId,
+      ),
+      'ADMOB_INTERSTITIAL_AD_UNIT_ID': _readStringEnv(
+        previousEnv,
+        'ADMOB_INTERSTITIAL_AD_UNIT_ID',
+        _defaultInterstitialAdUnitId,
+      ),
       'CORE_SHA256': ?coreSha256,
     }),
   );
@@ -219,6 +238,12 @@ Future<int> _package(
   });
   final exitCode = await process.exitCode;
   return exitCode;
+}
+
+String _readStringEnv(Map<String, dynamic> env, String key, String fallback) {
+  final value = env[key];
+  if (value is String) return value;
+  return fallback;
 }
 
 Future<String?> _buildGoCore(String rootDir) async {
