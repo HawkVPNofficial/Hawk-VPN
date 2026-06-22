@@ -4604,6 +4604,51 @@ class AppLocalizations {
     );
   }
 
+  /// `Watch`
+  String get watch {
+    return Intl.message('Watch', name: 'watch', desc: '', args: []);
+  }
+
+  /// `Completed today`
+  String get todayCompleted {
+    return Intl.message(
+      'Completed today',
+      name: 'todayCompleted',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Unavailable`
+  String get rewardedAdUnavailable {
+    return Intl.message(
+      'Unavailable',
+      name: 'rewardedAdUnavailable',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Rewarded video failed`
+  String get rewardedAdFailed {
+    return Intl.message(
+      'Rewarded video failed',
+      name: 'rewardedAdFailed',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Reward is being confirmed. Please refresh later.`
+  String get rewardConfirming {
+    return Intl.message(
+      'Reward is being confirmed. Please refresh later.',
+      name: 'rewardConfirming',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Coming soon`
   String get comingSoon {
     return Intl.message('Coming soon', name: 'comingSoon', desc: '', args: []);

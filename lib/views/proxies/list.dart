@@ -13,9 +13,24 @@ import 'card.dart';
 import 'common.dart';
 
 typedef GroupNameProxiesMap = Map<String, List<Proxy>>;
+typedef ProxySelectedCallback =
+    void Function(String groupName, String proxyName);
 
 class ProxiesListView extends StatefulWidget {
-  const ProxiesListView({super.key});
+  const ProxiesListView({
+    super.key,
+    this.cardType,
+    this.columns,
+    this.iconStyle,
+    this.onSelected,
+    this.storageKey = proxiesListStoreKey,
+  });
+
+  final ProxyCardType? cardType;
+  final int? columns;
+  final ProxiesIconStyle? iconStyle;
+  final ProxySelectedCallback? onSelected;
+  final PageStorageKey<String> storageKey;
 
   @override
   State<ProxiesListView> createState() => _ProxiesListViewState();
@@ -125,6 +140,7 @@ class _ProxiesListViewState extends State<ProxiesListView> {
       final isExpand = currentUnfoldSet.contains(groupName);
       items.addAll([
         ListHeader(
+          iconStyle: widget.iconStyle,
           onScrollToSelected: _scrollToGroupSelected,
           isExpand: isExpand,
           group: group,
@@ -151,6 +167,7 @@ class _ProxiesListViewState extends State<ProxiesListView> {
                           key: ValueKey('$groupName.${proxy.name}'),
                           proxy: proxy,
                           groupName: groupName,
+                          onSelected: widget.onSelected,
                         ),
                       ),
                     ),
@@ -180,6 +197,7 @@ class _ProxiesListViewState extends State<ProxiesListView> {
     return SizedBox(
       height: listHeaderHeight,
       child: ListHeader(
+        iconStyle: widget.iconStyle,
         enterAnimated: false,
         onScrollToSelected: _scrollToGroupSelected,
         key: Key(groupName),
@@ -298,10 +316,11 @@ class _ProxiesListViewState extends State<ProxiesListView> {
           ref,
           groups: state.groups,
           currentUnfoldSet: state.currentUnfoldSet,
-          columns: state.columns,
-          cardType: state.proxyCardType,
+          columns: widget.columns ?? state.columns,
+          cardType: widget.cardType ?? state.proxyCardType,
         );
-        final itemsOffset = _getItemHeightList(items, state.proxyCardType);
+        final cardType = widget.cardType ?? state.proxyCardType;
+        final itemsOffset = _getItemHeightList(items, cardType);
         return CommonScrollBar(
           controller: _controller,
           thumbVisibility: true,
@@ -312,7 +331,7 @@ class _ProxiesListViewState extends State<ProxiesListView> {
                 child: ScrollConfiguration(
                   behavior: HiddenBarScrollBehavior(),
                   child: ListView.builder(
-                    key: proxiesListStoreKey,
+                    key: widget.storageKey,
                     padding: const EdgeInsets.all(16),
                     controller: _controller,
                     itemExtentBuilder: (index, _) {
@@ -381,12 +400,14 @@ class ListHeader extends StatefulWidget {
   final Function(String groupName) onChange;
   final Function(String groupName) onScrollToSelected;
   final bool isExpand;
+  final ProxiesIconStyle? iconStyle;
 
   final bool enterAnimated;
 
   const ListHeader({
     super.key,
     this.enterAnimated = true,
+    this.iconStyle,
     required this.group,
     required this.onChange,
     required this.onScrollToSelected,
@@ -425,7 +446,8 @@ class _ListHeaderState extends State<ListHeader> {
         final iconStyle = ref.watch(
           proxiesStyleSettingProvider.select((state) => state.iconStyle),
         );
-        return switch (iconStyle) {
+        final effectiveIconStyle = widget.iconStyle ?? iconStyle;
+        return switch (effectiveIconStyle) {
           ProxiesIconStyle.standard => LayoutBuilder(
             builder: (_, constraints) {
               return Container(

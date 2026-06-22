@@ -14,6 +14,7 @@ class ProxyCard extends StatelessWidget {
   final GroupType groupType;
   final ProxyCardType type;
   final String? testUrl;
+  final void Function(String groupName, String proxyName)? onSelected;
 
   const ProxyCard({
     super.key,
@@ -22,6 +23,7 @@ class ProxyCard extends StatelessWidget {
     required this.proxy,
     required this.groupType,
     required this.type,
+    this.onSelected,
   });
 
   Measure get measure => globalState.measure;
@@ -111,6 +113,7 @@ class ProxyCard extends StatelessWidget {
       ref
           .read(proxiesActionProvider.notifier)
           .changeProxyDebounce(groupName, nextProxyName);
+      onSelected?.call(groupName, nextProxyName);
       return;
     }
     globalState.showNotifier(currentAppLocalizations.notSelectedTip);

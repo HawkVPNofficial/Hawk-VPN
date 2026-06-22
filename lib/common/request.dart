@@ -175,6 +175,23 @@ class Request {
     return BackendTrafficReward.fromJson(result.data);
   }
 
+  Future<BackendAdRewardSession> createAdRewardSession({
+    BackendAuth? auth,
+  }) async {
+    await _prepareBackendRequest(auth: auth);
+    final response = await _backendDio.post<Map<String, dynamic>>(
+      '/api/traffic/ad-reward/session',
+      options: Options(responseType: ResponseType.json),
+    );
+    final result = BackendResponse.fromJson(response.data ?? {});
+    result.throwIfFailed();
+    final session = BackendAdRewardSession.fromJson(result.data);
+    if (session.sessionId.isEmpty || session.customData.isEmpty) {
+      throw 'ad reward session is empty';
+    }
+    return session;
+  }
+
   Future<BackendSubscription> getBackendSubscription({
     BackendAuth? auth,
   }) async {

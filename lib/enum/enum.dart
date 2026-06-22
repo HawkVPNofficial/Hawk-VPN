@@ -495,6 +495,7 @@ enum LoadingTag {
   feedback,
   checkIn,
   inviteCode,
+  rewardedAd,
 }
 
 enum CoreStatus { connecting, connected, disconnected }

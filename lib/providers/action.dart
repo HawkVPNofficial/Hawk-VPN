@@ -968,6 +968,15 @@ class ProfilesAction extends _$ProfilesAction {
     return reward;
   }
 
+  Future<BackendAdRewardSession> createAdRewardSession() async {
+    final auth = globalState.backendAuth ?? await preferences.getBackendAuth();
+    return request.createAdRewardSession(auth: auth);
+  }
+
+  Future<void> refreshBackendUser() {
+    return _refreshBackendUser();
+  }
+
   Future<void> _refreshBackendUser({BackendAuth? auth}) async {
     final nextAuth = auth ?? await preferences.getBackendAuth();
     if (nextAuth == null || !nextAuth.isValid) {

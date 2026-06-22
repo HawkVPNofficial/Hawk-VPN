@@ -91,6 +91,9 @@ class BackendUser {
     required this.inviteCodeSubmitted,
     required this.todayRewardBytes,
     required this.checkedInToday,
+    required this.rewardedAdEnabled,
+    required this.rewardedAdWatchedToday,
+    required this.rewardedAdDailyLimit,
     required this.invitationSummary,
     required this.createdAt,
   });
@@ -109,6 +112,12 @@ class BackendUser {
       inviteCodeSubmitted: _boolFromJson(json['inviteCodeSubmitted']),
       todayRewardBytes: _intFromJson(json['todayRewardBytes']),
       checkedInToday: _boolFromJson(json['checkedInToday']),
+      rewardedAdEnabled: _boolFromJson(json['rewardedAdEnabled']),
+      rewardedAdWatchedToday: _intFromJson(json['rewardedAdWatchedToday']),
+      rewardedAdDailyLimit: _intFromJson(
+        json['rewardedAdDailyLimit'],
+        defaultValue: 3,
+      ),
       invitationSummary: BackendInvitationSummary.fromJson(
         json['invitationSummary'] is Map
             ? Map<String, dynamic>.from(json['invitationSummary'] as Map)
@@ -130,6 +139,9 @@ class BackendUser {
   final bool inviteCodeSubmitted;
   final int todayRewardBytes;
   final bool checkedInToday;
+  final bool rewardedAdEnabled;
+  final int rewardedAdWatchedToday;
+  final int rewardedAdDailyLimit;
   final BackendInvitationSummary invitationSummary;
   final int createdAt;
 }
@@ -214,6 +226,23 @@ class BackendTrafficReward {
   final String rewardType;
   final int rewardBytes;
   final int totalGb;
+}
+
+class BackendAdRewardSession {
+  const BackendAdRewardSession({
+    required this.sessionId,
+    required this.customData,
+  });
+
+  factory BackendAdRewardSession.fromJson(Map<String, dynamic> json) {
+    return BackendAdRewardSession(
+      sessionId: json['sessionId']?.toString() ?? '',
+      customData: json['customData']?.toString() ?? '',
+    );
+  }
+
+  final String sessionId;
+  final String customData;
 }
 
 class BackendSubscription {

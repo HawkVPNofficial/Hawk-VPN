@@ -229,15 +229,15 @@ class MessageLookup extends MessageLookupByLibrary {
       "Отменить выбор всего",
     ),
     "checkIn": MessageLookupByLibrary.simpleMessage("Отметиться"),
-    "checkedInToday": MessageLookupByLibrary.simpleMessage(
-      "Сегодня уже отмечено",
-    ),
     "checkInFailed": MessageLookupByLibrary.simpleMessage(
       "Не удалось отметиться",
     ),
     "checkUpdate": MessageLookupByLibrary.simpleMessage("Проверить обновления"),
     "checkUpdateError": MessageLookupByLibrary.simpleMessage(
       "Текущее приложение уже является последней версией",
+    ),
+    "checkedInToday": MessageLookupByLibrary.simpleMessage(
+      "Сегодня уже отмечено",
     ),
     "clearData": MessageLookupByLibrary.simpleMessage("Очистить данные"),
     "clipboardExport": MessageLookupByLibrary.simpleMessage(
@@ -898,8 +898,15 @@ class MessageLookup extends MessageLookupByLibrary {
     "restoreSuccess": MessageLookupByLibrary.simpleMessage(
       "Восстановление успешно",
     ),
+    "rewardConfirming": MessageLookupByLibrary.simpleMessage(
+      "Награда подтверждается. Обновите позже.",
+    ),
     "rewardReceived": MessageLookupByLibrary.simpleMessage("Награда получена"),
     "rewardReceivedMessage": m22,
+    "rewardedAdFailed": MessageLookupByLibrary.simpleMessage(
+      "Не удалось показать видео",
+    ),
+    "rewardedAdUnavailable": MessageLookupByLibrary.simpleMessage("Недоступно"),
     "routeAddress": MessageLookupByLibrary.simpleMessage("Адрес маршрутизации"),
     "routeAddressDesc": MessageLookupByLibrary.simpleMessage(
       "Настройка адреса прослушивания маршрутизации",
@@ -1140,6 +1147,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "time": MessageLookupByLibrary.simpleMessage("Время"),
     "timeout": MessageLookupByLibrary.simpleMessage("Таймаут"),
     "tip": MessageLookupByLibrary.simpleMessage("подсказка"),
+    "todayCompleted": MessageLookupByLibrary.simpleMessage(
+      "На сегодня выполнено",
+    ),
     "todayReceived": MessageLookupByLibrary.simpleMessage("Получено сегодня"),
     "todayTaskProgress": m24,
     "toggle": MessageLookupByLibrary.simpleMessage("Переключить"),
@@ -1192,6 +1202,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "vpnTip": MessageLookupByLibrary.simpleMessage(
       "Изменения вступят в силу после перезапуска VPN",
     ),
+    "watch": MessageLookupByLibrary.simpleMessage("Смотреть"),
     "watchRewardVideo": MessageLookupByLibrary.simpleMessage("Смотреть видео"),
     "webDAVConfiguration": MessageLookupByLibrary.simpleMessage(
       "Конфигурация WebDAV",

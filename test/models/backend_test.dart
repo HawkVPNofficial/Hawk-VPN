@@ -17,6 +17,9 @@ void main() {
         'inviteCodeSubmitted': true,
         'todayRewardBytes': 104857600,
         'checkedInToday': true,
+        'rewardedAdEnabled': true,
+        'rewardedAdWatchedToday': 2,
+        'rewardedAdDailyLimit': 3,
         'createdAt': 1710000000000,
         'invitationSummary': {
           'successCount': 2,
@@ -28,6 +31,9 @@ void main() {
       expect(user.inviteCodeSubmitted, isTrue);
       expect(user.todayRewardBytes, 104857600);
       expect(user.checkedInToday, isTrue);
+      expect(user.rewardedAdEnabled, isTrue);
+      expect(user.rewardedAdWatchedToday, 2);
+      expect(user.rewardedAdDailyLimit, 3);
       expect(user.createdAt, 1710000000000);
       expect(user.invitationSummary.successCount, 2);
       expect(user.invitationSummary.rewardTotalBytes, 1048576000);
@@ -40,6 +46,9 @@ void main() {
       expect(user.inviteCodeSubmitted, isFalse);
       expect(user.todayRewardBytes, 0);
       expect(user.checkedInToday, isFalse);
+      expect(user.rewardedAdEnabled, isFalse);
+      expect(user.rewardedAdWatchedToday, 0);
+      expect(user.rewardedAdDailyLimit, 3);
       expect(user.createdAt, 0);
       expect(user.invitationSummary.successCount, 0);
       expect(user.invitationSummary.rewardTotalBytes, 0);
@@ -52,6 +61,9 @@ void main() {
         'expiryTime': '1812542951658',
         'todayRewardBytes': '104857600',
         'checkedInToday': 'true',
+        'rewardedAdEnabled': 'true',
+        'rewardedAdWatchedToday': '2',
+        'rewardedAdDailyLimit': '3',
         'createdAt': '1710000000000',
         'invitationSummary': {
           'successCount': '3',
@@ -64,6 +76,9 @@ void main() {
       expect(user.expiryTime, 1812542951658);
       expect(user.todayRewardBytes, 104857600);
       expect(user.checkedInToday, isTrue);
+      expect(user.rewardedAdEnabled, isTrue);
+      expect(user.rewardedAdWatchedToday, 2);
+      expect(user.rewardedAdDailyLimit, 3);
       expect(user.createdAt, 1710000000000);
       expect(user.invitationSummary.successCount, 3);
       expect(user.invitationSummary.rewardTotalBytes, 1572864000);
@@ -83,6 +98,9 @@ void main() {
         'inviteCode': 'XFM-FFL',
         'inviteCodeSubmitted': false,
         'checkedInToday': false,
+        'rewardedAdEnabled': true,
+        'rewardedAdWatchedToday': 1,
+        'rewardedAdDailyLimit': 3,
         'todayRewardBytes': 0,
         'invitationSummary': {'successCount': 0, 'rewardTotalBytes': 0},
       });
@@ -93,6 +111,21 @@ void main() {
       expect(user.inviteCode, 'XFM-FFL');
       expect(user.inviteCodeSubmitted, isFalse);
       expect(user.checkedInToday, isFalse);
+      expect(user.rewardedAdEnabled, isTrue);
+      expect(user.rewardedAdWatchedToday, 1);
+      expect(user.rewardedAdDailyLimit, 3);
+    });
+  });
+
+  group('BackendAdRewardSession', () {
+    test('parses session fields', () {
+      final session = BackendAdRewardSession.fromJson(const {
+        'sessionId': 'session-1',
+        'customData': 'custom-data',
+      });
+
+      expect(session.sessionId, 'session-1');
+      expect(session.customData, 'custom-data');
     });
   });
 

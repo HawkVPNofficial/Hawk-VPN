@@ -225,12 +225,12 @@ class MessageLookup extends MessageLookupByLibrary {
       "Cancel select all",
     ),
     "checkIn": MessageLookupByLibrary.simpleMessage("Check in"),
-    "checkedInToday": MessageLookupByLibrary.simpleMessage("Checked in today"),
     "checkInFailed": MessageLookupByLibrary.simpleMessage("Check-in failed"),
     "checkUpdate": MessageLookupByLibrary.simpleMessage("Check for updates"),
     "checkUpdateError": MessageLookupByLibrary.simpleMessage(
       "The current application is already the latest version",
     ),
+    "checkedInToday": MessageLookupByLibrary.simpleMessage("Checked in today"),
     "clearData": MessageLookupByLibrary.simpleMessage("Clear Data"),
     "clipboardExport": MessageLookupByLibrary.simpleMessage("Export clipboard"),
     "clipboardImport": MessageLookupByLibrary.simpleMessage("Clipboard import"),
@@ -848,8 +848,17 @@ class MessageLookup extends MessageLookupByLibrary {
       "Override",
     ),
     "restoreSuccess": MessageLookupByLibrary.simpleMessage("Restore success"),
+    "rewardConfirming": MessageLookupByLibrary.simpleMessage(
+      "Reward is being confirmed. Please refresh later.",
+    ),
     "rewardReceived": MessageLookupByLibrary.simpleMessage("Reward received"),
     "rewardReceivedMessage": m22,
+    "rewardedAdFailed": MessageLookupByLibrary.simpleMessage(
+      "Rewarded video failed",
+    ),
+    "rewardedAdUnavailable": MessageLookupByLibrary.simpleMessage(
+      "Unavailable",
+    ),
     "routeAddress": MessageLookupByLibrary.simpleMessage("Route address"),
     "routeAddressDesc": MessageLookupByLibrary.simpleMessage(
       "Config listen route address",
@@ -1078,6 +1087,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "time": MessageLookupByLibrary.simpleMessage("Time"),
     "timeout": MessageLookupByLibrary.simpleMessage("Timeout"),
     "tip": MessageLookupByLibrary.simpleMessage("tip"),
+    "todayCompleted": MessageLookupByLibrary.simpleMessage("Completed today"),
     "todayReceived": MessageLookupByLibrary.simpleMessage("Received today"),
     "todayTaskProgress": m24,
     "toggle": MessageLookupByLibrary.simpleMessage("Toggle"),
@@ -1124,6 +1134,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "vpnTip": MessageLookupByLibrary.simpleMessage(
       "Changes take effect after restarting the VPN",
     ),
+    "watch": MessageLookupByLibrary.simpleMessage("Watch"),
     "watchRewardVideo": MessageLookupByLibrary.simpleMessage(
       "Watch rewarded video",
     ),

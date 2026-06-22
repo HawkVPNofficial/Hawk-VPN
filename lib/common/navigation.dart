@@ -36,15 +36,6 @@ class Navigation {
         modes: const [NavigationItemMode.mobile],
       ),
       NavigationItem(
-        icon: const Icon(Icons.article),
-        label: PageLabel.proxies,
-        builder: (_) =>
-            const ProxiesView(key: GlobalObjectKey(PageLabel.proxies)),
-        modes: hasProxies
-            ? [NavigationItemMode.mobile, NavigationItemMode.desktop]
-            : [],
-      ),
-      NavigationItem(
         icon: const Icon(Icons.folder),
         label: PageLabel.profiles,
         builder: (_) =>

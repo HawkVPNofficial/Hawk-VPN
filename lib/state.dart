@@ -72,8 +72,6 @@ class GlobalState {
       .read(patchClashConfigProvider.select((state) => state.globalUa))
       .takeFirstValid([packageInfo.ua]);
 
-  BuildContext get _context => navigatorKey.currentContext!;
-
   Future<ProviderContainer> _initData(int version) async {
     final appState = AppState(
       brightness: WidgetsBinding.instance.platformDispatcher.platformBrightness,
@@ -325,7 +323,6 @@ class GlobalState {
       window?.hide();
     }
     await _handleFailedPreference();
-    await _handlerDisclaimer();
     await _showCrashlyticsTip();
     await container.read(coreActionProvider.notifier).connectCore();
     await container.read(coreActionProvider.notifier).initCore();
@@ -348,31 +345,6 @@ class GlobalState {
     await container.read(systemActionProvider.notifier).handleExit();
   }
 
-  Future<bool> showDisclaimer() async {
-    return await showCommonDialog<bool>(
-          dismissible: false,
-          child: CommonDialog(
-            title: currentAppLocalizations.disclaimer,
-            actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.of(_context).pop<bool>(false);
-                },
-                child: Text(currentAppLocalizations.exit),
-              ),
-              TextButton(
-                onPressed: () {
-                  Navigator.of(_context).pop<bool>(true);
-                },
-                child: Text(currentAppLocalizations.agree),
-              ),
-            ],
-            child: Text(currentAppLocalizations.disclaimerDesc),
-          ),
-        ) ??
-        false;
-  }
-
   Future<void> _showCrashlyticsTip() async {
     if (!system.isAndroid) return;
     if (container.read(
@@ -390,20 +362,6 @@ class GlobalState {
         .update((state) => state.copyWith(crashlyticsTip: true));
   }
 
-  Future<void> _handlerDisclaimer() async {
-    if (container.read(
-      appSettingProvider.select((state) => state.disclaimerAccepted),
-    )) {
-      return;
-    }
-    final isDisclaimerAccepted = await showDisclaimer();
-    if (!isDisclaimerAccepted) {
-      await container.read(systemActionProvider.notifier).handleExit();
-    }
-    container
-        .read(appSettingProvider.notifier)
-        .update((state) => state.copyWith(disclaimerAccepted: true));
-  }
 }
 
 final globalState = GlobalState();

@@ -5,6 +5,8 @@ import 'package:fl_clash/enum/enum.dart';
 import 'package:fl_clash/models/models.dart';
 import 'package:fl_clash/providers/providers.dart';
 import 'package:fl_clash/state.dart';
+import 'package:fl_clash/views/dashboard/admob_banner.dart';
+import 'package:fl_clash/views/dashboard/proxy_picker_sheet.dart';
 import 'package:fl_clash/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -189,16 +191,36 @@ class MyProxyDashboardView extends ConsumerWidget {
     final enabled =
         state != _ConnectionDisplayState.noProfile &&
         state != _ConnectionDisplayState.connecting;
+    final isConnected = state == _ConnectionDisplayState.connected;
     return _panel(
       child: Padding(
         padding: baseInfoEdgeInsets,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            _ConnectionButton(
-              state: state,
-              onPressed: enabled ? () => _toggleConnection(ref) : null,
-            ),
+            if (isConnected)
+              Row(
+                children: [
+                  Expanded(
+                    flex: 1,
+                    child: _ConnectionButton(
+                      state: state,
+                      compact: true,
+                      onPressed: enabled ? () => _toggleConnection(ref) : null,
+                    ),
+                  ),
+                  const SizedBox(width: 14),
+                  const Expanded(
+                    flex: 3,
+                    child: _SelectedProxyButton(connected: true),
+                  ),
+                ],
+              )
+            else
+              _ConnectionButton(
+                state: state,
+                onPressed: enabled ? () => _toggleConnection(ref) : null,
+              ),
             const SizedBox(height: 16),
             Text(
               _connectionTitle(context, state),
@@ -215,6 +237,10 @@ class MyProxyDashboardView extends ConsumerWidget {
                 fontFeatures: const [FontFeature.tabularFigures()],
               ),
             ),
+            if (!isConnected) ...[
+              const SizedBox(height: 18),
+              const _SelectedProxyButton(connected: false),
+            ],
           ],
         ),
       ),
@@ -347,6 +373,7 @@ class MyProxyDashboardView extends ConsumerWidget {
               const SizedBox(height: 16),
               _buildChart(context, ref),
               const SizedBox(height: 16),
+              const DashboardAdMobBanner(),
               const _QuotaPanel(),
             ],
           ),
@@ -477,10 +504,15 @@ class _QuotaPanelState extends ConsumerState<_QuotaPanel> {
 }
 
 class _ConnectionButton extends StatelessWidget {
-  const _ConnectionButton({required this.state, this.onPressed});
+  const _ConnectionButton({
+    required this.state,
+    this.onPressed,
+    this.compact = false,
+  });
 
   final _ConnectionDisplayState state;
   final VoidCallback? onPressed;
+  final bool compact;
 
   @override
   Widget build(BuildContext context) {
@@ -508,7 +540,7 @@ class _ConnectionButton extends StatelessWidget {
       _ConnectionDisplayState.suspended => colorScheme.onSecondaryContainer,
     };
     return SizedBox.square(
-      dimension: 112,
+      dimension: compact ? 64 : 112,
       child: FilledButton(
         onPressed: onPressed,
         style: FilledButton.styleFrom(
@@ -530,7 +562,98 @@ class _ConnectionButton extends StatelessWidget {
                     color: foregroundColor,
                   ),
                 )
-              : Icon(key: ValueKey(icon), icon, size: 44),
+              : Icon(key: ValueKey(icon), icon, size: compact ? 30 : 44),
+        ),
+      ),
+    );
+  }
+}
+
+class _SelectedProxyButton extends ConsumerWidget {
+  const _SelectedProxyButton({required this.connected});
+
+  final bool connected;
+
+  void _showPicker(BuildContext context) {
+    showSheet(
+      context: context,
+      props: const SheetProps(isScrollControlled: true),
+      builder: (_) {
+        return FractionallySizedBox(
+          heightFactor: 0.62,
+          child: AdaptiveSheetScaffold(
+            title: context.appLocalizations.proxies,
+            body: const DashboardProxyPickerSheet(),
+          ),
+        );
+      },
+    );
+  }
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final groupName = ref.watch(
+      currentProfileProvider.select((profile) => profile?.currentGroupName),
+    );
+    final group = ref.watch(
+      groupsProvider.select((groups) {
+        if (groupName == null) return null;
+        return groups.getGroup(groupName);
+      }),
+    );
+    final effectiveGroupName = groupName ?? '';
+    final proxyName = effectiveGroupName.isEmpty
+        ? ''
+        : ref.watch(selectedProxyNameProvider(effectiveGroupName)) ?? '';
+    final label = proxyName.takeFirstValid([
+      effectiveGroupName,
+      context.appLocalizations.proxies,
+    ]);
+    final colorScheme = context.colorScheme;
+    return SizedBox(
+      height: connected ? 64 : 48,
+      child: FilledButton.tonal(
+        onPressed: () => _showPicker(context),
+        style: FilledButton.styleFrom(
+          padding: EdgeInsets.symmetric(horizontal: connected ? 14 : 16),
+          foregroundColor: connected
+              ? colorScheme.onSecondaryContainer
+              : colorScheme.onSurfaceVariant,
+          backgroundColor: connected
+              ? colorScheme.secondaryContainer
+              : colorScheme.surfaceContainerHighest,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(connected ? 28 : 24),
+          ),
+        ),
+        child: Row(
+          mainAxisSize: connected ? MainAxisSize.max : MainAxisSize.min,
+          children: [
+            if (group?.icon.isNotEmpty == true) ...[
+              SizedBox.square(
+                dimension: connected ? 34 : 24,
+                child: CommonTargetIcon(src: group!.icon),
+              ),
+              const SizedBox(width: 10),
+            ],
+            Flexible(
+              child: EmojiText(
+                label,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style:
+                    (connected
+                            ? context.textTheme.titleMedium
+                            : context.textTheme.labelLarge)
+                        ?.toSoftBold,
+              ),
+            ),
+            const SizedBox(width: 8),
+            Icon(
+              Icons.chevron_right,
+              color: colorScheme.onSurfaceVariant,
+            ),
+          ],
         ),
       ),
     );
