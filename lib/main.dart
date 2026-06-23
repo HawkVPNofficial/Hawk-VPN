@@ -17,7 +17,7 @@ Future<void> main() async {
     if (system.isDesktop) {
       await RustLib.init();
     }
-    if (Platform.isAndroid) {
+    if (Platform.isAndroid && showGoogleAds) {
       await MobileAds.instance.initialize();
     }
     final version = await system.version;

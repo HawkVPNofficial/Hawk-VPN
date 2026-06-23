@@ -31,7 +31,7 @@ class _FreeTrafficViewState extends ConsumerState<FreeTrafficView> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (mounted) {
+      if (mounted && showGoogleAds) {
         _loadRewardedAd();
       }
     });
@@ -50,7 +50,8 @@ class _FreeTrafficViewState extends ConsumerState<FreeTrafficView> {
     final user = ref.watch(backendUserStateProvider);
     final todayRewardBytes = user?.todayRewardBytes ?? 0;
     final checkedInToday = user?.checkedInToday ?? false;
-    final rewardedAdEnabled = user?.rewardedAdEnabled ?? false;
+    final rewardedAdEnabled =
+        showGoogleAds && (user?.rewardedAdEnabled ?? false);
     final rewardedAdWatchedToday = user?.rewardedAdWatchedToday ?? 0;
     final rewardedAdDailyLimit = user?.rewardedAdDailyLimit ?? 3;
     final rewardedAdCompleted =
@@ -80,25 +81,27 @@ class _FreeTrafficViewState extends ConsumerState<FreeTrafficView> {
             style: context.textTheme.titleMedium?.toSoftBold,
           ),
           const SizedBox(height: 12),
-          _TaskCard(
-            icon: '🎬',
-            title: appLocalizations.watchRewardVideo,
-            reward: formatRewardMb(appConfig.adRewardMb),
-            subtitle: appLocalizations.todayTaskProgress(
-              rewardedAdWatchedToday,
-              rewardedAdDailyLimit,
+          if (showGoogleAds) ...[
+            _TaskCard(
+              icon: '🎬',
+              title: appLocalizations.watchRewardVideo,
+              reward: formatRewardMb(appConfig.adRewardMb),
+              subtitle: appLocalizations.todayTaskProgress(
+                rewardedAdWatchedToday,
+                rewardedAdDailyLimit,
+              ),
+              actionLabel: _rewardedAdActionLabel(
+                context,
+                rewardedAdEnabled: rewardedAdEnabled,
+                rewardedAdCompleted: rewardedAdCompleted,
+                rewardedAdLoading: rewardedAdLoading,
+              ),
+              actionEnabled: canWatchRewardedAd,
+              isLoading: rewardedAdLoading,
+              onPressed: () => _handleRewardedAd(context, ref),
             ),
-            actionLabel: _rewardedAdActionLabel(
-              context,
-              rewardedAdEnabled: rewardedAdEnabled,
-              rewardedAdCompleted: rewardedAdCompleted,
-              rewardedAdLoading: rewardedAdLoading,
-            ),
-            actionEnabled: canWatchRewardedAd,
-            isLoading: rewardedAdLoading,
-            onPressed: () => _handleRewardedAd(context, ref),
-          ),
-          const SizedBox(height: 12),
+            const SizedBox(height: 12),
+          ],
           _TaskCard(
             icon: '📅',
             title: appLocalizations.dailyCheckIn,
@@ -159,7 +162,7 @@ class _FreeTrafficViewState extends ConsumerState<FreeTrafficView> {
 
   void _loadRewardedAd() {
     final adUnitId = _rewardedAdUnitId;
-    if (!Platform.isAndroid || adUnitId.isEmpty) return;
+    if (!showGoogleAds || !Platform.isAndroid || adUnitId.isEmpty) return;
     _rewardedAd?.dispose();
     _rewardedAd = null;
     setState(() {
@@ -274,9 +277,9 @@ class _FreeTrafficViewState extends ConsumerState<FreeTrafficView> {
       }
       await ref.read(profilesActionProvider.notifier).refreshBackendUser();
       final after = ref.read(backendUserStateProvider);
-      rewardBytes = ((after?.todayRewardBytes ?? 0) -
-              (before?.todayRewardBytes ?? 0))
-          .clamp(0, 1 << 62);
+      rewardBytes =
+          ((after?.todayRewardBytes ?? 0) - (before?.todayRewardBytes ?? 0))
+              .clamp(0, 1 << 62);
       if (rewardBytes > 0) {
         break;
       }

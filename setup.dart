@@ -178,6 +178,7 @@ Future<int> _package(
       'DASHBOARD_MODULE': previousEnv['DASHBOARD_MODULE'] == 'legacy'
           ? 'legacy'
           : 'tooran',
+      'SHOW_GOOGLE_ADS': previousEnv['SHOW_GOOGLE_ADS'] == true,
       'ADMOB_BANNER_AD_UNIT_ID': _readStringEnv(
         previousEnv,
         'ADMOB_BANNER_AD_UNIT_ID',

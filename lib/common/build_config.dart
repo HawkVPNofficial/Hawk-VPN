@@ -15,6 +15,11 @@ const dashboardModule = String.fromEnvironment(
 
 const useMyProxyDashboard = dashboardModule != 'legacy';
 
+const showGoogleAds = bool.fromEnvironment(
+  'SHOW_GOOGLE_ADS',
+  defaultValue: false,
+);
+
 const _debugBannerAdUnitId = 'ca-app-pub-3940256099942544/6300978111';
 const _releaseBannerAdUnitId = 'ca-app-pub-2702996863596684/8634447720';
 const _debugRewardedAdUnitId = 'ca-app-pub-3940256099942544/5224354917';
@@ -22,7 +27,9 @@ const _releaseRewardedAdUnitId = 'ca-app-pub-2702996863596684/6187806849';
 const _debugInterstitialAdUnitId = 'ca-app-pub-3940256099942544/1033173712';
 const _releaseInterstitialAdUnitId = '';
 
-const configuredBannerAdUnitId = String.fromEnvironment('ADMOB_BANNER_AD_UNIT_ID');
+const configuredBannerAdUnitId = String.fromEnvironment(
+  'ADMOB_BANNER_AD_UNIT_ID',
+);
 const configuredRewardedAdUnitId = String.fromEnvironment(
   'ADMOB_REWARDED_AD_UNIT_ID',
 );
@@ -44,5 +51,7 @@ String resolveInterstitialAdUnitId({required bool releaseMode}) {
   if (configuredInterstitialAdUnitId.isNotEmpty) {
     return configuredInterstitialAdUnitId;
   }
-  return releaseMode ? _releaseInterstitialAdUnitId : _debugInterstitialAdUnitId;
+  return releaseMode
+      ? _releaseInterstitialAdUnitId
+      : _debugInterstitialAdUnitId;
 }

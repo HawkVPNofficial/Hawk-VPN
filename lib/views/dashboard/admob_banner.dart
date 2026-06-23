@@ -82,7 +82,7 @@ class _DashboardAdMobBannerState extends State<DashboardAdMobBanner> {
 
   @override
   Widget build(BuildContext context) {
-    if (!Platform.isAndroid) {
+    if (!showGoogleAds || !Platform.isAndroid) {
       return const SizedBox.shrink();
     }
     return LayoutBuilder(

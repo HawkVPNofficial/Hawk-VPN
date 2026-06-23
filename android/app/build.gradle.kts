@@ -37,7 +37,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.namei.sorena"
+        applicationId = "com.cashcat.hawk"
         minSdk = flutter.minSdkVersion
         targetSdk = libs.versions.targetSdk.get().toInt()
         versionCode = flutter.versionCode
