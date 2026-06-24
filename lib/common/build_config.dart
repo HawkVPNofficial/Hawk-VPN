@@ -21,9 +21,9 @@ const showGoogleAds = bool.fromEnvironment(
 );
 
 const _debugBannerAdUnitId = 'ca-app-pub-3940256099942544/6300978111';
-const _releaseBannerAdUnitId = 'ca-app-pub-2702996863596684/8634447720';
+const _releaseBannerAdUnitId = 'ca-app-pub-2702996863596684/2280126085';
 const _debugRewardedAdUnitId = 'ca-app-pub-3940256099942544/5224354917';
-const _releaseRewardedAdUnitId = 'ca-app-pub-2702996863596684/6187806849';
+const _releaseRewardedAdUnitId = 'ca-app-pub-2702996863596684/1238507158';
 const _debugInterstitialAdUnitId = 'ca-app-pub-3940256099942544/1033173712';
 const _releaseInterstitialAdUnitId = '';
 

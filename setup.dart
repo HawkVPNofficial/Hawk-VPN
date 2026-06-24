@@ -17,8 +17,8 @@ const _androidFlutterTarget = {
   'amd64': 'android-x64',
 };
 
-const _defaultBannerAdUnitId = 'ca-app-pub-2702996863596684/8634447720';
-const _defaultRewardedAdUnitId = 'ca-app-pub-2702996863596684/6187806849';
+const _defaultBannerAdUnitId = 'ca-app-pub-2702996863596684/2280126085';
+const _defaultRewardedAdUnitId = 'ca-app-pub-2702996863596684/1238507158';
 const _defaultInterstitialAdUnitId = '';
 
 const _hostPlatform = {
@@ -177,7 +177,7 @@ Future<int> _package(
       'SHOW_FULL_TOOLS': previousEnv['SHOW_FULL_TOOLS'] == true,
       'DASHBOARD_MODULE': previousEnv['DASHBOARD_MODULE'] == 'legacy'
           ? 'legacy'
-          : 'tooran',
+          : 'hawk',
       'SHOW_GOOGLE_ADS': previousEnv['SHOW_GOOGLE_ADS'] == true,
       'ADMOB_BANNER_AD_UNIT_ID': _readStringEnv(
         previousEnv,

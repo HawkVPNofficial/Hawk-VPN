@@ -20,7 +20,9 @@ class FreeTrafficView extends ConsumerStatefulWidget {
 
 class _FreeTrafficViewState extends ConsumerState<FreeTrafficView> {
   RewardedAd? _rewardedAd;
+  bool _isRewardedAdLoading = false;
   bool _isRewardedAdLoaded = false;
+  bool _isRewardedAdLoadFailed = false;
   bool _earnedReward = false;
 
   String get _rewardedAdUnitId {
@@ -59,12 +61,12 @@ class _FreeTrafficViewState extends ConsumerState<FreeTrafficView> {
         rewardedAdWatchedToday >= rewardedAdDailyLimit;
     final checkInLoading = ref.watch(loadingProvider(LoadingTag.checkIn));
     final rewardedAdLoading = ref.watch(loadingProvider(LoadingTag.rewardedAd));
+    final rewardedAdBusy = rewardedAdLoading || _isRewardedAdLoading;
     final canWatchRewardedAd =
         Platform.isAndroid &&
         rewardedAdEnabled &&
         !rewardedAdCompleted &&
-        _isRewardedAdLoaded &&
-        !rewardedAdLoading;
+        !rewardedAdBusy;
     return CommonScaffold(
       title: appLocalizations.freeTraffic,
       body: ListView(
@@ -94,10 +96,10 @@ class _FreeTrafficViewState extends ConsumerState<FreeTrafficView> {
                 context,
                 rewardedAdEnabled: rewardedAdEnabled,
                 rewardedAdCompleted: rewardedAdCompleted,
-                rewardedAdLoading: rewardedAdLoading,
+                rewardedAdLoading: rewardedAdBusy,
               ),
               actionEnabled: canWatchRewardedAd,
-              isLoading: rewardedAdLoading,
+              isLoading: rewardedAdBusy,
               onPressed: () => _handleRewardedAd(context, ref),
             ),
             const SizedBox(height: 12),
@@ -154,19 +156,47 @@ class _FreeTrafficViewState extends ConsumerState<FreeTrafficView> {
     if (rewardedAdLoading) {
       return appLocalizations.loading;
     }
-    if (!_isRewardedAdLoaded) {
+    if (_isRewardedAdLoading) {
       return appLocalizations.loading;
+    }
+    if (_isRewardedAdLoadFailed) {
+      return appLocalizations.reload;
+    }
+    if (!_isRewardedAdLoaded) {
+      return appLocalizations.reload;
     }
     return appLocalizations.watch;
   }
 
   void _loadRewardedAd() {
+    if (_isRewardedAdLoading) {
+      commonPrint.log('激励视频广告正在加载中，忽略重复加载请求');
+      return;
+    }
     final adUnitId = _rewardedAdUnitId;
-    if (!showGoogleAds || !Platform.isAndroid || adUnitId.isEmpty) return;
+    if (!showGoogleAds) {
+      commonPrint.log('激励视频广告未加载：SHOW_GOOGLE_ADS=false，广告入口已关闭');
+      return;
+    }
+    if (!Platform.isAndroid) {
+      commonPrint.log('激励视频广告未加载：当前不是 Android 平台');
+      return;
+    }
+    if (adUnitId.isEmpty) {
+      commonPrint.log('激励视频广告未加载：广告位 ID 为空，请检查 ADMOB_REWARDED_AD_UNIT_ID');
+      return;
+    }
+    commonPrint.log(
+      '开始加载激励视频广告：广告位=$adUnitId，'
+      'releaseMode=$kReleaseMode，'
+      'configured=${configuredRewardedAdUnitId.isNotEmpty}',
+    );
     _rewardedAd?.dispose();
     _rewardedAd = null;
     setState(() {
+      _isRewardedAdLoading = true;
       _isRewardedAdLoaded = false;
+      _isRewardedAdLoadFailed = false;
     });
     RewardedAd.load(
       adUnitId: adUnitId,
@@ -174,19 +204,33 @@ class _FreeTrafficViewState extends ConsumerState<FreeTrafficView> {
       rewardedAdLoadCallback: RewardedAdLoadCallback(
         onAdLoaded: (ad) {
           if (!mounted) {
+            commonPrint.log('激励视频广告已加载，但页面已销毁，立即释放广告对象');
             ad.dispose();
             return;
           }
+          commonPrint.log('激励视频广告加载成功：广告位=$adUnitId');
           setState(() {
             _rewardedAd = ad;
+            _isRewardedAdLoading = false;
             _isRewardedAdLoaded = true;
+            _isRewardedAdLoadFailed = false;
           });
         },
         onAdFailedToLoad: (error) {
+          commonPrint.log(
+            '激励视频广告加载失败：广告位=$adUnitId，'
+            '错误码=${error.code}，'
+            '错误域=${error.domain}，'
+            '错误信息=${error.message}，'
+            '原因说明=${_describeAdLoadError(error)}',
+            logLevel: LogLevel.warning,
+          );
           if (!mounted) return;
           setState(() {
             _rewardedAd = null;
+            _isRewardedAdLoading = false;
             _isRewardedAdLoaded = false;
+            _isRewardedAdLoadFailed = true;
           });
         },
       ),
@@ -196,6 +240,7 @@ class _FreeTrafficViewState extends ConsumerState<FreeTrafficView> {
   Future<void> _handleRewardedAd(BuildContext context, WidgetRef ref) async {
     final ad = _rewardedAd;
     if (ad == null || !_isRewardedAdLoaded) {
+      commonPrint.log('激励视频广告点击时还未加载完成，重新触发加载');
       _loadRewardedAd();
       return;
     }
@@ -206,16 +251,20 @@ class _FreeTrafficViewState extends ConsumerState<FreeTrafficView> {
       final session = await ref
           .read(profilesActionProvider.notifier)
           .createAdRewardSession();
+      commonPrint.log('激励视频广告服务端会话创建成功：sessionId=${session.sessionId}');
       await ad.setServerSideOptions(
         ServerSideVerificationOptions(customData: session.customData),
       );
       ad.fullScreenContentCallback = FullScreenContentCallback<RewardedAd>(
         onAdDismissedFullScreenContent: (ad) async {
+          commonPrint.log('激励视频广告已关闭：earnedReward=$_earnedReward');
           ad.dispose();
           if (!mounted) return;
           setState(() {
             _rewardedAd = null;
+            _isRewardedAdLoading = false;
             _isRewardedAdLoaded = false;
+            _isRewardedAdLoadFailed = false;
           });
           if (_earnedReward) {
             await _refreshAfterReward(context, ref);
@@ -224,11 +273,20 @@ class _FreeTrafficViewState extends ConsumerState<FreeTrafficView> {
           _loadRewardedAd();
         },
         onAdFailedToShowFullScreenContent: (ad, error) async {
+          commonPrint.log(
+            '激励视频广告展示失败：错误码=${error.code}，'
+            '错误域=${error.domain}，'
+            '错误信息=${error.message}，'
+            '原因说明=${_describeAdLoadError(error)}',
+            logLevel: LogLevel.warning,
+          );
           ad.dispose();
           if (!mounted) return;
           setState(() {
             _rewardedAd = null;
+            _isRewardedAdLoading = false;
             _isRewardedAdLoaded = false;
+            _isRewardedAdLoadFailed = true;
           });
           await loading.stop();
           _loadRewardedAd();
@@ -242,19 +300,28 @@ class _FreeTrafficViewState extends ConsumerState<FreeTrafficView> {
       );
       await ad.show(
         onUserEarnedReward: (_, _) {
+          commonPrint.log('激励视频广告已触发用户奖励回调');
           _earnedReward = true;
         },
       );
       setState(() {
         _rewardedAd = null;
+        _isRewardedAdLoading = false;
         _isRewardedAdLoaded = false;
+        _isRewardedAdLoadFailed = false;
       });
     } catch (e) {
+      commonPrint.log(
+        '激励视频广告流程异常：${request.unwrapBackendError(e)}',
+        logLevel: LogLevel.warning,
+      );
       ad.dispose();
       if (mounted) {
         setState(() {
           _rewardedAd = null;
+          _isRewardedAdLoading = false;
           _isRewardedAdLoaded = false;
+          _isRewardedAdLoadFailed = true;
         });
       }
       _loadRewardedAd();
@@ -266,6 +333,23 @@ class _FreeTrafficViewState extends ConsumerState<FreeTrafficView> {
         );
       }
     }
+  }
+
+  String _describeAdLoadError(AdError error) {
+    final message = error.message.toLowerCase();
+    if (error.code == 3 || message.contains('no fill')) {
+      return '无广告填充。常见原因：广告位刚创建还未生效、当前地区/设备暂无可返回广告、应用包名或广告位配置不匹配、账号/应用审核状态限制。';
+    }
+    if (error.code == 0 || message.contains('internal')) {
+      return '广告 SDK 内部错误，通常可稍后重试；如果持续出现，请检查 Google Play 服务和广告位配置。';
+    }
+    if (error.code == 1 || message.contains('invalid request')) {
+      return '广告请求无效，请重点检查广告位 ID、应用 ID、包名和 AdMob 后台配置是否一致。';
+    }
+    if (error.code == 2 || message.contains('network')) {
+      return '网络错误，请检查设备网络、代理、DNS、Google Play 服务连通性。';
+    }
+    return '未知原因，请结合错误码、错误域和错误信息继续排查。';
   }
 
   Future<void> _refreshAfterReward(BuildContext context, WidgetRef ref) async {
