@@ -7,6 +7,11 @@ import 'package:fl_clash/widgets/list.dart';
 import 'package:fl_clash/widgets/scaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+const _privacyPolicyUrl = 'https://hawkvpn.app/privacy.html';
+const _flClashProjectUrl = 'https://github.com/chen08209/FlClash';
+const _hawkVpnProjectUrl = 'https://github.com/HawkVPNofficial/Hawk-VPN';
 
 class AboutView extends StatelessWidget {
   const AboutView({super.key});
@@ -33,8 +38,51 @@ class AboutView extends StatelessWidget {
             _checkUpdate(context);
           },
         ),
+        ListItem(
+          title: Text(appLocalizations.privacyPolicy),
+          trailing: const Icon(Icons.open_in_new),
+          onTap: () {
+            _openUrl(_privacyPolicyUrl);
+          },
+        ),
       ],
     );
+  }
+
+  List<Widget> _buildOpenSourceSection(BuildContext context) {
+    final appLocalizations = context.appLocalizations;
+    return generateSection(
+      separated: false,
+      title: appLocalizations.openSourceNotice,
+      items: [
+        ListTile(
+          title: Text(
+            appLocalizations.openSourceDescription,
+            style: Theme.of(context).textTheme.bodyMedium,
+          ),
+        ),
+        ListItem(
+          title: Text(appLocalizations.flClashProject),
+          subtitle: const Text('chen08209/FlClash'),
+          trailing: const Icon(Icons.open_in_new),
+          onTap: () {
+            _openUrl(_flClashProjectUrl);
+          },
+        ),
+        ListItem(
+          title: Text(appLocalizations.hawkVpnProject),
+          subtitle: const Text('HawkVPNofficial/Hawk-VPN'),
+          trailing: const Icon(Icons.open_in_new),
+          onTap: () {
+            _openUrl(_hawkVpnProjectUrl);
+          },
+        ),
+      ],
+    );
+  }
+
+  Future<void> _openUrl(String url) {
+    return launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication);
   }
 
   @override
@@ -94,6 +142,8 @@ class AboutView extends StatelessWidget {
           ],
         ),
       ),
+      const SizedBox(height: 12),
+      ..._buildOpenSourceSection(context),
       const SizedBox(height: 12),
       ..._buildMoreSection(context),
     ];

@@ -214,6 +214,46 @@ class AppLocalizations {
     return Intl.message('About', name: 'about', desc: '', args: []);
   }
 
+  /// `Privacy Policy`
+  String get privacyPolicy {
+    return Intl.message(
+      'Privacy Policy',
+      name: 'privacyPolicy',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Open source notice`
+  String get openSourceNotice {
+    return Intl.message(
+      'Open source notice',
+      name: 'openSourceNotice',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `This app is a derivative work based on the open-source project FlClash and is licensed under GPL-3.0.`
+  String get openSourceDescription {
+    return Intl.message(
+      'This app is a derivative work based on the open-source project FlClash and is licensed under GPL-3.0.',
+      name: 'openSourceDescription',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `FlClash`
+  String get flClashProject {
+    return Intl.message('FlClash', name: 'flClashProject', desc: '', args: []);
+  }
+
+  /// `This app`
+  String get hawkVpnProject {
+    return Intl.message('This app', name: 'hawkVpnProject', desc: '', args: []);
+  }
+
   /// `English`
   String get en {
     return Intl.message('English', name: 'en', desc: '', args: []);

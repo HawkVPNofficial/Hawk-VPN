@@ -448,6 +448,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "findProcessModeDesc": MessageLookupByLibrary.simpleMessage(
       "При включении возможны небольшие потери производительности",
     ),
+    "flClashProject": MessageLookupByLibrary.simpleMessage("FlClash"),
     "fontFamily": MessageLookupByLibrary.simpleMessage("Семейство шрифтов"),
     "forceRestartCoreTip": MessageLookupByLibrary.simpleMessage(
       "Вы уверены, что хотите принудительно перезапустить ядро?",
@@ -478,6 +479,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "hasCacheChange": MessageLookupByLibrary.simpleMessage(
       "Хотите сохранить изменения в кэше?",
     ),
+    "hawkVpnProject": MessageLookupByLibrary.simpleMessage("Это приложение"),
     "hideFromList": MessageLookupByLibrary.simpleMessage("Скрыть из списка"),
     "host": MessageLookupByLibrary.simpleMessage("Хост"),
     "hostsDesc": MessageLookupByLibrary.simpleMessage("Добавить Hosts"),
@@ -702,6 +704,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "onlyStatisticsProxyDesc": MessageLookupByLibrary.simpleMessage(
       "При включении будет учитываться только трафик прокси",
     ),
+    "openSourceDescription": MessageLookupByLibrary.simpleMessage(
+      "Это приложение является производной разработкой на основе открытого проекта FlClash и распространяется по лицензии GPL-3.0.",
+    ),
+    "openSourceNotice": MessageLookupByLibrary.simpleMessage(
+      "Сведения об открытом исходном коде",
+    ),
     "optional": MessageLookupByLibrary.simpleMessage("Необязательно"),
     "options": MessageLookupByLibrary.simpleMessage("Опции"),
     "other": MessageLookupByLibrary.simpleMessage("Другое"),
@@ -758,6 +766,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "Пожалуйста, нажмите клавишу.",
     ),
     "preview": MessageLookupByLibrary.simpleMessage("Предпросмотр"),
+    "privacyPolicy": MessageLookupByLibrary.simpleMessage(
+      "Политика конфиденциальности",
+    ),
     "process": MessageLookupByLibrary.simpleMessage("процесс"),
     "profile": MessageLookupByLibrary.simpleMessage("Профиль"),
     "profileAutoUpdateIntervalInvalidValidationDesc":
