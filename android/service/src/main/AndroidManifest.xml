@@ -15,7 +15,7 @@
             </intent-filter>
             <property
                 android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
-                android:value="vpn" />
+                android:value="Maintains the user-initiated VPN tunnel in the background and keeps a persistent notification so users can monitor and stop the connection." />
         </service>
 
         <service
@@ -25,7 +25,7 @@
             android:process=":remote">
             <property
                 android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
-                android:value="proxy" />
+                android:value="Maintains the user-initiated local proxy service in the background and keeps a persistent notification so users can monitor and stop the connection." />
         </service>
 
         <service

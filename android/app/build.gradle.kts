@@ -55,12 +55,6 @@ android {
         }
     }
 
-    packaging {
-        jniLibs {
-            useLegacyPackaging = true
-        }
-    }
-
     buildTypes {
         debug {
             isMinifyEnabled = false
