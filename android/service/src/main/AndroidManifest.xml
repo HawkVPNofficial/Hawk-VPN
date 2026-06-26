@@ -7,26 +7,17 @@
         <service
             android:name=".VpnService"
             android:exported="false"
-            android:foregroundServiceType="specialUse"
             android:permission="android.permission.BIND_VPN_SERVICE"
             android:process=":remote">
             <intent-filter>
                 <action android:name="android.net.VpnService" />
             </intent-filter>
-            <property
-                android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
-                android:value="Maintains the user-initiated VPN tunnel in the background and keeps a persistent notification so users can monitor and stop the connection." />
         </service>
 
         <service
             android:name=".CommonService"
             android:exported="false"
-            android:foregroundServiceType="specialUse"
-            android:process=":remote">
-            <property
-                android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
-                android:value="Maintains the user-initiated local proxy service in the background and keeps a persistent notification so users can monitor and stop the connection." />
-        </service>
+            android:process=":remote" />
 
         <service
             android:name=".RemoteService"

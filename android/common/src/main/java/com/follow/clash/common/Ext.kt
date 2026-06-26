@@ -14,7 +14,6 @@ import android.content.Context.RECEIVER_NOT_EXPORTED
 import android.content.Intent
 import android.content.IntentFilter
 import android.content.ServiceConnection
-import android.content.pm.ServiceInfo.FOREGROUND_SERVICE_TYPE_SPECIAL_USE
 import android.os.Build
 import android.os.Handler
 import android.os.IBinder
@@ -42,14 +41,6 @@ import kotlin.reflect.KClass
 
 val KClass<*>.intent: Intent
     get() = Intent(GlobalState.application, this.java)
-
-fun Service.startForegroundCompat(id: Int, notification: Notification) {
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
-        startForeground(id, notification, FOREGROUND_SERVICE_TYPE_SPECIAL_USE)
-    } else {
-        startForeground(id, notification)
-    }
-}
 
 val ComponentName.intent: Intent
     get() = Intent().apply {
@@ -105,7 +96,7 @@ val Intent.toPendingIntent: PendingIntent
     )
 
 
-fun Service.startForeground(notification: Notification) {
+fun Service.updateServiceNotification(notification: Notification) {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
         val manager = getSystemService(NotificationManager::class.java)
         var channel = manager?.getNotificationChannel(GlobalState.NOTIFICATION_CHANNEL)
@@ -118,7 +109,8 @@ fun Service.startForeground(notification: Notification) {
             manager?.createNotificationChannel(channel)
         }
     }
-    startForegroundCompat(GlobalState.NOTIFICATION_ID, notification)
+    getSystemService(NotificationManager::class.java)
+        ?.notify(GlobalState.NOTIFICATION_ID, notification)
 }
 
 @SuppressLint("UnspecifiedRegisterReceiverFlag")

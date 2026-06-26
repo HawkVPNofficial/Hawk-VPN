@@ -2,7 +2,7 @@ package com.follow.clash.service.modules
 
 import android.app.Notification.FOREGROUND_SERVICE_IMMEDIATE
 import android.app.Service
-import android.app.Service.STOP_FOREGROUND_REMOVE
+import android.app.NotificationManager
 import android.content.Intent
 import android.os.Build
 import android.os.PowerManager
@@ -13,9 +13,9 @@ import com.follow.clash.common.GlobalState
 import com.follow.clash.common.QuickAction
 import com.follow.clash.common.quickIntent
 import com.follow.clash.common.receiveBroadcastFlow
-import com.follow.clash.common.startForeground
 import com.follow.clash.common.tickerFlow
 import com.follow.clash.common.toPendingIntent
+import com.follow.clash.common.updateServiceNotification
 import com.follow.clash.core.Core
 import com.follow.clash.service.R
 import com.follow.clash.service.State
@@ -107,7 +107,7 @@ class NotificationModule(private val service: Service) : Module() {
     }
 
     private fun update(params: ExtendedNotificationParams) {
-        service.startForeground(
+        service.updateServiceNotification(
             with(notificationBuilder) {
                 setContentTitle(params.title)
                 setContentText(params.contentText)
@@ -119,11 +119,8 @@ class NotificationModule(private val service: Service) : Module() {
     }
 
     override fun onUninstall() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            service.stopForeground(STOP_FOREGROUND_REMOVE)
-        } else {
-            service.stopForeground(true)
-        }
+        service.getSystemService(NotificationManager::class.java)
+            ?.cancel(GlobalState.NOTIFICATION_ID)
         scope.cancel()
     }
 }
