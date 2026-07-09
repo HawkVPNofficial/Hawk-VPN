@@ -15,4 +15,5 @@ export 'profiles/profiles.dart';
 export 'proxies/proxies.dart';
 export 'resources.dart';
 export 'reward_message.dart';
+export 'support_guide_dialog.dart';
 export 'tools.dart';

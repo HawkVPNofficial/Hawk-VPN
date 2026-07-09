@@ -211,6 +211,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "connectionsDesc": MessageLookupByLibrary.simpleMessage("現在の接続データを表示"),
     "connectivity": MessageLookupByLibrary.simpleMessage("接続性："),
     "contact": MessageLookupByLibrary.simpleMessage("連絡先"),
+    "contactSupport": MessageLookupByLibrary.simpleMessage("サポートに連絡"),
+    "contactSupportForTraffic": MessageLookupByLibrary.simpleMessage(
+      "通信量についてサポートに連絡",
+    ),
     "content": MessageLookupByLibrary.simpleMessage("内容"),
     "contentNotEmpty": MessageLookupByLibrary.simpleMessage("内容は空にできません"),
     "contentScheme": MessageLookupByLibrary.simpleMessage("コンテンツテーマ"),
@@ -359,6 +363,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "有効化するとGeo低メモリローダーを使用",
     ),
     "geoipCode": MessageLookupByLibrary.simpleMessage("GeoIPコード"),
+    "getFreeTraffic": MessageLookupByLibrary.simpleMessage("無料データを取得"),
     "global": MessageLookupByLibrary.simpleMessage("グローバル"),
     "go": MessageLookupByLibrary.simpleMessage("移動"),
     "goDownload": MessageLookupByLibrary.simpleMessage("ダウンロードへ"),
@@ -855,6 +860,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "submitFeedback": MessageLookupByLibrary.simpleMessage("フィードバックを送信"),
     "submitInviteCode": MessageLookupByLibrary.simpleMessage("招待コードを入力"),
     "submitting": MessageLookupByLibrary.simpleMessage("送信中..."),
+    "subscriptionFetchFailedMessage": MessageLookupByLibrary.simpleMessage(
+      "サーバーリストを取得できませんでした。インターネット接続を確認するか、サポートにお問い合わせください。",
+    ),
+    "subscriptionFetchFailedTitle": MessageLookupByLibrary.simpleMessage(
+      "サブスクリプションの取得に失敗しました",
+    ),
     "subscriptionLoadFailed": MessageLookupByLibrary.simpleMessage(
       "サブスクリプションの読み込みに失敗しました",
     ),
@@ -898,7 +909,14 @@ class MessageLookup extends MessageLookupByLibrary {
     "totalTraffic": MessageLookupByLibrary.simpleMessage("総通信量"),
     "tproxyPort": MessageLookupByLibrary.simpleMessage("Tproxyポート"),
     "trafficEarned": MessageLookupByLibrary.simpleMessage("獲得データ"),
+    "trafficExhaustedMessage": MessageLookupByLibrary.simpleMessage(
+      "本日の通信量を使い切ったため、接続を切断しました。通信量を追加するにはサポートに連絡するか、無料タスクを完了してください。",
+    ),
+    "trafficExhaustedTitle": MessageLookupByLibrary.simpleMessage(
+      "通信量を使い切りました",
+    ),
     "trafficUsage": MessageLookupByLibrary.simpleMessage("トラフィック使用量"),
+    "tryAgain": MessageLookupByLibrary.simpleMessage("再試行"),
     "tun": MessageLookupByLibrary.simpleMessage("TUN"),
     "tunDesc": MessageLookupByLibrary.simpleMessage("管理者モードでのみ有効"),
     "turnOff": MessageLookupByLibrary.simpleMessage("オフ"),

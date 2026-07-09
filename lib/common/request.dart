@@ -105,7 +105,7 @@ class Request {
     _updateBackendBaseUrl();
     final response = await _backendDio.post<Map<String, dynamic>>(
       '/api/auth/login',
-      data: {'appSetId': appSetId},
+      data: {'appSetId': appSetId, 'channel': appChannel},
       options: Options(responseType: ResponseType.json),
     );
     final result = BackendResponse.fromJson(response.data ?? {});

@@ -44,12 +44,6 @@ android {
         versionName = flutter.versionName
     }
 
-    packaging {
-        jniLibs {
-            useLegacyPackaging = false
-        }
-    }
-
     signingConfigs {
         if (isRelease) {
             create("release") {
@@ -58,6 +52,12 @@ android {
                 keyAlias = mKeyAlias
                 keyPassword = mKeyPassword
             }
+        }
+    }
+
+    packaging {
+        jniLibs {
+            useLegacyPackaging = true
         }
     }
 

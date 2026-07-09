@@ -15,6 +15,11 @@ const dashboardModule = String.fromEnvironment(
 
 const useMyProxyDashboard = dashboardModule != 'legacy';
 
+const appChannel = String.fromEnvironment(
+  'APP_CHANNEL',
+  defaultValue: 'official',
+);
+
 const showGoogleAds = bool.fromEnvironment(
   'SHOW_GOOGLE_ADS',
   defaultValue: false,

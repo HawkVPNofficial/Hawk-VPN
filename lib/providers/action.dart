@@ -12,12 +12,29 @@ import 'package:fl_clash/plugins/app.dart';
 import 'package:fl_clash/plugins/service.dart';
 import 'package:fl_clash/providers/providers.dart';
 import 'package:fl_clash/state.dart';
+import 'package:fl_clash/views/support_guide_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 part 'generated/action.g.dart';
+
+const _supportTelegramUrl = 'tg://resolve?domain=hawkvpn_support';
+const _supportUrl = 'https://t.me/hawkvpn_support';
+
+Future<void> _launchTelegramSupport() async {
+  try {
+    final launched = await launchUrl(
+      Uri.parse(_supportTelegramUrl),
+      mode: LaunchMode.externalApplication,
+    );
+    if (launched) return;
+  } catch (_) {
+    // Fall back to the web URL when Telegram is not installed.
+  }
+  await launchUrl(Uri.parse(_supportUrl), mode: LaunchMode.externalApplication);
+}
 
 @Riverpod(keepAlive: true)
 class CommonAction extends _$CommonAction {
@@ -890,13 +907,12 @@ class ProfilesAction extends _$ProfilesAction {
     if (deviceId.isEmpty) return;
     while (true) {
       Object? error;
+      SubscriptionInfo? subscriptionInfo;
+      var isSynced = false;
       ref.read(loadingProvider(LoadingTag.backendSync).notifier).start();
       try {
-        await _syncBackendProfile(deviceId);
-        globalState.showNotifier(
-          currentAppLocalizations.subscriptionLoadSuccess,
-        );
-        return;
+        subscriptionInfo = await _syncBackendProfile(deviceId);
+        isSynced = true;
       } catch (e) {
         error = request.unwrapBackendError(e);
         commonPrint.log(
@@ -907,13 +923,17 @@ class ProfilesAction extends _$ProfilesAction {
         await ref.read(loadingProvider(LoadingTag.backendSync).notifier).stop();
       }
 
-      if (!retryOnFailure) {
-        await globalState.showMessage(
-          title: currentAppLocalizations.subscriptionLoadFailed,
-          message: TextSpan(text: error.toString()),
-          confirmText: currentAppLocalizations.reload,
-          cancelText: currentAppLocalizations.cancel,
+      if (isSynced) {
+        globalState.showNotifier(
+          currentAppLocalizations.subscriptionLoadSuccess,
         );
+        await _handleTrafficExhausted(subscriptionInfo);
+        return;
+      }
+
+      if (retryOnFailure) {
+        final retry = await _showSubscriptionFailedDialog();
+        if (retry == true) continue;
         return;
       }
 
@@ -921,13 +941,13 @@ class ProfilesAction extends _$ProfilesAction {
         title: currentAppLocalizations.subscriptionLoadFailed,
         message: TextSpan(text: error.toString()),
         confirmText: currentAppLocalizations.reload,
-        cancelable: false,
-        dismissible: false,
+        cancelText: currentAppLocalizations.cancel,
       );
+      return;
     }
   }
 
-  Future<void> _syncBackendProfile(String deviceId) async {
+  Future<SubscriptionInfo?> _syncBackendProfile(String deviceId) async {
     await ref.read(backendAppConfigStateProvider.notifier).sync();
     var auth = await preferences.getBackendAuth();
     BackendUser user;
@@ -949,6 +969,47 @@ class ProfilesAction extends _$ProfilesAction {
       throw 'subscription is empty';
     }
     await _saveBackendSubscription(subscription);
+    return subscription.subscriptionInfo;
+  }
+
+  Future<bool?> _showSubscriptionFailedDialog() async {
+    final contactSupport = await globalState.showCommonDialog<bool>(
+      dismissible: false,
+      barrierColor: Colors.black.withValues(alpha: 0.75),
+      filter: false,
+      child: const SupportGuideDialog(
+        type: SupportGuideDialogType.subscriptionFailed,
+      ),
+    );
+    if (contactSupport == true) {
+      await _launchTelegramSupport();
+      return false;
+    }
+    return true;
+  }
+
+  Future<void> _handleTrafficExhausted(
+    SubscriptionInfo? subscriptionInfo,
+  ) async {
+    final total = ref.read(backendUserStateProvider)?.totalGb ?? 0;
+    if (total <= 0) return;
+    final downloaded = subscriptionInfo?.download ?? 0;
+    if (total - downloaded > 0) return;
+
+    await ref.read(setupActionProvider.notifier).updateStatus(false);
+    final contactSupport = await globalState.showCommonDialog<bool>(
+      dismissible: false,
+      barrierColor: Colors.black.withValues(alpha: 0.75),
+      filter: false,
+      child: const SupportGuideDialog(
+        type: SupportGuideDialogType.trafficExhausted,
+      ),
+    );
+    if (contactSupport == true) {
+      await _launchTelegramSupport();
+      return;
+    }
+    ref.read(currentPageLabelProvider.notifier).toPage(PageLabel.free);
   }
 
   Future<BackendTrafficReward> checkIn() async {

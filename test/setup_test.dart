@@ -32,5 +32,19 @@ void main() {
         'split-per-abi',
       ]);
     });
+
+    test('omits split-per-abi for Android app bundles', () {
+      final args = setup.createFlutterBuildArgs(
+        platform: 'android',
+        target: 'aab',
+        verbose: false,
+      );
+
+      expect(args, ['dart-define-from-file=env.json']);
+    });
+
+    test('splits comma separated package targets', () {
+      expect(setup.createTargetList('apk, aab'), ['apk', 'aab']);
+    });
   });
 }

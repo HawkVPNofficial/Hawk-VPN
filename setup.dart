@@ -11,6 +11,16 @@ const _allTargets = <String, String>{
   'windows': 'exe,zip',
 };
 
+const _androidChannels = [
+  'official',
+  'cashcat',
+  'oppo',
+  'xiaomi',
+  'googleplay',
+  'vivo',
+  'apkpure',
+];
+
 const _androidFlutterTarget = {
   'arm': 'android-arm',
   'arm64': 'android-arm64',
@@ -61,6 +71,7 @@ Future<void> main(List<String> args) async {
   final targets = _getTargets(platform, arch, results['targets']);
   final androidArch = results['arch'] as String?;
   final verbose = results['verbose'] as bool;
+  final channels = _getChannels(platform, results['channels'] as String?);
 
   final exitCode = await _package(
     platform,
@@ -68,6 +79,7 @@ Future<void> main(List<String> args) async {
     targets,
     rootDir,
     arch,
+    channels: channels,
     androidArch: androidArch,
     verbose: verbose,
   );
@@ -93,6 +105,11 @@ ArgParser createSetupArgParser() {
       allowed: ['arm', 'arm64', 'amd64'],
       help: 'Target architecture (Android only)',
     )
+    ..addOption(
+      'channels',
+      valueHelp: _androidChannels.join(','),
+      help: 'Comma separated channels to build (Android only)',
+    )
     ..addFlag(
       'verbose',
       abbr: 'v',
@@ -103,16 +120,25 @@ ArgParser createSetupArgParser() {
 
 List<String> createFlutterBuildArgs({
   required String platform,
+  String target = 'apk',
   required bool verbose,
 }) {
   final flutterBuildArgs = <String>[
     if (verbose) 'verbose',
     'dart-define-from-file=env.json',
   ];
-  if (platform == 'android') {
+  if (platform == 'android' && target == 'apk') {
     flutterBuildArgs.add('split-per-abi');
   }
   return flutterBuildArgs;
+}
+
+List<String> createTargetList(String targets) {
+  return targets
+      .split(',')
+      .map((target) => target.trim())
+      .where((target) => target.isNotEmpty)
+      .toList();
 }
 
 String _getTargets(String platform, String arch, String? customTargets) {
@@ -121,12 +147,32 @@ String _getTargets(String platform, String arch, String? customTargets) {
   return _allTargets[platform]!;
 }
 
+List<String> _getChannels(String platform, String? channels) {
+  if (platform != 'android') return const [];
+  if (channels == null || channels.trim().isEmpty) return _androidChannels;
+  final values = channels
+      .split(',')
+      .map((channel) => channel.trim())
+      .where((channel) => channel.isNotEmpty)
+      .toList();
+  final unsupported = values
+      .where((channel) => !_androidChannels.contains(channel))
+      .toList();
+  if (unsupported.isNotEmpty) {
+    throw FormatException(
+      'Unsupported Android channels: ${unsupported.join(', ')}',
+    );
+  }
+  return values;
+}
+
 void _showHelp(ArgParser parser) {
   stderr.writeln('Usage: dart setup.dart [platform] [options]');
   stderr.writeln('Platform: current host platform (default) or android');
   stderr.writeln();
   stderr.writeln('Default package targets:');
   _allTargets.forEach((p, t) => stderr.writeln('  $p: $t'));
+  stderr.writeln('Android channels: ${_androidChannels.join(', ')}');
   stderr.writeln();
   stderr.writeln(parser.usage);
 }
@@ -137,6 +183,7 @@ Future<int> _package(
   String targets,
   String rootDir,
   String arch, {
+  required List<String> channels,
   String? androidArch,
   required bool verbose,
 }) async {
@@ -167,78 +214,110 @@ Future<int> _package(
       ? jsonDecode(file.readAsStringSync()) as Map<String, dynamic>
       : <String, dynamic>{};
 
-  await file.writeAsString(
-    jsonEncode({
-      'APP_ENV': env,
-      'BACKEND_BASE_URL': env == 'stable'
-          ? 'https://api.tooran.link/'
-          : 'https://myproxyapi.aigateway.cn/',
-      'SHOW_PROFILES_TAB': previousEnv['SHOW_PROFILES_TAB'] == true,
-      'SHOW_FULL_TOOLS': previousEnv['SHOW_FULL_TOOLS'] == true,
-      'DASHBOARD_MODULE': previousEnv['DASHBOARD_MODULE'] == 'legacy'
-          ? 'legacy'
-          : 'hawk',
-      'SHOW_GOOGLE_ADS': previousEnv['SHOW_GOOGLE_ADS'] == true,
-      'ADMOB_BANNER_AD_UNIT_ID': _readStringEnv(
-        previousEnv,
-        'ADMOB_BANNER_AD_UNIT_ID',
-        _defaultBannerAdUnitId,
-      ),
-      'ADMOB_REWARDED_AD_UNIT_ID': _readStringEnv(
-        previousEnv,
-        'ADMOB_REWARDED_AD_UNIT_ID',
-        _defaultRewardedAdUnitId,
-      ),
-      'ADMOB_INTERSTITIAL_AD_UNIT_ID': _readStringEnv(
-        previousEnv,
-        'ADMOB_INTERSTITIAL_AD_UNIT_ID',
-        _defaultInterstitialAdUnitId,
-      ),
-      'CORE_SHA256': ?coreSha256,
-    }),
-  );
-
-  final flutterBuildArgs = createFlutterBuildArgs(
-    platform: platform,
-    verbose: verbose,
-  );
-  final descriptionArgs = <String>[];
-  if (platform != 'android') {
-    descriptionArgs.addAll(['--description', arch]);
-  }
-
   final depExit = await _ensureDependencies(platform, arch);
   if (depExit != 0) return depExit;
 
-  final process = await Process.start(
-    'flutter_distributor',
-    [
-      'package',
-      '--skip-clean',
-      '--artifact-name=HawkVPN-{{build_name}}-{{platform}}{{#description}}-{{description}}{{/description}}{{#is_installer}}-setup{{/is_installer}}{{#ext}}.{{ext}}{{/ext}}',
-      '--platform',
-      platform,
-      '--targets',
-      targets,
-      if (androidArch != null)
-        '--build-target-platform=${_androidFlutterTarget[androidArch]!}',
-      if (flutterBuildArgs.isNotEmpty)
-        '--flutter-build-args=${flutterBuildArgs.join(',')}',
-      ...descriptionArgs,
-    ],
-    includeParentEnvironment: true,
-    environment: {'ANDROID_ARCH': ?androidArch},
-    runInShell: Platform.isWindows,
-  );
+  final buildChannels = platform == 'android' ? channels : const <String>[''];
+  final buildTargets = platform == 'android'
+      ? createTargetList(targets)
+      : <String>[targets];
+  for (final channel in buildChannels) {
+    final appChannel = channel.isEmpty ? 'official' : channel;
+    await file.writeAsString(
+      jsonEncode({
+        'APP_ENV': env,
+        'BACKEND_BASE_URL': env == 'stable'
+            ? 'https://api.tooran.link/'
+            : 'https://myproxyapi.aigateway.cn/',
+        'APP_CHANNEL': appChannel,
+        'SHOW_PROFILES_TAB': previousEnv['SHOW_PROFILES_TAB'] == true,
+        'SHOW_FULL_TOOLS': previousEnv['SHOW_FULL_TOOLS'] == true,
+        'DASHBOARD_MODULE': previousEnv['DASHBOARD_MODULE'] == 'legacy'
+            ? 'legacy'
+            : 'hawk',
+        'SHOW_GOOGLE_ADS': previousEnv['SHOW_GOOGLE_ADS'] == true,
+        'ADMOB_BANNER_AD_UNIT_ID': _readStringEnv(
+          previousEnv,
+          'ADMOB_BANNER_AD_UNIT_ID',
+          _defaultBannerAdUnitId,
+        ),
+        'ADMOB_REWARDED_AD_UNIT_ID': _readStringEnv(
+          previousEnv,
+          'ADMOB_REWARDED_AD_UNIT_ID',
+          _defaultRewardedAdUnitId,
+        ),
+        'ADMOB_INTERSTITIAL_AD_UNIT_ID': _readStringEnv(
+          previousEnv,
+          'ADMOB_INTERSTITIAL_AD_UNIT_ID',
+          _defaultInterstitialAdUnitId,
+        ),
+        'CORE_SHA256': ?coreSha256,
+      }),
+    );
 
-  process.stdout.listen((data) {
-    stdout.write(utf8.decode(data));
-  });
-  process.stderr.listen((data) {
-    stderr.write(utf8.decode(data));
-  });
-  final exitCode = await process.exitCode;
-  return exitCode;
+    final description = platform == 'android' ? appChannel : arch;
+    for (final target in buildTargets) {
+      final flutterBuildArgs = createFlutterBuildArgs(
+        platform: platform,
+        target: target,
+        verbose: verbose,
+      );
+      if (platform == 'android') {
+        await _clearAndroidOutputs(rootDir, target);
+      }
+      stdout.writeln('Packaging $platform channel=$appChannel targets=$target');
+      final process = await Process.start(
+        'flutter_distributor',
+        [
+          'package',
+          '--skip-clean',
+          '--artifact-name=HawkVPN-{{build_name}}-{{platform}}{{#description}}-{{description}}{{/description}}-{{build_mode}}{{#is_installer}}-setup{{/is_installer}}{{#ext}}.{{ext}}{{/ext}}',
+          '--platform',
+          platform,
+          '--targets',
+          target,
+          if (androidArch != null)
+            '--build-target-platform=${_androidFlutterTarget[androidArch]!}',
+          if (flutterBuildArgs.isNotEmpty)
+            '--flutter-build-args=${flutterBuildArgs.join(',')}',
+          '--description',
+          description,
+        ],
+        includeParentEnvironment: true,
+        environment: {'ANDROID_ARCH': ?androidArch},
+        runInShell: Platform.isWindows,
+      );
+
+      process.stdout.listen((data) {
+        stdout.write(utf8.decode(data));
+      });
+      process.stderr.listen((data) {
+        stderr.write(utf8.decode(data));
+      });
+      final exitCode = await process.exitCode;
+      if (exitCode != 0) return exitCode;
+    }
+  }
+  return 0;
+}
+
+Future<void> _clearAndroidOutputs(String rootDir, String target) async {
+  final outputDir = switch (target) {
+    'apk' => Directory(
+      p.join(rootDir, 'build', 'app', 'outputs', 'flutter-apk'),
+    ),
+    'aab' => Directory(
+      p.join(rootDir, 'build', 'app', 'outputs', 'bundle', 'release'),
+    ),
+    _ => null,
+  };
+  if (outputDir == null) return;
+  if (!outputDir.existsSync()) return;
+  await for (final entity in outputDir.list()) {
+    if (entity is File && entity.path.endsWith('.$target')) {
+      await entity.delete();
+    }
+  }
 }
 
 String _readStringEnv(Map<String, dynamic> env, String key, String fallback) {

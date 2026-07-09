@@ -4589,6 +4589,81 @@ class AppLocalizations {
     );
   }
 
+  /// `Subscription fetch failed`
+  String get subscriptionFetchFailedTitle {
+    return Intl.message(
+      'Subscription fetch failed',
+      name: 'subscriptionFetchFailedTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `We couldn't fetch the server list. Please check your internet connection or contact support for help.`
+  String get subscriptionFetchFailedMessage {
+    return Intl.message(
+      'We couldn\'t fetch the server list. Please check your internet connection or contact support for help.',
+      name: 'subscriptionFetchFailedMessage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Contact Support`
+  String get contactSupport {
+    return Intl.message(
+      'Contact Support',
+      name: 'contactSupport',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Try again`
+  String get tryAgain {
+    return Intl.message('Try again', name: 'tryAgain', desc: '', args: []);
+  }
+
+  /// `You've run out of traffic`
+  String get trafficExhaustedTitle {
+    return Intl.message(
+      'You\'ve run out of traffic',
+      name: 'trafficExhaustedTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Your traffic for today is used up and the connection was closed. Contact support to get more traffic, or complete free tasks.`
+  String get trafficExhaustedMessage {
+    return Intl.message(
+      'Your traffic for today is used up and the connection was closed. Contact support to get more traffic, or complete free tasks.',
+      name: 'trafficExhaustedMessage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Contact support for traffic`
+  String get contactSupportForTraffic {
+    return Intl.message(
+      'Contact support for traffic',
+      name: 'contactSupportForTraffic',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Get free traffic`
+  String get getFreeTraffic {
+    return Intl.message(
+      'Get free traffic',
+      name: 'getFreeTraffic',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Reload`
   String get reload {
     return Intl.message('Reload', name: 'reload', desc: '', args: []);

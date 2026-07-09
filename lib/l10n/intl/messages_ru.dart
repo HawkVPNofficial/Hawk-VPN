@@ -282,6 +282,12 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "connectivity": MessageLookupByLibrary.simpleMessage("Связь："),
     "contact": MessageLookupByLibrary.simpleMessage("Контакт"),
+    "contactSupport": MessageLookupByLibrary.simpleMessage(
+      "Связаться с поддержкой",
+    ),
+    "contactSupportForTraffic": MessageLookupByLibrary.simpleMessage(
+      "Поддержка для получения трафика",
+    ),
     "content": MessageLookupByLibrary.simpleMessage("Содержание"),
     "contentNotEmpty": MessageLookupByLibrary.simpleMessage(
       "Содержимое не может быть пустым",
@@ -470,6 +476,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "Включение будет использовать загрузчик геоданных с низким потреблением памяти",
     ),
     "geoipCode": MessageLookupByLibrary.simpleMessage("Код Geoip"),
+    "getFreeTraffic": MessageLookupByLibrary.simpleMessage(
+      "Получить бесплатный трафик",
+    ),
     "global": MessageLookupByLibrary.simpleMessage("Глобальный"),
     "go": MessageLookupByLibrary.simpleMessage("Перейти"),
     "goDownload": MessageLookupByLibrary.simpleMessage("Перейти к загрузке"),
@@ -1110,6 +1119,12 @@ class MessageLookup extends MessageLookupByLibrary {
       "Ввести код приглашения",
     ),
     "submitting": MessageLookupByLibrary.simpleMessage("Отправка..."),
+    "subscriptionFetchFailedMessage": MessageLookupByLibrary.simpleMessage(
+      "Не удалось загрузить список серверов. Проверьте подключение к интернету или обратитесь в поддержку.",
+    ),
+    "subscriptionFetchFailedTitle": MessageLookupByLibrary.simpleMessage(
+      "Не удалось получить подписку",
+    ),
     "subscriptionLoadFailed": MessageLookupByLibrary.simpleMessage(
       "Не удалось загрузить подписку",
     ),
@@ -1169,9 +1184,16 @@ class MessageLookup extends MessageLookupByLibrary {
     "totalTraffic": MessageLookupByLibrary.simpleMessage("Всего трафика"),
     "tproxyPort": MessageLookupByLibrary.simpleMessage("Tproxy-порт"),
     "trafficEarned": MessageLookupByLibrary.simpleMessage("Полученный трафик"),
+    "trafficExhaustedMessage": MessageLookupByLibrary.simpleMessage(
+      "Ваш трафик на сегодня исчерпан, соединение разорвано. Обратитесь в поддержку, чтобы получить больше трафика, или выполните бесплатные задания.",
+    ),
+    "trafficExhaustedTitle": MessageLookupByLibrary.simpleMessage(
+      "Трафик закончился",
+    ),
     "trafficUsage": MessageLookupByLibrary.simpleMessage(
       "Использование трафика",
     ),
+    "tryAgain": MessageLookupByLibrary.simpleMessage("Повторить"),
     "tun": MessageLookupByLibrary.simpleMessage("TUN"),
     "tunDesc": MessageLookupByLibrary.simpleMessage(
       "действительно только в режиме администратора",

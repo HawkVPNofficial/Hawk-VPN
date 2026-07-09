@@ -268,6 +268,10 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "connectivity": MessageLookupByLibrary.simpleMessage("Connectivity："),
     "contact": MessageLookupByLibrary.simpleMessage("Contact"),
+    "contactSupport": MessageLookupByLibrary.simpleMessage("Contact Support"),
+    "contactSupportForTraffic": MessageLookupByLibrary.simpleMessage(
+      "Contact support for traffic",
+    ),
     "content": MessageLookupByLibrary.simpleMessage("Content"),
     "contentNotEmpty": MessageLookupByLibrary.simpleMessage(
       "Content cannot be empty",
@@ -448,6 +452,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Enabling will use the Geo low memory loader",
     ),
     "geoipCode": MessageLookupByLibrary.simpleMessage("Geoip code"),
+    "getFreeTraffic": MessageLookupByLibrary.simpleMessage("Get free traffic"),
     "global": MessageLookupByLibrary.simpleMessage("Global"),
     "go": MessageLookupByLibrary.simpleMessage("Go"),
     "goDownload": MessageLookupByLibrary.simpleMessage("Go to download"),
@@ -1054,6 +1059,12 @@ class MessageLookup extends MessageLookupByLibrary {
       "Submit invite code",
     ),
     "submitting": MessageLookupByLibrary.simpleMessage("Submitting..."),
+    "subscriptionFetchFailedMessage": MessageLookupByLibrary.simpleMessage(
+      "We couldn\'t fetch the server list. Please check your internet connection or contact support for help.",
+    ),
+    "subscriptionFetchFailedTitle": MessageLookupByLibrary.simpleMessage(
+      "Subscription fetch failed",
+    ),
     "subscriptionLoadFailed": MessageLookupByLibrary.simpleMessage(
       "Subscription load failed",
     ),
@@ -1105,7 +1116,14 @@ class MessageLookup extends MessageLookupByLibrary {
     "totalTraffic": MessageLookupByLibrary.simpleMessage("Total traffic"),
     "tproxyPort": MessageLookupByLibrary.simpleMessage("Tproxy Port"),
     "trafficEarned": MessageLookupByLibrary.simpleMessage("Traffic earned"),
+    "trafficExhaustedMessage": MessageLookupByLibrary.simpleMessage(
+      "Your traffic for today is used up and the connection was closed. Contact support to get more traffic, or complete free tasks.",
+    ),
+    "trafficExhaustedTitle": MessageLookupByLibrary.simpleMessage(
+      "You\'ve run out of traffic",
+    ),
     "trafficUsage": MessageLookupByLibrary.simpleMessage("Traffic usage"),
+    "tryAgain": MessageLookupByLibrary.simpleMessage("Try again"),
     "tun": MessageLookupByLibrary.simpleMessage("TUN"),
     "tunDesc": MessageLookupByLibrary.simpleMessage(
       "only effective in administrator mode",

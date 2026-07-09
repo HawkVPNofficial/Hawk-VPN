@@ -266,12 +266,13 @@ class GlobalState {
     BuildContext? context,
     bool? dismissible,
     bool filter = true,
+    Color? barrierColor,
   }) async {
     return showModal<T>(
       useRootNavigator: false,
       context: context ?? globalState.navigatorKey.currentContext!,
       configuration: FadeScaleTransitionConfiguration(
-        barrierColor: Colors.black38,
+        barrierColor: barrierColor ?? Colors.black38,
         barrierDismissible: dismissible ?? true,
       ),
       builder: (_) => child,
@@ -361,7 +362,6 @@ class GlobalState {
         .read(appSettingProvider.notifier)
         .update((state) => state.copyWith(crashlyticsTip: true));
   }
-
 }
 
 final globalState = GlobalState();
