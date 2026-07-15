@@ -68,7 +68,8 @@ Future<void> main(List<String> args) async {
   final env = results['env'] as String;
   final rootDir = Directory.current.path;
   final arch = _detectArch();
-  final targets = _getTargets(platform, arch, results['targets']);
+  final customTargets = results['targets'] as String?;
+  final targets = _getTargets(platform, arch, customTargets);
   final androidArch = results['arch'] as String?;
   final verbose = results['verbose'] as bool;
   final channels = _getChannels(platform, results['channels'] as String?);
@@ -81,6 +82,7 @@ Future<void> main(List<String> args) async {
     arch,
     channels: channels,
     androidArch: androidArch,
+    customTargets: customTargets,
     verbose: verbose,
   );
   exit(exitCode);
@@ -141,6 +143,36 @@ List<String> createTargetList(String targets) {
       .toList();
 }
 
+List<String> createAndroidBuildTargets({
+  required String channel,
+  String? customTargets,
+}) {
+  if (channel == 'googleplay') {
+    final requestedTargets = customTargets == null
+        ? const <String>[]
+        : createTargetList(customTargets);
+    if (requestedTargets.isNotEmpty &&
+        (requestedTargets.length != 1 || requestedTargets.single != 'aab')) {
+      throw FormatException(
+        'The googleplay channel only supports the universal aab target.',
+      );
+    }
+    return const ['aab'];
+  }
+  if (customTargets == null) return const ['apk'];
+  return createTargetList(customTargets);
+}
+
+String? resolveAndroidBuildArch({
+  required String channel,
+  required String target,
+  String? requestedArch,
+}) {
+  if (channel == 'googleplay') return null;
+  if (target == 'apk') return requestedArch ?? 'arm64';
+  return requestedArch;
+}
+
 String _getTargets(String platform, String arch, String? customTargets) {
   if (customTargets != null) return customTargets;
   if (platform == 'linux' && arch == 'amd64') return 'deb,appimage,rpm';
@@ -171,7 +203,12 @@ void _showHelp(ArgParser parser) {
   stderr.writeln('Platform: current host platform (default) or android');
   stderr.writeln();
   stderr.writeln('Default package targets:');
-  _allTargets.forEach((p, t) => stderr.writeln('  $p: $t'));
+  _allTargets.forEach((platform, targets) {
+    final defaultTargets = platform == 'android'
+        ? 'googleplay: universal aab; other channels: arm64 apk'
+        : targets;
+    stderr.writeln('  $platform: $defaultTargets');
+  });
   stderr.writeln('Android channels: ${_androidChannels.join(', ')}');
   stderr.writeln();
   stderr.writeln(parser.usage);
@@ -185,6 +222,7 @@ Future<int> _package(
   String arch, {
   required List<String> channels,
   String? androidArch,
+  String? customTargets,
   required bool verbose,
 }) async {
   final distributorDir = p.join(
@@ -218,11 +256,14 @@ Future<int> _package(
   if (depExit != 0) return depExit;
 
   final buildChannels = platform == 'android' ? channels : const <String>[''];
-  final buildTargets = platform == 'android'
-      ? createTargetList(targets)
-      : <String>[targets];
   for (final channel in buildChannels) {
     final appChannel = channel.isEmpty ? 'official' : channel;
+    final buildTargets = platform == 'android'
+        ? createAndroidBuildTargets(
+            channel: appChannel,
+            customTargets: customTargets,
+          )
+        : <String>[targets];
     await file.writeAsString(
       jsonEncode({
         'APP_ENV': env,
@@ -257,6 +298,13 @@ Future<int> _package(
 
     final description = platform == 'android' ? appChannel : arch;
     for (final target in buildTargets) {
+      final buildArch = platform == 'android'
+          ? resolveAndroidBuildArch(
+              channel: appChannel,
+              target: target,
+              requestedArch: androidArch,
+            )
+          : null;
       final flutterBuildArgs = createFlutterBuildArgs(
         platform: platform,
         target: target,
@@ -276,15 +324,15 @@ Future<int> _package(
           platform,
           '--targets',
           target,
-          if (androidArch != null)
-            '--build-target-platform=${_androidFlutterTarget[androidArch]!}',
+          if (buildArch != null)
+            '--build-target-platform=${_androidFlutterTarget[buildArch]!}',
           if (flutterBuildArgs.isNotEmpty)
             '--flutter-build-args=${flutterBuildArgs.join(',')}',
           '--description',
           description,
         ],
         includeParentEnvironment: true,
-        environment: {'ANDROID_ARCH': ?androidArch},
+        environment: {'ANDROID_ARCH': ?buildArch},
         runInShell: Platform.isWindows,
       );
 

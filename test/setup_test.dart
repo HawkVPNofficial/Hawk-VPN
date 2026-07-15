@@ -46,5 +46,39 @@ void main() {
     test('splits comma separated package targets', () {
       expect(setup.createTargetList('apk, aab'), ['apk', 'aab']);
     });
+
+    test('defaults Google Play to a universal app bundle', () {
+      expect(setup.createAndroidBuildTargets(channel: 'googleplay'), ['aab']);
+      expect(
+        setup.resolveAndroidBuildArch(
+          channel: 'googleplay',
+          target: 'aab',
+          requestedArch: 'arm64',
+        ),
+        isNull,
+      );
+    });
+
+    test('defaults other Android channels to arm64 APKs', () {
+      expect(setup.createAndroidBuildTargets(channel: 'official'), ['apk']);
+      expect(
+        setup.resolveAndroidBuildArch(
+          channel: 'official',
+          target: 'apk',
+          requestedArch: null,
+        ),
+        'arm64',
+      );
+    });
+
+    test('rejects non-AAB Google Play targets', () {
+      expect(
+        () => setup.createAndroidBuildTargets(
+          channel: 'googleplay',
+          customTargets: 'apk',
+        ),
+        throwsFormatException,
+      );
+    });
   });
 }
