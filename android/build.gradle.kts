@@ -3,6 +3,17 @@ allprojects {
         google()
         mavenCentral()
     }
+
+    configurations.configureEach {
+        resolutionStrategy.eachDependency {
+            if (requested.group == "com.github.fast-development.android-js-runtimes" &&
+                requested.name == "fastdev-jsruntimes-quickjs"
+            ) {
+                useVersion("0.3.6")
+                because("0.3.5 bundles native libraries that are not 16KB page-size aligned")
+            }
+        }
+    }
 }
 
 val newBuildDir: Directory =

@@ -23,6 +23,13 @@ val mKeyPassword: String? = localProperties.getProperty("keyPassword")
 val isRelease =
     mStoreFile.exists() && mStorePassword != null && mKeyAlias != null && mKeyPassword != null
 
+val androidArch = System.getenv("ANDROID_ARCH")
+val excludedAndroidAbiLibs = when (androidArch) {
+    "arm" -> listOf("lib/arm64-v8a/**", "lib/x86/**", "lib/x86_64/**")
+    "arm64" -> listOf("lib/armeabi-v7a/**", "lib/x86/**", "lib/x86_64/**")
+    "amd64" -> listOf("lib/armeabi-v7a/**", "lib/arm64-v8a/**", "lib/x86/**")
+    else -> emptyList()
+}
 
 android {
     namespace = "com.follow.clash"
@@ -42,6 +49,13 @@ android {
         targetSdk = libs.versions.targetSdk.get().toInt()
         versionCode = flutter.versionCode
         versionName = flutter.versionName
+        ndk {
+            when (androidArch) {
+                "arm" -> abiFilters += "armeabi-v7a"
+                "arm64" -> abiFilters += "arm64-v8a"
+                "amd64" -> abiFilters += "x86_64"
+            }
+        }
     }
 
     signingConfigs {
@@ -58,6 +72,7 @@ android {
     packaging {
         jniLibs {
             useLegacyPackaging = true
+            excludes += excludedAndroidAbiLibs
         }
     }
 
