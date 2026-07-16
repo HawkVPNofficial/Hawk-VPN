@@ -1,132 +1,146 @@
-<div>
+# Hawk VPN
 
-[**简体中文**](README_zh_CN.md)
+> Privacy-first, zero-logs VPN for secure, fast, and unrestricted internet access.
 
-</div>
+Hawk VPN helps you browse with privacy, security, and confidence. It routes your connection through a high-speed global network of encrypted servers, protecting your traffic on public Wi-Fi and keeping your online activity private.
 
-## FlClash
+No registration. No credit card. No complicated setup. Just install, tap connect, and browse securely.
 
-[![Downloads](https://img.shields.io/github/downloads/chen08209/FlClash/total?style=flat-square&logo=github)](https://github.com/chen08209/FlClash/releases/)[![Last Version](https://img.shields.io/github/release/chen08209/FlClash/all.svg?style=flat-square)](https://github.com/chen08209/FlClash/releases/)[![License](https://img.shields.io/github/license/chen08209/FlClash?style=flat-square)](LICENSE)
+[Official Website](https://hawkvpn.app) · [Download APK](https://dl.hawkvpn.app/HawkVPN-0.0.6-android-official-release-arm64-v8a.apk) · [Google Play](https://play.google.com/store/apps/details?id=com.cashcat.hawk) · [Telegram Support](https://t.me/HawkVPN_Support)
 
-[![Channel](https://img.shields.io/badge/Telegram-Channel-blue?style=flat-square&logo=telegram)](https://t.me/FlClash)
-
-A multi-platform proxy client based on ClashMeta, simple and easy to use, open-source and ad-free.
-
-on Desktop:
-<p style="text-align: center;">
-    <img alt="desktop" src="snapshots/desktop.gif">
-</p>
-
-on Mobile:
-<p style="text-align: center;">
-    <img alt="mobile" src="snapshots/mobile.gif">
-</p>
-
-## Features
-
-✈️ Multi-platform: Android, Windows, macOS and Linux
-
-💻 Adaptive multiple screen sizes, Multiple color themes available
-
-💡 Based on Material You Design, [Surfboard](https://github.com/getsurfboard/surfboard)-like UI
-
-☁️ Supports data sync via WebDAV
-
-✨ Support subscription link, Dark mode
-
-## Use
-
-### Linux
-
-⚠️ Make sure to install the following dependencies before using them
-
-   ```bash
-    sudo apt-get install libayatana-appindicator3-dev
-    sudo apt-get install libkeybinder-3.0-dev
-   ```
-
-### Android
-
-Support the following actions
-
-   ```bash
-    com.follow.clash.action.START
-    
-    com.follow.clash.action.STOP
-    
-    com.follow.clash.action.TOGGLE
-   ```
+---
 
 ## Download
 
-<a href="https://chen08209.github.io/FlClash-fdroid-repo/repo?fingerprint=789D6D32668712EF7672F9E58DEEB15FBD6DCEEC5AE7A4371EA72F2AAE8A12FD"><img alt="Get it on F-Droid" src="snapshots/get-it-on-fdroid.svg" width="200px"/></a> <a href="https://github.com/chen08209/FlClash/releases"><img alt="Get it on GitHub" src="snapshots/get-it-on-github.svg" width="200px"/></a>
+| Platform | Status | Link |
+| --- | --- | --- |
+| Android APK | Available | [Download APK](https://dl.hawkvpn.app/HawkVPN-0.0.6-android-official-release-arm64-v8a.apk) |
+| Google Play | Available | [Get on Google Play](https://play.google.com/store/apps/details?id=com.cashcat.hawk) |
+| GetApps | Available | [Get on GetApps](https://global.app.mi.com/details?id=com.cashcat.hawk) |
+| iOS | In development | Coming soon |
 
-## Build
+---
 
-1. Update submodules
-   ```bash
-   git submodule update --init --recursive
-   ```
+## Why Hawk VPN
 
-2. Install `Flutter` and `Golang` environment
+### Privacy First
 
-3. Build Application
+Your data belongs to you. Hawk VPN follows a strict zero-logs approach and does not track, collect, or store your personal information, browsing history, or network traffic.
 
-    - android
+### One-Tap Connection
 
-        1. Install `Android SDK`, `Android NDK`
+Hawk VPN is designed to be simple. Open the app, tap connect, and start browsing securely. No account, no sign-up flow, and no advanced configuration required.
 
-        2. Set `ANDROID_NDK` environment variable
+### High-Speed Global Network
 
-        3. Run build script
+Connect through a high-speed global network with 50+ servers across 10+ countries. Hawk VPN is built for smooth browsing, private communication, and reliable access wherever you are.
 
-           ```bash
-           dart setup.dart android
-           ```
+Server coverage includes regions across Europe, the Middle East, and Asia, including Germany, Netherlands, Finland, Romania, Sweden, Turkey, Armenia, Georgia, Singapore, and India.
 
-    - windows
+### Bank-Grade Security
 
-        1. Requires a Windows client
+Hawk VPN creates an encrypted tunnel between your device and remote servers, helping protect your traffic from snooping and threats, especially on public Wi-Fi networks.
 
-        2. Install `GCC`, `Inno Setup`
+### Open Source & Verifiable
 
-        3. Run build script
+Trust should be transparent. Hawk VPN is open source under the GPL-3.0 license, so anyone can inspect, audit, and verify how the client works.
 
-           ```bash
-           dart setup.dart windows
-           ```
+No hidden backdoors. No black-box client. Just open code.
 
-    - linux
+---
 
-        1. Requires a Linux client
+## How It Works
 
-        2. Dependencies are auto-installed by setup script, or manually:
-           ```bash
-           sudo apt-get install -y libayatana-appindicator3-dev libkeybinder-3.0-dev
-           ```
+1. **Tap to Connect**  
+   Open Hawk VPN and connect with a single tap.
 
-        3. Run build script
+2. **Secure Tunnel**  
+   Your traffic is routed through an encrypted tunnel to Hawk VPN servers.
 
-           ```bash
-           dart setup.dart linux
-           ```
+3. **Browse Privately**  
+   Enjoy a safer, more private, and more reliable internet experience.
 
-    - macOS
+---
 
-        1. Requires a macOS client
+## Privacy & Transparency
 
-        2. Run build script
+Hawk VPN is built around privacy and trust:
 
-           ```bash
-           dart setup.dart macos
-           ```
+- No registration required
+- No credit card required
+- No browsing history collection
+- No traffic logging
+- Open-source client code
+- Public privacy policy
+- Community and support channels available
 
-## Star
+Read the full privacy policy here:
 
-The easiest way to support developers is to click on the star (⭐) at the top of the page.
+[Privacy Policy](https://hawkvpn.app/privacy.html)
 
-<p style="text-align: center;">
-    <a href="https://api.star-history.com/svg?repos=chen08209/FlClash&Date">
-        <img alt="start" width=50% src="https://api.star-history.com/svg?repos=chen08209/FlClash&Date"/>
-    </a>
-</p>
+---
+
+## About This Repository
+
+This repository contains the open-source client code for Hawk VPN.
+
+The project is built primarily with Flutter and Dart, with platform-specific integrations for Android and desktop environments. The codebase includes the application UI, local data handling, networking logic, platform integrations, multilingual resources, and native/plugin components used by the client.
+
+While Hawk VPN is a user-focused VPN product, the open-source repository allows developers, security researchers, and community members to review how the client is built and how it behaves.
+
+---
+
+## Tech Stack
+
+The Hawk VPN client uses a modern cross-platform stack, including:
+
+- Flutter / Dart
+- Android platform integration
+- Riverpod for application state management
+- Drift for local data management
+- Dio for networking
+- Platform-specific native/plugin components
+- Multi-language resource files
+- GPL-3.0 open-source license
+
+---
+
+## Project Structure
+
+The repository includes platform and application source directories such as:
+
+```text
+android/      Android platform code
+lib/          Flutter application source code
+core/         Core client logic
+plugins/      Native/plugin integrations
+assets/       App assets
+arb/          Localization resources
+test/         Tests
+```
+
+Some platform directories are included to support cross-platform development and shared client functionality. Android is the primary available platform today, while iOS support is in development.
+
+---
+
+## Website & Support
+
+- Official Website: [https://hawkvpn.app](https://hawkvpn.app)
+- Privacy Policy: [https://hawkvpn.app/privacy.html](https://hawkvpn.app/privacy.html)
+- Telegram Channel: [@HawkVPN_official](https://t.me/HawkVPN_official)
+- Telegram Group: [@HawkVPN_Group](https://t.me/HawkVPN_Group)
+- Telegram Support: [@HawkVPN_Support](https://t.me/HawkVPN_Support)
+- YouTube: [@HawkVPN](https://www.youtube.com/@HawkVPN)
+- Email: [dev@cashcatapi.com](mailto:dev@cashcatapi.com)
+
+---
+
+## License
+
+Hawk VPN is open source under the [GPL-3.0 license](LICENSE).
+
+---
+
+## Disclaimer
+
+Hawk VPN is designed to help users improve privacy, security, and connection reliability. Please use the app responsibly and follow all applicable laws and regulations in your region.
