@@ -61,6 +61,8 @@ void main() {
 
     test('defaults other Android channels to arm64 APKs', () {
       expect(setup.createAndroidBuildTargets(channel: 'official'), ['apk']);
+      expect(setup.createAndroidBuildTargets(channel: 'samsung'), ['apk']);
+      expect(setup.createAndroidBuildTargets(channel: 'transsion'), ['apk']);
       expect(
         setup.resolveAndroidBuildArch(
           channel: 'official',
@@ -78,6 +80,30 @@ void main() {
           customTargets: 'apk',
         ),
         throwsFormatException,
+      );
+    });
+
+    test('adds ABI suffix to Android APK artifact names', () {
+      expect(
+        setup.createAndroidArtifactFileName(
+          buildName: '0.0.8',
+          channel: 'samsung',
+          target: 'apk',
+          buildArch: 'arm64',
+        ),
+        'HawkVPN-0.0.8-android-samsung-release-arm64-v8a.apk',
+      );
+    });
+
+    test('keeps Android AAB artifact names universal', () {
+      expect(
+        setup.createAndroidArtifactFileName(
+          buildName: '0.0.8',
+          channel: 'googleplay',
+          target: 'aab',
+          buildArch: 'arm64',
+        ),
+        'HawkVPN-0.0.8-android-googleplay-release.aab',
       );
     });
   });

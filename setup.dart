@@ -19,12 +19,20 @@ const _androidChannels = [
   'googleplay',
   'vivo',
   'apkpure',
+  'samsung',
+  'transsion',
 ];
 
 const _androidFlutterTarget = {
   'arm': 'android-arm',
   'arm64': 'android-arm64',
   'amd64': 'android-x64',
+};
+
+const _androidApkAbiSuffix = {
+  'arm': 'armeabi-v7a',
+  'arm64': 'arm64-v8a',
+  'amd64': 'x86_64',
 };
 
 const _defaultBannerAdUnitId = 'ca-app-pub-2702996863596684/2280126085';
@@ -344,9 +352,86 @@ Future<int> _package(
       });
       final exitCode = await process.exitCode;
       if (exitCode != 0) return exitCode;
+      if (platform == 'android' && target == 'apk') {
+        await _renameAndroidApkArtifact(
+          rootDir: rootDir,
+          channel: appChannel,
+          buildArch: buildArch,
+        );
+      }
     }
   }
   return 0;
+}
+
+Future<void> _renameAndroidApkArtifact({
+  required String rootDir,
+  required String channel,
+  required String? buildArch,
+}) async {
+  final buildName = _readPubspecBuildName(rootDir);
+  final abiSuffix = buildArch == null ? null : _androidApkAbiSuffix[buildArch];
+  if (buildName == null || abiSuffix == null) return;
+
+  final source = File(
+    p.join(
+      rootDir,
+      'dist',
+      createAndroidArtifactFileName(
+        buildName: buildName,
+        channel: channel,
+        target: 'apk',
+      ),
+    ),
+  );
+  if (!source.existsSync()) return;
+
+  final target = File(
+    p.join(
+      rootDir,
+      'dist',
+      createAndroidArtifactFileName(
+        buildName: buildName,
+        channel: channel,
+        target: 'apk',
+        buildArch: buildArch,
+      ),
+    ),
+  );
+  if (target.existsSync()) {
+    await target.delete();
+  }
+  await source.rename(target.path);
+}
+
+String createAndroidArtifactFileName({
+  required String buildName,
+  required String channel,
+  required String target,
+  String? buildArch,
+}) {
+  final abiSuffix = target == 'apk' && buildArch != null
+      ? _androidApkAbiSuffix[buildArch]
+      : null;
+  return [
+        'HawkVPN',
+        buildName,
+        'android',
+        channel,
+        'release',
+        if (abiSuffix != null) abiSuffix,
+      ].join('-') +
+      '.$target';
+}
+
+String? _readPubspecBuildName(String rootDir) {
+  final pubspec = File(p.join(rootDir, 'pubspec.yaml'));
+  if (!pubspec.existsSync()) return null;
+  for (final line in pubspec.readAsLinesSync()) {
+    final match = RegExp(r'^version:\s*([^+\s]+)').firstMatch(line);
+    if (match != null) return match.group(1);
+  }
+  return null;
 }
 
 Future<void> _clearAndroidOutputs(String rootDir, String target) async {

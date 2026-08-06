@@ -39,7 +39,7 @@ Android 构建需要本机已配置 Flutter、Android SDK、NDK。当前 16KB pa
 当前支持渠道：
 
 ```text
-official,cashcat,oppo,xiaomi,googleplay,vivo,apkpure
+official,cashcat,oppo,xiaomi,googleplay,vivo,apkpure,samsung,transsion
 ```
 
 指定单渠道：
@@ -77,7 +77,7 @@ dart setup.dart android --env stable
 常见输出示例：
 
 ```text
-dist/HawkVPN-0.0.7-android-official-release-arm64-v8a.apk
+dist/HawkVPN-0.0.8-android-official-release-arm64-v8a.apk
 ```
 
 ## Play AAB 打包
@@ -97,7 +97,7 @@ dist/HawkVPN-<version>-android-googleplay-release.aab
 例如：
 
 ```text
-dist/HawkVPN-0.0.7-android-googleplay-release.aab
+dist/HawkVPN-0.0.8-android-googleplay-release.aab
 ```
 
 说明：
@@ -105,7 +105,7 @@ dist/HawkVPN-0.0.7-android-googleplay-release.aab
 - Google Play 渠道会忽略 `--arch`，确保 AAB 包含全部 ABI。
 - 指定 `googleplay` 渠道时，`--targets` 只能为 `aab`。
 - Go core 会使用 `-Wl,-z,max-page-size=16384` 重新链接。
-- QuickJS Android 依赖会解析到 `fastdev-jsruntimes-quickjs:0.3.6`，避免旧版 native so 不满足 16KB page size。
+- 第三方 native so 是否满足 16KB page size 以构建后的验证脚本结果为准；不要为了打包脚本直接改依赖版本。
 
 ## 普通 AAB 打包
 
@@ -140,7 +140,7 @@ python3 - <<'PY'
 import struct, zipfile
 from pathlib import Path
 
-path = Path('dist/HawkVPN-0.0.6-android-googleplay-release.aab')
+path = Path('dist/HawkVPN-0.0.8-android-googleplay-release.aab')
 
 def load_aligns(data):
     if data[:4] != b'\x7fELF':

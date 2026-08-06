@@ -24,6 +24,8 @@ val isRelease =
     mStoreFile.exists() && mStorePassword != null && mKeyAlias != null && mKeyPassword != null
 
 val androidArch = System.getenv("ANDROID_ARCH")
+val isSplitPerAbi = (findProperty("split-per-abi") as? String)?.toBoolean() == true ||
+    (rootProject.findProperty("split-per-abi") as? String)?.toBoolean() == true
 val excludedAndroidAbiLibs = when (androidArch) {
     "arm" -> listOf("lib/arm64-v8a/**", "lib/x86/**", "lib/x86_64/**")
     "arm64" -> listOf("lib/armeabi-v7a/**", "lib/x86/**", "lib/x86_64/**")
@@ -49,11 +51,13 @@ android {
         targetSdk = libs.versions.targetSdk.get().toInt()
         versionCode = flutter.versionCode
         versionName = flutter.versionName
-        ndk {
-            when (androidArch) {
-                "arm" -> abiFilters += "armeabi-v7a"
-                "arm64" -> abiFilters += "arm64-v8a"
-                "amd64" -> abiFilters += "x86_64"
+        if (!isSplitPerAbi) {
+            ndk {
+                when (androidArch) {
+                    "arm" -> abiFilters += "armeabi-v7a"
+                    "arm64" -> abiFilters += "arm64-v8a"
+                    "amd64" -> abiFilters += "x86_64"
+                }
             }
         }
     }
