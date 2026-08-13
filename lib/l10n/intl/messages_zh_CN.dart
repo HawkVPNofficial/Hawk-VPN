@@ -744,6 +744,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "subscriptionLoadFailed": MessageLookupByLibrary.simpleMessage("订阅加载失败"),
     "subscriptionLoadSuccess": MessageLookupByLibrary.simpleMessage("订阅加载成功"),
+    "subscriptionUnavailable": MessageLookupByLibrary.simpleMessage(
+      "你的订阅服务不可用，请联系客服",
+    ),
     "successfulInvites": MessageLookupByLibrary.simpleMessage("成功邀请"),
     "suggestion": MessageLookupByLibrary.simpleMessage("建议"),
     "suspended": MessageLookupByLibrary.simpleMessage("挂起中..."),

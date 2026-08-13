@@ -207,6 +207,10 @@ class SetupAction extends _$SetupAction {
   }
 
   Future<void> updateStatus(bool isStart, {bool isInit = false}) async {
+    if (isStart && ref.read(backendUserStateProvider)?.enabled == false) {
+      globalState.showNotifier(currentAppLocalizations.subscriptionUnavailable);
+      return;
+    }
     if (isStart) {
       if (!isInit) {
         final res = await ref
@@ -924,6 +928,10 @@ class ProfilesAction extends _$ProfilesAction {
       }
 
       if (isSynced) {
+        if (ref.read(backendUserStateProvider)?.enabled == false) {
+          await _handleBackendUserDisabled();
+          return;
+        }
         globalState.showNotifier(
           currentAppLocalizations.subscriptionLoadSuccess,
         );
@@ -964,6 +972,9 @@ class ProfilesAction extends _$ProfilesAction {
     }
     globalState.backendAuth = auth;
     ref.read(backendUserStateProvider.notifier).setUser(user);
+    if (!user.enabled) {
+      return null;
+    }
     final subscription = await request.getBackendSubscription(auth: auth);
     if (subscription.content.trim().isEmpty) {
       throw 'subscription is empty';
@@ -1042,11 +1053,27 @@ class ProfilesAction extends _$ProfilesAction {
     final nextAuth = auth ?? await preferences.getBackendAuth();
     if (nextAuth == null || !nextAuth.isValid) {
       await _syncBackendProfile(globalState.deviceId);
+      if (ref.read(backendUserStateProvider)?.enabled == false) {
+        await _handleBackendUserDisabled();
+      }
       return;
     }
     final user = await request.currentUser(auth: nextAuth);
     globalState.backendAuth = nextAuth;
     ref.read(backendUserStateProvider.notifier).setUser(user);
+    if (!user.enabled) {
+      await _handleBackendUserDisabled();
+    }
+  }
+
+  Future<void> _handleBackendUserDisabled() async {
+    if (ref.read(isStartProvider)) {
+      await ref.read(setupActionProvider.notifier).updateStatus(false);
+    }
+    await globalState.showMessage(
+      message: TextSpan(text: currentAppLocalizations.subscriptionUnavailable),
+      cancelable: false,
+    );
   }
 
   Future<void> _saveBackendSubscription(

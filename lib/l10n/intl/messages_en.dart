@@ -1071,6 +1071,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "subscriptionLoadSuccess": MessageLookupByLibrary.simpleMessage(
       "Subscription loaded",
     ),
+    "subscriptionUnavailable": MessageLookupByLibrary.simpleMessage(
+      "Your subscription service is unavailable. Please contact support.",
+    ),
     "successfulInvites": MessageLookupByLibrary.simpleMessage(
       "Successful invites",
     ),

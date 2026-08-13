@@ -75,6 +75,9 @@ class _StartButtonState extends ConsumerState<StartButton>
       return Container();
     }
     final suspend = ref.watch(suspendProvider);
+    final subscriptionEnabled = ref.watch(
+      backendUserStateProvider.select((user) => user?.enabled ?? true),
+    );
     final theme = Theme.of(context);
     final appLocalizations = context.appLocalizations;
     return RepaintBoundary(
@@ -110,9 +113,11 @@ class _StartButtonState extends ConsumerState<StartButton>
               clipBehavior: Clip.antiAlias,
               materialTapTargetSize: MaterialTapTargetSize.padded,
               heroTag: null,
-              onPressed: () {
-                handleSwitchStart();
-              },
+              onPressed: subscriptionEnabled
+                  ? () {
+                      handleSwitchStart();
+                    }
+                  : null,
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [

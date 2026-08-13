@@ -563,6 +563,7 @@
   "otherFeedback": "Other",
   "subscriptionLoadSuccess": "Subscription loaded",
   "subscriptionLoadFailed": "Subscription load failed",
+  "subscriptionUnavailable": "Your subscription service is unavailable. Please contact support.",
   "subscriptionFetchFailedTitle": "Subscription fetch failed",
   "subscriptionFetchFailedMessage": "We couldn't fetch the server list. Please check your internet connection or contact support for help.",
   "contactSupport": "Contact Support",

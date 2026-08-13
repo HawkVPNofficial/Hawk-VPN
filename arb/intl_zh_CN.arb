@@ -563,6 +563,7 @@
   "otherFeedback": "其他",
   "subscriptionLoadSuccess": "订阅加载成功",
   "subscriptionLoadFailed": "订阅加载失败",
+  "subscriptionUnavailable": "你的订阅服务不可用，请联系客服。",
   "subscriptionFetchFailedTitle": "订阅获取失败",
   "subscriptionFetchFailedMessage": "服务器列表拉取失败。请检查网络连接，或联系客服获取帮助。",
   "contactSupport": "联系客服",

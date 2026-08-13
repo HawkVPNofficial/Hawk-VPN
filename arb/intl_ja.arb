@@ -563,6 +563,7 @@
   "otherFeedback": "その他",
   "subscriptionLoadSuccess": "サブスクリプションを読み込みました",
   "subscriptionLoadFailed": "サブスクリプションの読み込みに失敗しました",
+  "subscriptionUnavailable": "サブスクリプションサービスを利用できません。サポートにお問い合わせください。",
   "subscriptionFetchFailedTitle": "サブスクリプションの取得に失敗しました",
   "subscriptionFetchFailedMessage": "サーバーリストを取得できませんでした。インターネット接続を確認するか、サポートにお問い合わせください。",
   "contactSupport": "サポートに連絡",

@@ -4589,6 +4589,16 @@ class AppLocalizations {
     );
   }
 
+  /// `Your subscription service is unavailable. Please contact support.`
+  String get subscriptionUnavailable {
+    return Intl.message(
+      'Your subscription service is unavailable. Please contact support.',
+      name: 'subscriptionUnavailable',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Subscription fetch failed`
   String get subscriptionFetchFailedTitle {
     return Intl.message(

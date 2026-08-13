@@ -188,9 +188,13 @@ class MyProxyDashboardView extends ConsumerWidget {
 
   Widget _buildConnectionCard(BuildContext context, WidgetRef ref) {
     final state = _connectionState(ref);
+    final subscriptionEnabled = ref.watch(
+      backendUserStateProvider.select((user) => user?.enabled ?? true),
+    );
     final enabled =
         state != _ConnectionDisplayState.noProfile &&
-        state != _ConnectionDisplayState.connecting;
+        state != _ConnectionDisplayState.connecting &&
+        subscriptionEnabled;
     final isConnected = state == _ConnectionDisplayState.connected;
     return _panel(
       child: Padding(

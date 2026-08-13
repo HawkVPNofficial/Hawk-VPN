@@ -3,6 +3,12 @@ import 'package:test/test.dart';
 
 void main() {
   group('BackendUser', () {
+    test('parses disabled subscription status', () {
+      final user = BackendUser.fromJson({'enabled': false});
+
+      expect(user.enabled, isFalse);
+    });
+
     test('parses 0.0.2 fields', () {
       final user = BackendUser.fromJson({
         'id': 1,

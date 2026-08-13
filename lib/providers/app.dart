@@ -335,7 +335,6 @@ class Query extends _$Query with AutoDisposeNotifierMixin {
 @Riverpod(keepAlive: true)
 class Loading extends _$Loading with AutoDisposeNotifierMixin {
   DateTime? _start;
-  Timer? _timer;
 
   @override
   bool build(LoadingTag tag) {
@@ -343,8 +342,6 @@ class Loading extends _$Loading with AutoDisposeNotifierMixin {
   }
 
   void start() {
-    _timer?.cancel();
-    _timer = null;
     _start = DateTime.now();
     value = true;
   }
@@ -361,12 +358,10 @@ class Loading extends _$Loading with AutoDisposeNotifierMixin {
       value = false;
       return;
     }
-    _timer = Timer(Duration(milliseconds: minDuration - elapsed), () {
-      if (_start != startedAt) {
-        return;
-      }
+    await Future<void>.delayed(Duration(milliseconds: minDuration - elapsed));
+    if (_start == startedAt) {
       value = false;
-    });
+    }
   }
 }
 

@@ -872,6 +872,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "subscriptionLoadSuccess": MessageLookupByLibrary.simpleMessage(
       "サブスクリプションを読み込みました",
     ),
+    "subscriptionUnavailable": MessageLookupByLibrary.simpleMessage(
+      "サブスクリプションサービスを利用できません。サポートにお問い合わせください。",
+    ),
     "successfulInvites": MessageLookupByLibrary.simpleMessage("招待成功"),
     "suggestion": MessageLookupByLibrary.simpleMessage("提案"),
     "suspended": MessageLookupByLibrary.simpleMessage("一時停止中..."),

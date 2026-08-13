@@ -1131,6 +1131,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "subscriptionLoadSuccess": MessageLookupByLibrary.simpleMessage(
       "Подписка загружена",
     ),
+    "subscriptionUnavailable": MessageLookupByLibrary.simpleMessage(
+      "Сервис подписки недоступен. Обратитесь в поддержку.",
+    ),
     "successfulInvites": MessageLookupByLibrary.simpleMessage(
       "Успешные приглашения",
     ),

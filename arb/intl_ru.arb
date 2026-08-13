@@ -563,6 +563,7 @@
   "otherFeedback": "Другое",
   "subscriptionLoadSuccess": "Подписка загружена",
   "subscriptionLoadFailed": "Не удалось загрузить подписку",
+  "subscriptionUnavailable": "Сервис подписки недоступен. Обратитесь в поддержку.",
   "subscriptionFetchFailedTitle": "Не удалось получить подписку",
   "subscriptionFetchFailedMessage": "Не удалось загрузить список серверов. Проверьте подключение к интернету или обратитесь в поддержку.",
   "contactSupport": "Связаться с поддержкой",
