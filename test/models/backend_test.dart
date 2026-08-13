@@ -121,10 +121,12 @@ void main() {
     test('parses session fields', () {
       final session = BackendAdRewardSession.fromJson(const {
         'sessionId': 'session-1',
+        'userId': 'user-1',
         'customData': 'custom-data',
       });
 
       expect(session.sessionId, 'session-1');
+      expect(session.userId, 'user-1');
       expect(session.customData, 'custom-data');
     });
   });

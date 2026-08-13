@@ -5,7 +5,7 @@ import 'package:fl_clash/enum/enum.dart';
 import 'package:fl_clash/models/models.dart';
 import 'package:fl_clash/providers/providers.dart';
 import 'package:fl_clash/state.dart';
-import 'package:fl_clash/views/dashboard/admob_banner.dart';
+import 'package:fl_clash/views/dashboard/topon_banner.dart';
 import 'package:fl_clash/views/dashboard/proxy_picker_sheet.dart';
 import 'package:fl_clash/widgets/widgets.dart';
 import 'package:flutter/material.dart';
@@ -373,7 +373,7 @@ class MyProxyDashboardView extends ConsumerWidget {
               const SizedBox(height: 16),
               _buildChart(context, ref),
               const SizedBox(height: 16),
-              const DashboardAdMobBanner(),
+              const DashboardToponBanner(),
               const _QuotaPanel(),
             ],
           ),
@@ -649,10 +649,7 @@ class _SelectedProxyButton extends ConsumerWidget {
               ),
             ),
             const SizedBox(width: 8),
-            Icon(
-              Icons.chevron_right,
-              color: colorScheme.onSurfaceVariant,
-            ),
+            Icon(Icons.chevron_right, color: colorScheme.onSurfaceVariant),
           ],
         ),
       ),

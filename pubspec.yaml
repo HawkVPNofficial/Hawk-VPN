@@ -1,7 +1,7 @@
 name: fl_clash
 description: Hawk VPN helps you enjoy a safer, more private and more reliable internet experience.
 publish_to: 'none'
-version: 0.0.8+8
+version: 0.0.9+9
 environment:
   sdk: '>=3.8.0 <4.0.0'
 
@@ -56,7 +56,6 @@ dependencies:
   uni_platform: ^0.1.3
   device_info_plus: ^12.2.0
   connectivity_plus: ^7.0.0
-  google_mobile_ads: ^6.0.0
   screen_retriever: ^0.2.0
   defer_pointer: ^0.0.2
   flutter_riverpod: ^3.3.1

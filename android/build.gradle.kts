@@ -2,6 +2,7 @@ allprojects {
     repositories {
         google()
         mavenCentral()
+        maven("https://jfrog.anythinktech.com/artifactory/overseas_sdk")
     }
 }
 

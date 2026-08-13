@@ -35,9 +35,11 @@ const _androidApkAbiSuffix = {
   'amd64': 'x86_64',
 };
 
-const _defaultBannerAdUnitId = 'ca-app-pub-2702996863596684/2280126085';
-const _defaultRewardedAdUnitId = 'ca-app-pub-2702996863596684/1238507158';
-const _defaultInterstitialAdUnitId = '';
+const _defaultToponAppId = 'h6a4b0451496a4';
+const _defaultToponAppKey = 'aa9d6d33e888f3d8b951bda5f4cd5875b';
+const _defaultToponSdkDebugKey = 'dfa750a1dcd6771580b64070c71f9897328491c9';
+const _defaultToponBannerPlacementId = 'n6a4b046c1874b';
+const _defaultToponRewardedPlacementId = 'n6a4b046acb85d';
 
 const _hostPlatform = {
   'linux': 'linux',
@@ -284,21 +286,33 @@ Future<int> _package(
         'DASHBOARD_MODULE': previousEnv['DASHBOARD_MODULE'] == 'legacy'
             ? 'legacy'
             : 'hawk',
-        'SHOW_GOOGLE_ADS': previousEnv['SHOW_GOOGLE_ADS'] == true,
-        'ADMOB_BANNER_AD_UNIT_ID': _readStringEnv(
+        'SHOW_TOPON_ADS':
+            previousEnv['SHOW_TOPON_ADS'] == true ||
+            previousEnv['SHOW_GOOGLE_ADS'] == true,
+        'TOPON_APP_ID': _readStringEnv(
           previousEnv,
-          'ADMOB_BANNER_AD_UNIT_ID',
-          _defaultBannerAdUnitId,
+          'TOPON_APP_ID',
+          _defaultToponAppId,
         ),
-        'ADMOB_REWARDED_AD_UNIT_ID': _readStringEnv(
+        'TOPON_APP_KEY': _readStringEnv(
           previousEnv,
-          'ADMOB_REWARDED_AD_UNIT_ID',
-          _defaultRewardedAdUnitId,
+          'TOPON_APP_KEY',
+          _defaultToponAppKey,
         ),
-        'ADMOB_INTERSTITIAL_AD_UNIT_ID': _readStringEnv(
+        'TOPON_SDK_DEBUG_KEY': _readStringEnv(
           previousEnv,
-          'ADMOB_INTERSTITIAL_AD_UNIT_ID',
-          _defaultInterstitialAdUnitId,
+          'TOPON_SDK_DEBUG_KEY',
+          _defaultToponSdkDebugKey,
+        ),
+        'TOPON_BANNER_PLACEMENT_ID': _readStringEnv(
+          previousEnv,
+          'TOPON_BANNER_PLACEMENT_ID',
+          _defaultToponBannerPlacementId,
+        ),
+        'TOPON_REWARDED_PLACEMENT_ID': _readStringEnv(
+          previousEnv,
+          'TOPON_REWARDED_PLACEMENT_ID',
+          _defaultToponRewardedPlacementId,
         ),
         'CORE_SHA256': ?coreSha256,
       }),

@@ -231,17 +231,20 @@ class BackendTrafficReward {
 class BackendAdRewardSession {
   const BackendAdRewardSession({
     required this.sessionId,
+    required this.userId,
     required this.customData,
   });
 
   factory BackendAdRewardSession.fromJson(Map<String, dynamic> json) {
     return BackendAdRewardSession(
       sessionId: json['sessionId']?.toString() ?? '',
+      userId: json['userId']?.toString() ?? '',
       customData: json['customData']?.toString() ?? '',
     );
   }
 
   final String sessionId;
+  final String userId;
   final String customData;
 }
 

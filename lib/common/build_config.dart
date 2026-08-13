@@ -20,43 +20,34 @@ const appChannel = String.fromEnvironment(
   defaultValue: 'official',
 );
 
-const showGoogleAds = bool.fromEnvironment(
-  'SHOW_GOOGLE_ADS',
+const showToponAds = bool.fromEnvironment(
+  'SHOW_TOPON_ADS',
   defaultValue: false,
 );
 
-const _debugBannerAdUnitId = 'ca-app-pub-3940256099942544/6300978111';
-const _releaseBannerAdUnitId = 'ca-app-pub-2702996863596684/2280126085';
-const _debugRewardedAdUnitId = 'ca-app-pub-3940256099942544/5224354917';
-const _releaseRewardedAdUnitId = 'ca-app-pub-2702996863596684/1238507158';
-const _debugInterstitialAdUnitId = 'ca-app-pub-3940256099942544/1033173712';
-const _releaseInterstitialAdUnitId = '';
+const _defaultToponAppId = 'h6a4b0451496a4';
+const _defaultToponAppKey = 'aa9d6d33e888f3d8b951bda5f4cd5875b';
+const _defaultToponBannerPlacementId = 'n6a4b046c1874b';
+const _defaultToponRewardedPlacementId = 'n6a4b046acb85d';
 
-const configuredBannerAdUnitId = String.fromEnvironment(
-  'ADMOB_BANNER_AD_UNIT_ID',
+const configuredToponAppId = String.fromEnvironment('TOPON_APP_ID');
+const configuredToponAppKey = String.fromEnvironment('TOPON_APP_KEY');
+const toponSdkDebugKey = String.fromEnvironment(
+  'TOPON_SDK_DEBUG_KEY',
+  defaultValue: 'dfa750a1dcd6771580b64070c71f9897328491c9',
 );
-const configuredRewardedAdUnitId = String.fromEnvironment(
-  'ADMOB_REWARDED_AD_UNIT_ID',
+const toponBannerPlacementId = String.fromEnvironment(
+  'TOPON_BANNER_PLACEMENT_ID',
+  defaultValue: _defaultToponBannerPlacementId,
 );
-const configuredInterstitialAdUnitId = String.fromEnvironment(
-  'ADMOB_INTERSTITIAL_AD_UNIT_ID',
+const toponRewardedPlacementId = String.fromEnvironment(
+  'TOPON_REWARDED_PLACEMENT_ID',
+  defaultValue: _defaultToponRewardedPlacementId,
 );
 
-String resolveBannerAdUnitId({required bool releaseMode}) {
-  if (configuredBannerAdUnitId.isNotEmpty) return configuredBannerAdUnitId;
-  return releaseMode ? _releaseBannerAdUnitId : _debugBannerAdUnitId;
-}
-
-String resolveRewardedAdUnitId({required bool releaseMode}) {
-  if (configuredRewardedAdUnitId.isNotEmpty) return configuredRewardedAdUnitId;
-  return releaseMode ? _releaseRewardedAdUnitId : _debugRewardedAdUnitId;
-}
-
-String resolveInterstitialAdUnitId({required bool releaseMode}) {
-  if (configuredInterstitialAdUnitId.isNotEmpty) {
-    return configuredInterstitialAdUnitId;
-  }
-  return releaseMode
-      ? _releaseInterstitialAdUnitId
-      : _debugInterstitialAdUnitId;
-}
+final toponAppId = configuredToponAppId.isNotEmpty
+    ? configuredToponAppId
+    : _defaultToponAppId;
+final toponAppKey = configuredToponAppKey.isNotEmpty
+    ? configuredToponAppKey
+    : _defaultToponAppKey;
